@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Service Details — Perry Home Wound Care</title>
+  <meta name="description" content="Learn more about this wound care service and book online."/>
+  <link rel="stylesheet" href="./service-details.css"/>
+</head>
+<body>
+  <header class="nav pro-nav">
+    <div class="navin pro-navin">
+      <a class="brand pro-brand" href="../../index.html">
+        <span class="logo pro-logo">PHWC</span>
+        <span class="brandname pro-brandname">Perry Home Wound Care</span>
+      </a>
+      <nav class="navlinks pro-navlinks">
+        <a href="./Service.html" class="btn ghost pro-btn">All Services</a>
+        <a href="../booking/bookings.html" class="btn primary pro-btn">Book</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-slim pro-hero">
+    <div class="breadcrumbs pro-breadcrumbs"><span id="crumbs">Services</span></div>
+    <h1 id="svcTitle" class="pro-title">Service title</h1>
+    <p class="muted pro-blurb" id="svcBlurb">Short description of this service.</p>
+  </section>
+
+  <section class="details pro-details">
+    <div class="details-grid">
+      <figure class="poster pro-poster">
+        <img id="svcImage" alt="Service Image" class="pro-img"/>
+      </figure>
+      <div class="box pro-box">
+        <h3 class="pro-section-title">What’s Included</h3>
+        <ul class="list pro-list" id="svcBullets"></ul>
+        <p class="small muted pro-duration" id="svcDuration"></p>
+        <div class="cta-row pro-cta-row">
+          <a class="btn primary pro-btn" id="bookBtn" href="#">Book Online</a>
+          <a class="btn pro-btn" href="./Service.html">Back to Services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="book" class="wrap pro-book">
+    <div class="cta pro-cta">
+      <div>
+        <h3 class="pro-section-title">Book: <span id="svcShort"></span></h3>
+        <p class="small muted pro-book-desc">Complete our secure booking to request an appointment. We’ll confirm by phone/email.</p>
+      </div>
+      <div class="cta-row right pro-cta-row">
+        <a class="btn primary pro-btn" id="bookBtn2" href="#">Book Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky mobile booking bar -->
+  <div class="sticky-cta pro-sticky-cta" role="region" aria-label="Quick booking">
+    <div class="sticky-cta__title pro-sticky-title">
+      <strong id="stickySvc">Service name</strong>
+      <span class="small muted pro-sticky-desc">Secure booking</span>
+    </div>
+    <a id="stickyBtn" class="btn primary pro-btn" href="#" aria-label="Book now">Book Now</a>
+  </div>
+
+  <footer class="footer pro-footer">
+    <div class="muted small pro-footer-text">&copy; <span id="yr"></span> Perry Home Wound Care</div>
+  </footer>
+
+  <script src="./service-details.js" defer></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      background: #f7f9fc;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .pro-nav {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 0 0 0 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .pro-navin {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 32px;
+    }
+    .pro-brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .pro-logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #2a7be4;
+      margin-right: 10px;
+      letter-spacing: 2px;
+    }
+    .pro-brandname {
+      font-size: 1.1rem;
+      color: #222;
+      font-weight: 500;
+    }
+    .pro-navlinks {
+      display: flex;
+      gap: 12px;
+    }
+    .pro-btn {
+      border-radius: 6px;
+      font-size: 1rem;
+      padding: 8px 22px;
+      transition: background .2s, color .2s, box-shadow .2s;
+      box-shadow: 0 1px 4px rgba(42,123,228,0.08);
+    }
+    .pro-btn.primary {
+      background: linear-gradient(90deg,#2a7be4 0%,#1e4fa2 100%);
+      color: #fff;
+      border: none;
+    }
+    .pro-btn.ghost {
+      background: #f7f9fc;
+      color: #2a7be4;
+      border: 1px solid #2a7be4;
+    }
+    .pro-btn:hover {
+      box-shadow: 0 2px 8px rgba(42,123,228,0.12);
+      opacity: .92;
+    }
+    .pro-hero {
+      background: linear-gradient(90deg,#eaf3fc 0%,#f7f9fc 100%);
+      padding: 48px 0 32px 0;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .pro-breadcrumbs {
+      font-size: .95rem;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    .pro-title {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: #1e4fa2;
+      margin-bottom: 12px;
+    }
+    .pro-blurb {
+      font-size: 1.15rem;
+      color: #374151;
+      margin-bottom: 0;
+    }
+    .pro-details {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 32px;
+    }
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    .pro-poster {
+      margin: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(42,123,228,0.08);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+    }
+    .pro-img {
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .pro-box {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(42,123,228,0.08);
+      padding: 32px 28px;
+      min-height: 320px;
+    }
+    .pro-section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1e4fa2;
+      margin-bottom: 18px;
+    }
+    .pro-list {
+      margin-bottom: 18px;
+      padding-left: 18px;
+      color: #222;
+      font-size: 1.08rem;
+    }
+    .pro-duration {
+      color: #6b7280;
+      margin-bottom: 18px;
+    }
+    .pro-cta-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .pro-book {
+      background: #eaf3fc;
+      padding: 38px 0;
+      margin-top: 48px;
+    }
+    .pro-cta {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(42,123,228,0.08);
+      padding: 32px 28px;
+    }
+    .pro-book-desc {
+      color: #6b7280;
+      font-size: 1.05rem;
+    }
+    .pro-sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg,#2a7be4 0%,#1e4fa2 100%);
+      color: #fff;
+      box-shadow: 0 -2px 12px rgba(42,123,228,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      z-index: 100;
+    }
+    .pro-sticky-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .pro-sticky-desc {
+      color: #eaf3fc;
+      font-size: .95rem;
+      margin-left: 12px;
+    }
+    .pro-footer {
+      background: #1e4fa2;
+      color: #fff;
+      padding: 32px 0 18px 0;
+      text-align: center;
+      margin-top: 48px;
+    }
+    .pro-footer-text {
+      color: #eaf3fc;
+      font-size: 1.05rem;
+    }
+    @media (max-width: 900px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+      .pro-cta {
+        flex-direction: column;
+        gap: 18px;
+      }
+    }
+    @media (max-width: 600px) {
+      .pro-navin, .pro-details, .pro-sticky-cta {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .pro-box, .pro-cta {
+        padding: 18px 10px;
+      }
+      .pro-title {
+        font-size: 1.5rem;
+      }
+      .pro-section-title {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</body>
+</html>

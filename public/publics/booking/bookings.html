@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Book a Visit — Perry Home Wound Care</title>
+  <meta name="description" content="Book an in-home or virtual wound care visit with Perry Home Wound Care."/>
+  <link rel="stylesheet" href="./bookings.css"/>
+</head>
+<body>
+  <header class="nav">
+    <div class="navin">
+      <a class="brand" href="/"><span class="logo">PH</span><span class="brandname">Perry Home Wound Care</span></a>
+      <nav class="navlinks">
+        <a class="btn ghost" href="../services/Service.html">Services</a>
+        <a class="btn primary" href="./bookings.html">Book</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="book-hero">
+    <h1>Book your wound care visit</h1>
+    <p class="muted">Tell us about the patient and pick a preferred date/time. We’ll confirm by phone/email.</p>
+    <div class="svc-pill" id="svcPill">Service: <strong id="svcTitle">Any service</strong></div>
+  </section>
+
+  <section class="wrap">
+    <form id="bookingForm" class="card book-card" novalidate>
+      <div class="form-col">
+        <h3>Patient information</h3>
+        <div class="row">
+          <label>Patient first name*<input required name="firstName" autocomplete="given-name"/></label>
+          <label>Last name*<input required name="lastName" autocomplete="family-name"/></label>
+        </div>
+        <div class="row">
+          <label>Date of birth*<input required name="dob" type="date"/></label>
+          <label>Primary diagnosis / wound type*<select required name="woundType">
+            <option value="">Select…</option>
+            <option>Pressure injury</option><option>Diabetic foot ulcer</option>
+            <option>Venous ulcer</option><option>Arterial ulcer</option>
+            <option>Surgical / traumatic</option><option>Ostomy care</option><option>Other</option>
+          </select></label>
+        </div>
+        <label>Brief clinical notes (optional)
+          <textarea name="notes" rows="4" placeholder="e.g., stage II sacral ulcer, moderate exudate, caregiver support…"></textarea>
+        </label>
+
+        <h3>Visit preference</h3>
+        <div class="row">
+          <label>Mode*<select required name="mode">
+            <option value="">Select…</option>
+            <option value="in-home">In-home</option><option value="virtual">Virtual</option><option value="facility">Facility / SNF</option>
+          </select></label>
+          <label>Preferred date*<input required name="preferredDate" type="date"/></label>
+        </div>
+        <div class="row">
+          <label>Preferred time window*<select required name="preferredTime">
+            <option value="">Select…</option>
+            <option>Morning (8–11am)</option><option>Midday (11–2pm)</option><option>Afternoon (2–5pm)</option><option>Evening (5–7pm)</option>
+          </select></label>
+          <label>Service area / Address (if in-home)<input name="address" placeholder="Street, City, ZIP"/></label>
+        </div>
+      </div>
+
+      <aside class="form-col">
+        <h3>Contact & consent</h3>
+        <label>Contact name (self or caregiver)*<input required name="contactName"/></label>
+        <div class="row">
+          <label>Phone*<input required name="phone" type="tel" placeholder="+1 (___) ___-____"/></label>
+          <label>Email*<input required name="email" type="email" placeholder="name@example.com"/></label>
+        </div>
+        <label>How did you hear about us?
+          <select name="refSource">
+            <option value="">Select…</option>
+            <option>Hospital / Clinic</option><option>SNF / Home Health</option><option>Friend / Family</option>
+            <option>Google / Web</option><option>Social worker</option><option>Other</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" required name="consent"/><span>I consent to be contacted about this booking, acknowledge the <a href="../../privacy.html" target="_blank">Privacy Policy</a>, and understand this is not a medical emergency line.</span></label>
+        <div class="divider"></div>
+        <button class="btn primary block" type="submit" id="submitBtn">Request appointment</button>
+        <p class="small muted">You’ll receive a confirmation by phone or email. Same-week availability in Houston County.</p>
+        <div id="formStatus" class="status" aria-live="polite"></div>
+      </aside>
+
+      <input type="hidden" name="serviceSlug" id="serviceSlug"/>
+      <input type="hidden" name="serviceTitle" id="serviceTitle"/>
+    </form>
+  </section>
+
+  <section id="successWrap" class="wrap" hidden>
+    <div class="card success-card">
+      <h2>Request received 🎉</h2>
+      <p>Thanks! Your booking request for <strong id="succSvc">—</strong> has been submitted.</p>
+      <p class="muted">We’ll contact you soon to confirm date/time and next steps.</p>
+      <div class="cta-row">
+        <a class="btn" href="../services/Service.html">Back to Services</a>
+        <a class="btn primary" href="../contact/contact.html">Contact us</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="muted small">
+      <a href="../../privacy.html">Privacy</a> ·
+      <a href="../../accessibility.html">Accessibility</a>
+    </div>
+  </footer>
+
+  <script type="module" src="./bookings.js"></script>
+</body>
+</html>

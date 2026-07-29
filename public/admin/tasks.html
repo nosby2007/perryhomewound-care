@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Tasks — Admin</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+</head>
+<body>
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">PH</div>
+    <div class="btxt">
+      <strong>Perry Home</strong>
+      <span class="muted">Admin</span>
+    </div>
+  </div>
+  <nav class="snav">
+    <a class="sitem" data-target="tasks"    href="/admin/tasks.html">Tasks</a>
+    <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+    <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+    <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+    <a class="sitem" data-target="users"    href="/admin/users.html">Users</a>
+  </nav>
+  <div class="sfoot">
+    <span id="who" class="small muted"></span>
+    <button id="logoutBtn" class="btn wfull">Sign out</button>
+  </div>
+</aside>
+
+
+  <div class="main">
+    <header class="topbar">
+      <h1>Tasks</h1>
+      <div></div>
+    </header>
+
+    <section class="wrap">
+      <div class="phead">
+        <div class="filters">
+          <select id="fTaskStatus"><option value="">All</option><option>assigned</option><option>in_progress</option><option>done</option><option>cancelled</option></select>
+          <input id="qTasks" class="inp" placeholder="Search patient/service/assignee…"/>
+        </div>
+        <button id="btnAddTask" class="btn primary">+ Add Task</button>
+      </div>
+
+      <div class="tablewrap">
+        <table class="tbl" id="tblTasks">
+          <thead><tr><th>Created</th><th>Scheduled</th><th>Patient</th><th>Service</th><th>Assignee</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="wrap small muted">&copy; <span id="yr"></span> Perry Home Wound Care — Admin</footer>
+  </div>
+
+  <!-- Add Task modal -->
+  <dialog id="dlgTask">
+    <form id="createTaskForm" method="dialog" class="form">
+      <h3>Create Task</h3>
+      <fieldset class="fieldset">
+        <legend>Assignee & Schedule</legend>
+        <label>Assign to (clinician)* <select id="ctAssignedToSel" required><option value="">Select clinician…</option></select></label>
+        <label>Scheduled At (YYYY-MM-DD HH:mm) <input id="ctWhen" placeholder="2025-10-01 09:30"/></label>
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend>Patient</legend>
+        <label>Patient Name* <input id="ctPName" required/></label>
+        <label>Patient Phone <input id="ctPPhone"/></label>
+        <label>Patient Address <input id="ctPAddr"/></label>
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend>Service & Source</legend>
+        <label>Service Title <input id="ctSTitle" list="servicesList"/></label>
+        <label>Service Slug <input id="ctSSlug"/></label>
+        <datalist id="servicesList"></datalist>
+        <div class="row2">
+          <label>Source Type
+            <select id="ctSrcType"><option value="manual">manual</option><option value="booking">booking</option><option value="referral">referral</option></select>
+          </label>
+          <label>Source Id <input id="ctSrcId"/></label>
+        </div>
+      </fieldset>
+      <label>Notes <textarea id="ctNotes" rows="3"></textarea></label>
+      <div class="row-end">
+        <button class="btn" value="cancel" type="submit">Cancel</button>
+        <button class="btn primary" value="save"  type="submit">Save task</button>
+      </div>
+      <div id="ctStatus" class="small muted" aria-live="polite"></div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { mountSidebar } from "/admin/admin-shared.js";
+    mountSidebar("tasks");
+    document.getElementById("yr").textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="/admin/tasks.js"></script>
+</body>
+</html>

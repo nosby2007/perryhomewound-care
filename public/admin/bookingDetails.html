@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Booking Details — Admin</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="./bookingDetails.css"/>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">PH</div>
+      <div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div>
+    </div>
+    <nav class="snav">
+      <a class="sitem" href="/admin/bookings.html">← All Bookings</a>
+    </nav>
+    <div class="sfoot">
+      <span id="who" class="small muted"></span>
+      <button id="logoutBtn" class="btn wfull">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="bTitle">Booking Details</h1>
+    </header>
+
+    <section class="wrap" id="bookingWrap">
+      <div id="bookingInfo" class="card"></div>
+
+      <div class="split">
+        <div class="card">
+          <div class="head">
+            <h3>Booking Details</h3>
+            <button id="btnAddDetail" class="btn small">+ Add Detail</button>
+          </div>
+          <table class="tbl" id="tblDetails">
+            <thead><tr><th>Title</th><th>Note</th><th>Created</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="head">
+            <h3>Tasks</h3>
+            <button id="btnAddTask" class="btn small">+ Add Task</button>
+          </div>
+          <table class="tbl" id="tblTasks">
+            <thead><tr><th>Title</th><th>Assignee</th><th>Status</th><th>When</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add Detail -->
+  <dialog id="dlgAddDetail">
+    <form method="dialog" id="formAddDetail">
+      <h3>Add Booking Detail</h3>
+      <input id="detailTitle" class="inp" placeholder="Detail title" required />
+      <textarea id="detailNote" class="inp" placeholder="Note"></textarea>
+      <menu>
+        <button value="cancel" class="btn">Cancel</button>
+        <button value="save" class="btn primary">Save</button>
+      </menu>
+      <p id="detailMsg" class="small muted"></p>
+    </form>
+  </dialog>
+
+  <!-- Add Task (with user assignment) -->
+  <dialog id="dlgAddTask">
+    <form method="dialog" id="formAddTask">
+      <h3>Create Task</h3>
+
+      <fieldset class="fieldset">
+        <legend>Assign & Schedule</legend>
+        <label>Assign to (clinician)* 
+          <select id="bdAssignedToSel" required>
+            <option value="">Select clinician…</option>
+          </select>
+        </label>
+        <label>Scheduled At (YYYY-MM-DD HH:mm)
+          <input id="bdWhen" class="inp" placeholder="2025-10-01 09:30"/>
+        </label>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend>Patient</legend>
+        <label>Patient Name* <input id="bdPName" required/></label>
+        <label>Patient Phone <input id="bdPPhone"/></label>
+        <label>Patient Address <input id="bdPAddr"/></label>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend>Service</legend>
+        <label>Service Title <input id="bdSTitle"/></label>
+        <label>Service Slug <input id="bdSSlug"/></label>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend>Source</legend>
+        <div class="small muted">This task will be linked to this booking.</div>
+        <input id="bdSrcType" value="booking" disabled class="inp"/>
+        <input id="bdSrcId"   value="" disabled class="inp"/>
+      </fieldset>
+
+      <label>Task Title* <input id="bdTaskTitle" required/></label>
+      <label>Notes <textarea id="bdNotes" rows="3"></textarea></label>
+
+      <menu class="row-end">
+        <button class="btn" value="cancel">Cancel</button>
+        <button class="btn primary" value="save">Save Task</button>
+      </menu>
+      <div id="bdStatus" class="small muted" aria-live="polite"></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./bookingdetails.js?v=1"></script>
+</body>
+</html>

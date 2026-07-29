@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin Dashboard — Perry Home Wound Care</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="./admin-dashboard.css"/>
+
+</head>
+<body>
+  <!-- Sidebar (le même snippet qu'aux autres pages) -->
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar"><h1>Admin Dashboard</h1></header>
+
+    <main class="wrap">
+      <section class="cards">
+        <article class="kcard"><div class="klabel">Tasks</div><div class="kvalue" id="kTasks">–</div><div class="kmeta">assigned/in&nbsp;progress</div></article>
+        <article class="kcard"><div class="klabel">Bookings</div><div class="kvalue" id="kBookings">–</div><div class="kmeta" id="kBookingsMeta">pending: –</div></article>
+        <article class="kcard"><div class="klabel">Contacts</div><div class="kvalue" id="kContacts">–</div><div class="kmeta" id="kContactsMeta">new: –</div></article>
+        <article class="kcard"><div class="klabel">Referrals</div><div class="kvalue" id="kRef">–</div><div class="kmeta" id="kRefMeta">new: –</div></article>
+      </section>
+
+      <div class="cards" style="grid-template-columns:repeat(5,1fr)">
+        <a class="kcard sitem" href="/admin/tasks.html"><strong>Tasks</strong><div class="small muted">Plan & assign work</div></a>
+        <a class="kcard sitem" href="/admin/bookings.html"><strong>Bookings</strong><div class="small muted">Visits & scheduling</div></a>
+        <a class="kcard sitem" href="/admin/contacts.html"><strong>Contacts</strong><div class="small muted">Lead inbox</div></a>
+        <a class="kcard sitem" href="/admin/referrals.html"><strong>Referrals</strong><div class="small muted">Referrer pipeline</div></a>
+        <a class="kcard sitem" href="/admin/users.html"><strong>Users</strong><div class="small muted">Roles & access</div></a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Booking details modal -->
+<dialog id="dlgBookingDetails" class="dlg">
+  <form method="dialog" class="dlg-inner">
+    <header class="dlg-head">
+      <h3 id="dlgTitle">Booking</h3>
+      <button value="cancel" class="btn soft small">booking</button>
+    </header>
+
+    <section id="dlgBody" class="dlg-body">
+      <!-- Filled by JS -->
+    </section>
+
+    <footer class="dlg-foot">
+      <button value="cancel" class="btn">Close</button>
+    </footer>
+  </form>
+</dialog>
+
+<style>
+  .dlg { border: none; padding: 0; border-radius: 14px; max-width: 860px; width: 92%; }
+  .dlg::backdrop { background: rgb(0 0 0 / .45); }
+  .dlg-inner { padding: 0; }
+  .dlg-head, .dlg-foot { padding: 12px 16px; border-bottom: 1px solid #e6e9ef; background: #fff; }
+  .dlg-foot { border-top: 1px solid #e6e9ef; border-bottom: 0; }
+  .dlg-head h3 { margin: 0; font-weight: 800; }
+  .dlg-body { padding: 14px 16px; background: #fafbfe; max-height: 70vh; overflow: auto; }
+
+  .kv { display:grid; grid-template-columns: 180px 1fr; gap: 6px 12px; margin-bottom: 12px; }
+  .kv .k { color:#6b7280; }
+  .subgrid { display:grid; gap:8px; }
+  .box { background:#fff; border:1px solid #e6e9ef; border-radius:12px; padding:10px 12px; }
+  .box h4 { margin:0 0 6px; font-size:.95rem; }
+  .muted { color:#6b7280; }
+  .small { font-size:.875rem; }
+  .btn.small { padding:6px 10px; border-radius:10px; }
+</style>
+
+
+  <script type="module">
+    import { auth, db, mountSidebar } from "/admin/admin-shared.js";
+    import { signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import { collection, query, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    mountSidebar(""); // highlight active nav
+
+// ---- Logout button ----
+
+
+// ---- KPI counts ----
+(async () => {
+  const setText = (id, v)=>{ const el=document.getElementById(id); if(el) el.textContent=String(v); };
+  const counts = await Promise.all([
+    getCountFromServer(query(collection(db,"tasks"))),
+    getCountFromServer(query(collection(db,"bookings"))),
+    getCountFromServer(query(collection(db,"contacts"))),
+    getCountFromServer(query(collection(db,"patientReferal")))
+  ]);
+  setText("kTasks", counts[0].data().count);
+  setText("kBookings", counts[1].data().count);
+  setText("kContacts", counts[2].data().count);
+  setText("kRef", counts[3].data().count);
+})();
+  </script>
+</body>
+</html>

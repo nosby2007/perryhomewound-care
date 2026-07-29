@@ -1,0 +1,1375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perry Home Wound Care | Hospice Partnership (Wound Care Support)</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Hospice wound care partner in Middle Georgia. Comfort-centered wound management support: pain/odor/exudate strategies, caregiver teaching, SBAR documentation, and rapid communication with hospice teams." />
+  <meta name="keywords" content="hospice wound care, palliative wound care, hospice partner, wound management, odor control, exudate management, pressure injury hospice, malignant wound care, incontinence associated dermatitis, Middle Georgia, Perry GA, home wound care" />
+  <meta name="author" content="Perry Home Wound Care" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="Perry Home Wound Care | Hospice Partnership" />
+  <meta property="og:description" content="Comfort-centered wound care support for hospice teams: documentation, caregiver teaching, symptom-focused plans, and rapid communication." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://perryhomewoundcare.network/publics/hospice/hospice" />
+  <meta property="og:image" content="https://res.cloudinary.com/dtdpx59sc/image/upload/v1767298783/home-wound-care_gu5rnw.jpg" />
+  <meta property="og:site_name" content="Perry Home Wound Care" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Perry Home Wound Care | Hospice Partnership" />
+  <meta name="twitter:description" content="Comfort-centered wound care support for hospice teams: documentation, caregiver teaching, symptom-focused plans, and rapid communication." />
+  <meta name="twitter:image" content="https://res.cloudinary.com/dtdpx59sc/image/upload/v1767298783/home-wound-care_gu5rnw.jpg" />
+  <link rel="canonical" href="https://perryhomewoundcare.network/publics/hospice/hospice" />
+
+  <style>
+    :root{
+      --phwc-blue:#2f7cff;     /* primary */
+      --phwc-blue-2:#1766f3;   /* deeper */
+      --phwc-orange:#ff8a00;   /* accent */
+      --phwc-ink:#0f172a;
+      --phwc-muted:#64748b;
+      --phwc-bg:#f6f8fc;
+      --phwc-card:#ffffff;
+      --phwc-border:#e7edf7;
+      --radius:22px;
+      --shadow:0 18px 48px rgba(15, 23, 42, .13);
+    }
+
+    html,body{height:100%}
+    body{
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      color:var(--phwc-ink);
+      background:#f6f8fc;
+      font-size:1.22rem;
+      line-height:1.7;
+      letter-spacing:.01em;
+    }
+    a{color:inherit; text-decoration:none; transition:color .18s;}
+    .container-narrow{max-width:1400px}
+
+    /* Top strip */
+    .topbar{
+      font-size:1.08rem;
+      color:#334155;
+      background:#fff;
+      border-bottom:2px solid var(--phwc-border);
+      padding:.2rem 0;
+      letter-spacing:.01em;
+    }
+    .topbar .chip{
+      display:flex; gap:.7rem; align-items:center;
+      padding:.85rem 0;
+      white-space:nowrap;
+      font-size:1.08rem;
+      font-weight:600;
+    }
+    .topbar i{color:var(--phwc-blue); font-size:1.25em;}
+    .btn-cta{
+      background:var(--phwc-orange);
+      border:none;
+      color:#fff;
+      font-weight:800;
+      padding:.95rem 1.45rem;
+      border-radius:999px;
+      font-size:1.1rem;
+      box-shadow:0 12px 32px rgba(255,138,0,.18);
+      letter-spacing:.02em;
+      transition:background .18s, box-shadow .18s;
+    }
+    .btn-cta:hover{filter:brightness(.97); color:#fff; box-shadow:0 18px 48px rgba(255,138,0,.22);}
+
+    /* Nav */
+    .navbar{
+      background:#fff;
+      font-size:1.18rem;
+      box-shadow:0 2px 18px rgba(47,124,255,.04);
+    }
+    .brand{
+      font-weight:900;
+      letter-spacing:.4px;
+      font-size:2.1rem;
+      color:var(--phwc-blue-2);
+    }
+    .brand .dot{ color:var(--phwc-orange); }
+    .nav-link{
+      font-weight:700;
+      color:#334155 !important;
+      padding:1.15rem 1.3rem !important;
+      font-size:1.13rem;
+      border-radius:12px !important;
+      transition:background .15s, color .15s;
+    }
+    .nav-link:hover{color:var(--phwc-blue) !important; background:rgba(47,124,255,.07) !important;}
+
+    /* Hero */
+    .hero{
+      position:relative;
+      padding:7.5rem 0 7.2rem;
+      overflow:hidden;
+      background:
+        linear-gradient(90deg, rgba(246,248,252,.92) 0%, rgba(246,248,252,.88) 45%, rgba(246,248,252,.68) 60%, rgba(246,248,252,.30) 100%),
+        url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1747103827/Nurse_Arrives_for_Wound_Care_Visit_xgmpuk.png");
+      background-size:cover;
+      background-position:center right;
+      border-bottom:2px solid var(--phwc-border);
+    }
+    .hero .kicker{
+      color:var(--phwc-blue);
+      font-weight:900;
+      letter-spacing:.3px;
+      font-size:1.25rem;
+      margin-bottom:.5rem;
+    }
+    .hero h1{
+      font-weight:900;
+      line-height:1.05;
+      margin:.25rem 0 1.2rem;
+      font-size:3.5rem;
+      letter-spacing:.01em;
+    }
+    .hero p{
+      color:var(--phwc-muted);
+      max-width:760px;
+      margin-bottom:2.2rem;
+      font-size:1.35rem;
+    }
+    .btn-primary-soft{
+      background:var(--phwc-orange);
+      border:none;
+      color:#fff;
+      font-weight:900;
+      padding:1.1rem 2.1rem;
+      border-radius:999px;
+      font-size:1.15rem;
+      box-shadow:0 8px 24px rgba(255,138,0,.13);
+    }
+    .btn-primary-soft:hover{filter:brightness(.97); color:#fff}
+
+    /* Feature tiles */
+    .feature-row{
+      margin-top:-4.2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:1.8rem;
+      padding:0 1.2rem;
+      position:relative;
+      z-index:2;
+    }
+    .feature-tile{
+      background:linear-gradient(180deg, var(--phwc-blue) 0%, var(--phwc-blue-2) 100%);
+      color:#fff;
+      border-radius:0;
+      padding:2.1rem 1.65rem;
+      height:100%;
+      box-shadow:0 18px 38px rgba(23,102,243,.18);
+      font-size:1.18rem;
+    }
+    .feature-tile:first-child{border-top-left-radius:18px; border-bottom-left-radius:18px}
+    .feature-tile:last-child{border-top-right-radius:18px; border-bottom-right-radius:18px}
+    .feature-tile .ico{
+      width:62px; height:62px;
+      border-radius:16px;
+      display:grid; place-items:center;
+      background:rgba(255,255,255,.14);
+      margin-bottom:1.3rem;
+      font-size:2.1rem;
+    }
+    .feature-tile h6{font-weight:900; margin-bottom:.45rem; font-size:1.25rem;}
+    .feature-tile p{margin:0; opacity:.94; font-size:1.08rem}
+
+    /* Sections */
+    .section{ padding:5.5rem 0; }
+    .section-title{
+      font-weight:900;
+      margin-bottom:1.2rem;
+      font-size:2.5rem;
+      letter-spacing:.01em;
+    }
+    .section-sub{
+      color:var(--phwc-muted);
+      margin-bottom:2.2rem;
+      font-size:1.25rem;
+    }
+
+    /* Pill */
+    .pill{
+      display:inline-flex; align-items:center; gap:.7rem;
+      padding:.55rem 1.25rem;
+      border-radius:999px;
+      border:2px solid var(--phwc-border);
+      color:var(--phwc-muted);
+      font-weight:800;
+      font-size:1.08rem;
+      background:#fff;
+      letter-spacing:.01em;
+    }
+    .divider{
+      width:88px; height:4px;
+      background:linear-gradient(90deg, var(--phwc-blue), var(--phwc-orange));
+      border-radius:99px;
+      margin:1.1rem auto 1.65rem;
+    }
+
+    /* About / info card */
+    .about-card{
+      background:#fff;
+      border:2px solid var(--phwc-border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .about-img{
+      min-height:420px;
+      background:
+        url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1767298783/Wound-Care-1024x645_nftv1h.jpg");
+      background-size:cover;
+      background-position:center;
+    }
+    .mini-feature{
+      display:flex; gap:1.2rem;
+      align-items:flex-start;
+      margin-bottom:1.45rem;
+      font-size:1.08rem;
+    }
+    .mini-feature .badge-ico{
+      width:54px; height:54px; border-radius:14px;
+      display:grid; place-items:center;
+      background:rgba(47,124,255,.13);
+      color:var(--phwc-blue);
+      flex:0 0 auto;
+      font-size:1.5rem;
+    }
+    .mini-feature h6{font-weight:900; margin:0; font-size:1.13rem;}
+    .mini-feature p{margin:.15rem 0 0; color:var(--phwc-muted); font-size:1.05rem}
+
+    /* Blue CTA band */
+    .cta-band{
+      position:relative;
+      padding:3.1rem 0;
+      color:#fff;
+      background:linear-gradient(90deg, var(--phwc-blue) 0%, var(--phwc-blue-2) 100%);
+      overflow:hidden;
+      font-size:1.25rem;
+    }
+    .cta-band:before{
+      content:"";
+      position:absolute; inset:-30% -20%;
+      background:
+        radial-gradient(circle at 20% 40%, rgba(255,255,255,.12), transparent 55%),
+        radial-gradient(circle at 70% 20%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(circle at 85% 80%, rgba(255,255,255,.08), transparent 55%);
+      transform:rotate(-6deg);
+    }
+    .cta-band .content{position:relative; z-index:1}
+    .cta-band h4{font-weight:900; margin:0; font-size:2.1rem;}
+    .cta-band p{margin:.25rem 0 0; opacity:.93}
+    .btn-cta-outline{
+      border:2px solid rgba(255,255,255,.85);
+      color:#fff;
+      background:transparent;
+      font-weight:900;
+      padding:.98rem 1.45rem;
+      border-radius:999px;
+      font-size:1.1rem;
+    }
+    .btn-cta-outline:hover{background:rgba(255,255,255,.12); color:#fff}
+
+    /* Departments / tabs */
+    .dept-wrap{
+      background:#fff;
+      border:2px solid var(--phwc-border);
+      border-radius:18px;
+      padding:2.1rem;
+    }
+    .nav-dept{
+      border:2px solid var(--phwc-border);
+      border-radius:14px;
+      overflow:hidden;
+      width:fit-content;
+      font-size:1.13rem;
+    }
+    .nav-dept .nav-link{
+      border-radius:0 !important;
+      font-weight:900;
+      padding:1.1rem 1.55rem !important;
+      font-size:1.13rem;
+    }
+    .nav-dept .nav-link.active{
+      background:var(--phwc-blue) !important;
+      color:#fff !important;
+    }
+    .dept-img{
+      border-radius:18px;
+      min-height:320px;
+      background-size:cover;
+      background-position:center;
+      border:2px solid var(--phwc-border);
+    }
+
+    /* Team */
+    .card-lite{
+      border:2px solid var(--phwc-border);
+      border-radius:22px;
+      background:#fff;
+      box-shadow:0 14px 38px rgba(15,23,42,.09);
+      font-size:1.08rem;
+    }
+    .team-photo{
+      height:210px;
+      border-radius:16px;
+      background-size:cover;
+      background-position:center;
+      border:2px solid var(--phwc-border);
+    }
+    .team-name{font-weight:900; margin:1.1rem 0 .25rem; font-size:1.18rem;}
+    .team-role{color:var(--phwc-muted); font-weight:700; font-size:1.08rem}
+
+    /* Testimonials */
+    .testimonial-card {
+      border: 2px solid var(--phwc-border);
+      background: #fff;
+      box-shadow: 0 8px 32px rgba(47,124,255,.07);
+      position: relative;
+      min-height: 180px;
+    }
+    .testimonial-quote-icon {
+      position: absolute;
+      top: -22px;
+      left: 22px;
+      font-size: 2.5rem;
+      color: var(--phwc-blue-2);
+      opacity: 0.18;
+      z-index: 1;
+    }
+    .testimonial-text {
+      font-size: 1.22rem;
+      color: var(--phwc-muted);
+      font-style: italic;
+      z-index: 2;
+      position: relative;
+    }
+    .testimonial-author {
+      color: var(--phwc-ink);
+      font-size: 1.08rem;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* Consultation block */
+    .consult{
+      background:#f3f7ff;
+      border-radius:24px;
+      overflow:hidden;
+      border:2px solid var(--phwc-border);
+    }
+    .consult-left{
+      background:linear-gradient(180deg, var(--phwc-blue) 0%, var(--phwc-blue-2) 100%);
+      color:#fff;
+      padding:3.1rem;
+      min-height:100%;
+      font-size:1.13rem;
+    }
+    .consult-left h4{font-weight:900; margin-bottom:.45rem; font-size:2rem;}
+    .consult-left p{opacity:.94; font-size:1.13rem;}
+    .form-control, .form-select{
+      border-radius:14px;
+      border:2px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.13);
+      color:#fff;
+      font-size:1.08rem;
+      padding:1.1rem .95rem;
+    }
+    .form-control::placeholder{color:rgba(255,255,255,.75)}
+    .form-select{color:#fff}
+    .form-select option{color:#0f172a}
+    .btn-submit{
+      background:var(--phwc-orange);
+      color:#fff;
+      border:none;
+      font-weight:900;
+      padding:1.1rem 1.5rem;
+      border-radius:999px;
+      width:100%;
+      font-size:1.13rem;
+      box-shadow:0 8px 24px rgba(255,138,0,.13);
+    }
+
+    .stats{
+      padding:3.1rem;
+      background:#fff;
+      font-size:1.13rem;
+    }
+    .stat{
+      border:2px solid var(--phwc-border);
+      border-radius:18px;
+      padding:1.7rem 1.5rem;
+      height:100%;
+      font-size:1.13rem;
+    }
+    .stat .num{
+      color:var(--phwc-blue);
+      font-weight:950;
+      font-size:2.1rem;
+      line-height:1;
+    }
+    .stat .lbl{color:var(--phwc-muted); font-weight:700; margin-top:.45rem; font-size:1.08rem;}
+
+    /* Footer */
+    footer{
+      background:#0b1020;
+      color:rgba(255,255,255,.92);
+      padding:4.5rem 0 2.2rem;
+      font-size:1.13rem;
+    }
+    footer h6{
+      color:#fff;
+      font-weight:900;
+      margin-bottom:1.3rem;
+      font-size:1.18rem;
+    }
+    footer a{color:rgba(255,255,255,.75); text-decoration:none; transition:color .18s;}
+    footer a:hover{color:#fff}
+    .footer-muted{color:rgba(255,255,255,.72)}
+    .footer-line{
+      border-top:2px solid rgba(255,255,255,.13);
+      margin-top:2.7rem;
+      padding-top:1.35rem;
+      font-size:1.05rem;
+      color:rgba(255,255,255,.62);
+    }
+
+    /* Feature tile animations (same pattern as your file) */
+    .animated-tile {
+      opacity: 0;
+      transform: translateY(40px) scale(0.98);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1), box-shadow .22s;
+      box-shadow: 0 2px 18px rgba(47,124,255,.08);
+      will-change: opacity, transform;
+    }
+    .animated-tile.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .animated-tile:hover {
+      box-shadow: 0 24px 48px rgba(47,124,255,.18), 0 2px 18px rgba(47,124,255,.08);
+      transform: translateY(-8px) scale(1.03);
+      z-index: 2;
+    }
+    .animated-tile:hover .animated-ico {
+      animation: bounce-ico 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .animated-ico {
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 8px rgba(255,255,255,.10);
+      background: rgba(255,255,255,.18);
+      position: relative;
+    }
+    .animated-tile:hover .animated-ico {
+      background: rgba(255,255,255,.24);
+      box-shadow: 0 6px 18px rgba(255,255,255,.18);
+    }
+    @keyframes bounce-ico {
+      0% { transform: scale(1) translateY(0); }
+      30% { transform: scale(1.18) translateY(-10px); }
+      60% { transform: scale(0.95) translateY(2px); }
+      100% { transform: scale(1) translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top contact strip -->
+  <div class="topbar">
+    <div class="container container-narrow">
+      <div class="row align-items-center gy-2">
+        <div class="col-lg-9">
+          <div class="d-flex flex-wrap gap-4">
+            <div class="chip"><i class="fa-solid fa-location-dot"></i><span>211 Rusty Plow Ln, Perry, GA 31069</span></div>
+            <div class="chip">
+              <a href="tel:+14783104446" style="color:inherit; text-decoration:none; display:flex; align-items:center; gap:.7rem;">
+                <i class="fa-solid fa-phone"></i><span>(478) 310-4446</span>
+              </a>
+            </div>
+            <div class="chip">
+              <a href="mailto:support@perryhomewoundcare.network" style="color:inherit; text-decoration:none; display:flex; align-items:center; gap:.7rem;">
+                <i class="fa-solid fa-envelope"></i>
+                <span>support@perryhomewoundcare.network</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 text-lg-end">
+          <a class="btn btn-cta btn-sm" href="#hospice-referral"><i class="fa-solid fa-file-signature me-2"></i>Hospice Referral</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container container-narrow">
+      <a class="navbar-brand brand" href="../../index.html">>
+        Perry<span class="dot">.</span>Home Wound Care
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="../services/Service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#partnership">Hospice Partnership</a></li>
+          <li class="nav-item"><a class="nav-link" href="#focus">Wound Focus Areas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+          <li class="nav-item"><a class="nav-link" href="#hospice-referral">Referral</a></li>
+          <li class="nav-item"><a class="nav-link" href="../contact/contact.html">Contact</a></li>
+          <li class="nav-item" id="navAuth"></li>
+        </ul>
+        <div class="ms-lg-3">
+          <a class="btn btn-cta" href="#hospice-referral"><i class="fa-solid fa-handshake me-2"></i>Partner With Us</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="services">
+    <div class="container container-narrow">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="pill mb-3"><i class="fa-solid fa-house-medical"></i> Hospice Partnership • Comfort-Centered Wound Support</div>
+          <div class="kicker">For Hospice Agencies in Middle Georgia</div>
+          <h1>We help your team manage complex wounds without losing focus on comfort.</h1>
+          <p>
+            Perry Home Wound Care supports hospice teams with <b>symptom-focused wound plans</b> (pain, odor, exudate, fragile skin),
+            <b>caregiver teaching</b>, and <b>SBAR documentation</b>—aligned with goals of care and hospice protocols.
+          </p>
+
+          <div class="d-flex align-items-center mb-4 mt-3" style="justify-content:flex-start;">
+            <span class="attention-blink" style="background:linear-gradient(90deg, #2f7cff 60%, #ff8a00 100%); color:#fff; font-weight:900; border-radius:999px; padding:.7rem 1.5rem; font-size:1.22rem; box-shadow:0 6px 18px rgba(47,124,255,.10); display:flex; align-items:center; gap:.7rem; letter-spacing:.01em;">
+              <i class="fa-solid fa-arrow-right-arrow-left" style="font-size:1.3em;"></i>
+              <span style="font-size:1.13em;">Hospice Plan</span>
+              <i class="fa-solid fa-arrow-right"></i>
+              <span style="font-size:1.13em;">Home Wound Support</span>
+              <i class="fa-solid fa-arrow-right"></i>
+              <span style="font-size:1.13em;">Better Comfort</span>
+            </span>
+          </div>
+
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="#hospice-referral" class="btn btn-primary-soft"><i class="fa-solid fa-file-circle-plus me-2"></i>Send a Referral</a>
+            <a href="#focus" class="btn btn-outline-primary rounded-pill fw-bold px-4"><i class="fa-solid fa-layer-group me-2"></i>Explore Focus Areas</a>
+          </div>
+
+          <div class="mt-3" style="color:var(--phwc-muted); font-size:1.05rem; max-width:820px;">
+            <i class="fa-solid fa-shield-halved me-2" style="color:var(--phwc-blue);"></i>
+            We complement hospice nursing—your hospice RN/CM remains the primary coordinator. For urgent changes, follow hospice escalation protocols.
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Feature tiles (4 blue cards) -->
+  <section class="feature-row">
+    <div class="container container-narrow">
+      <div class="row g-0">
+        <div class="col-md-3">
+          <div class="feature-tile animated-tile" data-delay="0">
+            <div class="ico animated-ico"><i class="fa-solid fa-shield-heart"></i></div>
+            <h6>Comfort-First Wound Plans</h6>
+            <p>Pain control, gentle dressing strategies, and realistic goals aligned with hospice care.</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feature-tile animated-tile" data-delay="1">
+            <div class="ico animated-ico"><i class="fa-solid fa-wind"></i></div>
+            <h6>Odor & Exudate Management</h6>
+            <p>Practical strategies to reduce odor burden, protect skin, and manage heavy drainage.</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feature-tile animated-tile" data-delay="2">
+            <div class="ico animated-ico"><i class="fa-solid fa-people-arrows"></i></div>
+            <h6>Caregiver Teaching</h6>
+            <p>Step-by-step guidance, teach-back coaching, and confidence building for families.</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feature-tile animated-tile" data-delay="3">
+            <div class="ico animated-ico"><i class="fa-solid fa-file-shield"></i></div>
+            <h6>SBAR Documentation</h6>
+            <p>Clear notes: measurements, periwound, dressing schedule, and escalation triggers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Animate feature tiles on scroll
+      (function() {
+        function animateTiles() {
+          const tiles = document.querySelectorAll('.animated-tile');
+          const trigger = window.innerHeight * 0.92;
+          tiles.forEach(tile => {
+            const rect = tile.getBoundingClientRect();
+            if(rect.top < trigger) {
+              setTimeout(() => tile.classList.add('visible'), 120 * (parseInt(tile.dataset.delay)||0));
+            }
+          });
+        }
+        window.addEventListener('scroll', animateTiles);
+        window.addEventListener('DOMContentLoaded', animateTiles);
+        setTimeout(animateTiles, 350);
+      })();
+    </script>
+  </section>
+
+  <!-- Working with Hospice Agencies -->
+  <section class="section" id="partnership">
+    <div class="container container-narrow">
+      <div class="row align-items-center g-5 flex-lg-row-reverse">
+        <div class="col-lg-6 text-center text-lg-end mb-4 mb-lg-0">
+          <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1767049351/dNk0l81Mq3DxRS8C_d320YG0yizPVycul_gsubuz.jpg"
+               alt="Hospice case manager partnering with wound care team"
+               class="img-fluid shadow rounded-4"
+               style="max-height:640px; object-fit:cover; border:4px solid #e7edf7;">
+        </div>
+
+        <div class="col-lg-6">
+          <div class="pill mb-3"><i class="fa-solid fa-handshake"></i> Working with Hospice Agencies</div>
+          <h3 class="section-title mt-2">A trusted clinical partner for wound symptom management</h3>
+          <div class="divider" style="margin-left:0;"></div>
+
+          <div class="section-sub mb-4" style="font-size:1.22rem;">
+            Your team stays focused on comfort and goals of care—while we strengthen wound management, caregiver confidence, and documentation.
+          </div>
+
+          <ul class="list-unstyled fs-5 mb-4">
+            <li class="mb-3"><i class="fa-solid fa-check-circle text-primary me-2"></i>
+              <strong>Collaborative care:</strong> We align with hospice plan of care and communicate through your preferred channels.
+            </li>
+            <li class="mb-3"><i class="fa-solid fa-check-circle text-primary me-2"></i>
+              <strong>Symptom priority focus:</strong> pain, odor, exudate, maceration, fragile skin, bleeding-risk approach.
+            </li>
+            <li class="mb-3"><i class="fa-solid fa-check-circle text-primary me-2"></i>
+              <strong>Caregiver training:</strong> simple instructions + teach-back so families feel confident.
+            </li>
+            <li class="mb-3"><i class="fa-solid fa-check-circle text-primary me-2"></i>
+              <strong>Rapid updates:</strong> SBAR-style note to hospice RN/CM with clear escalation triggers.
+            </li>
+            <li class="mb-3"><i class="fa-solid fa-check-circle text-primary me-2"></i>
+              <strong>HIPAA-minded:</strong> minimal necessary information; photos only with consent and per hospice policy.
+            </li>
+          </ul>
+
+          <div class="alert alert-primary"
+               style="background:linear-gradient(90deg, #eaf2ff 60%, #f6f8fc 100%); border-radius:14px; border:none; color:#1766f3; font-weight:600;">
+            <i class="fa-solid fa-user-shield me-2"></i>
+            <span>Refer with confidence: PHWC complements hospice nursing—comfort-first wound management, caregiver coaching, and clean documentation.</span>
+          </div>
+
+          <a href="#hospice-referral" class="btn btn-cta mt-3 px-4 py-3 shadow" style="font-size:1.13rem; font-weight:900; letter-spacing:.01em;">
+            <i class="fa-solid fa-file-signature me-2"></i> Hospice Referral / Partnership Request
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blue CTA band -->
+  <section class="cta-band">
+    <div class="container container-narrow content">
+      <div class="row align-items-center gy-3">
+        <div class="col-lg-8">
+          <h4>“We reduce wound burden so hospice can protect comfort and dignity.”</h4>
+          <p>Odor control • drainage management • gentle care plans • caregiver confidence • documentation clarity</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="#hospice-referral" class="btn btn-cta-outline">Start Partnership</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="trust">
+    <div class="container container-narrow">
+      <div class="about-card">
+        <div class="row g-0">
+          <div class="col-lg-4 about-img" role="img" aria-label="Clinician holding clipboard"></div>
+
+          <div class="col-lg-8 p-4 p-lg-5">
+            <div class="pill mb-3"><i class="fa-solid fa-shield-heart"></i> Why PHWC for Hospice</div>
+            <h3 class="section-title">Clinical clarity for complex hospice wounds</h3>
+            <p class="section-sub">
+              In hospice, the goal is often not “perfect closure”—it’s <b>comfort</b>, <b>dignity</b>, and <b>predictability</b>.
+              We translate wound complexity into a simple, hospice-aligned plan your team and caregivers can implement.
+            </p>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mini-feature">
+                  <div class="badge-ico"><i class="fa-solid fa-notes-medical"></i></div>
+                  <div>
+                    <h6>Structured Assessment</h6>
+                    <p>Measurement, tissue type, exudate, periwound, odor level, and symptom priorities.</p>
+                  </div>
+                </div>
+
+                <div class="mini-feature">
+                  <div class="badge-ico"><i class="fa-solid fa-bandage"></i></div>
+                  <div>
+                    <h6>Gentle Dressing Strategy</h6>
+                    <p>Comfort-first dressing frequency with periwound protection and leakage prevention.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mini-feature">
+                  <div class="badge-ico"><i class="fa-solid fa-people-group"></i></div>
+                  <div>
+                    <h6>Caregiver Coaching</h6>
+                    <p>Teach-back training, written steps, and what to watch for between visits.</p>
+                  </div>
+                </div>
+
+                <div class="mini-feature">
+                  <div class="badge-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                  <div>
+                    <h6>Clear Escalation Triggers</h6>
+                    <p>When to call hospice RN/MD: sudden bleeding, new severe pain, fever, rapid change.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <a href="#hospice-referral" class="btn btn-cta mt-2"><i class="fa-solid fa-headset me-2"></i>Request a Partner Call</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Focus Areas (Tabs) -->
+  <section class="section" id="focus">
+    <div class="container container-narrow text-center">
+      <div class="pill"><i class="fa-solid fa-layer-group"></i> Hospice Focus Areas</div>
+      <h3 class="section-title mt-2">Wounds we commonly support in hospice</h3>
+      <div class="divider"></div>
+      <p class="section-sub">
+        Focused on comfort: pain reduction, odor/exudate control, periwound protection, and caregiver simplicity—aligned with hospice goals.
+      </p>
+    </div>
+
+    <div class="container container-narrow">
+      <div class="dept-wrap">
+        <ul class="nav nav-pills nav-dept mb-4" id="deptTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-pressure" data-bs-toggle="pill" data-bs-target="#pane-pressure" type="button" role="tab">Pressure Injury</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-malignant" data-bs-toggle="pill" data-bs-target="#pane-malignant" type="button" role="tab">Malignant/Fungating</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masd" data-bs-toggle="pill" data-bs-target="#pane-masd" type="button" role="tab">MASD / IAD</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-skintear" data-bs-toggle="pill" data-bs-target="#pane-skintear" type="button" role="tab">Skin Tears</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-other" data-bs-toggle="pill" data-bs-target="#pane-other" type="button" role="tab">Other Complex</button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="deptTabsContent">
+
+          <!-- Pressure -->
+          <div class="tab-pane fade show active" id="pane-pressure" role="tabpanel" aria-labelledby="tab-pressure">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <h5 style="font-weight:900;">Pressure Injuries (Comfort-first)</h5>
+                <p style="color:var(--phwc-muted);">
+                  Gentle wound plans plus prevention coaching: repositioning, moisture control, support surfaces, and skin protection.
+                </p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-bed"></i></div>
+                      <div>
+                        <h6>Offloading & Prevention</h6>
+                        <p>Simple turning support and pressure redistribution education.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-droplet"></i></div>
+                      <div>
+                        <h6>Moisture Balance</h6>
+                        <p>Protect periwound skin; manage exudate to prevent maceration.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="dept-img" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767446881/slough_2_jiriou.jpg');"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Malignant -->
+          <div class="tab-pane fade" id="pane-malignant" role="tabpanel" aria-labelledby="tab-malignant">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <h5 style="font-weight:900;">Malignant / Fungating Wounds</h5>
+                <p style="color:var(--phwc-muted);">
+                  Symptom priority planning: odor control, bleeding risk awareness, gentle dressing selection, and caregiver burden reduction.
+                </p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-wind"></i></div>
+                      <div>
+                        <h6>Odor Strategy</h6>
+                        <p>Practical interventions and dressing recommendations to reduce odor burden.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-shield"></i></div>
+                      <div>
+                        <h6>Gentle Handling</h6>
+                        <p>Minimize trauma; align frequency with comfort and goals of care.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="dept-img" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767049353/FSLrjUkHKaPL7LWb_OVU-knaKaYcXBeXK_lzkkcp.jpg');"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MASD -->
+          <div class="tab-pane fade" id="pane-masd" role="tabpanel" aria-labelledby="tab-masd">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <h5 style="font-weight:900;">MASD / IAD (Incontinence-Associated Dermatitis)</h5>
+                <p style="color:var(--phwc-muted);">
+                  Skin protection routines for dignity and comfort: barrier care, gentle cleansing, and moisture control.
+                </p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-shield-virus"></i></div>
+                      <div>
+                        <h6>Barrier Protection</h6>
+                        <p>Reduce breakdown risk with simple daily routines.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-hand-holding-droplet"></i></div>
+                      <div>
+                        <h6>Caregiver Simplicity</h6>
+                        <p>Steps caregivers can realistically maintain—less confusion, more consistency.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="dept-img" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767295087/take-care-of-yourself-as-a-caregiver-150dpi_flmzit.jpg');"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skin Tears -->
+          <div class="tab-pane fade" id="pane-skintear" role="tabpanel" aria-labelledby="tab-skintear">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <h5 style="font-weight:900;">Skin Tears / Fragile Skin</h5>
+                <p style="color:var(--phwc-muted);">
+                  Gentle dressing choices, protection, and teaching to prevent painful dressing changes and re-injury.
+                </p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-bandage"></i></div>
+                      <div>
+                        <h6>Low-Trauma Dressings</h6>
+                        <p>Comfort-first dressing strategy to reduce skin stripping.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-person-circle-check"></i></div>
+                      <div>
+                        <h6>Prevention Coaching</h6>
+                        <p>Environmental and handling tips to minimize skin tears.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="dept-img" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767043094/tdGHd2wAze9Ltyvh_jypl-_iTUqs4tbqM_bnxmwt.jpg');"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Other complex -->
+          <div class="tab-pane fade" id="pane-other" role="tabpanel" aria-labelledby="tab-other">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <h5 style="font-weight:900;">Other Complex Wounds</h5>
+                <p style="color:var(--phwc-muted);">
+                  Post-surgical complications, vascular-related issues, diabetic foot monitoring, and complex drainage situations—
+                  always coordinated with hospice team direction and goals of care.
+                </p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-ruler-combined"></i></div>
+                      <div>
+                        <h6>Trend Tracking</h6>
+                        <p>Consistent measurements and clear wound narrative for hospice records.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mini-feature mb-0">
+                      <div class="badge-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                      <div>
+                        <h6>Escalation Clarity</h6>
+                        <p>What to report immediately vs. what can wait for routine updates.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="dept-img" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767446826/NPWT_Chariker_Jeter_Method_abdominal_wound_mjc2gl.jpg');"></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- tab content -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section pt-0" id="team">
+    <div class="container container-narrow text-center">
+      <div class="pill"><i class="fa-solid fa-user-doctor"></i> Our Team</div>
+      <h3 class="section-title mt-2">Qualified Providers</h3>
+      <div class="divider"></div>
+      <p class="section-sub">Skilled, responsive, and compliance-driven care delivery.</p>
+    </div>
+
+    <div class="container container-narrow">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="card-lite p-3 text-center h-100">
+            <div class="team-photo" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767048757/7f4AuTEtsP7HwoGQ_5z7odvVF2FACPKiY_lw0evh.jpg');"></div>
+            <div class="team-name">Willy A. Yougang Tchoutang</div>
+            <div class="team-role">Family Nurse Practitioner – Clinical Oversight</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card-lite p-3 text-center h-100">
+            <div class="team-photo" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/c_fill,ar_1:1,g_auto/v1770172924/IMG_4230_wnih1v.jpg'); background-size: cover;"></div>
+            <div class="team-name">Jepthe Nkwanmen</div>
+            <div class="team-role">Administrator / RN (Wound Care)</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card-lite p-3 text-center h-100">
+            <div class="team-photo" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/c_fill,ar_1:1,g_auto/v1770172925/IMG_4264_ktls2b.jpg'); background-size: cover;"></div>
+            <div class="team-name">Yolande Makougang</div>
+            <div class="team-role">Compliance Officer / HR</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card-lite p-3 text-center h-100">
+            <div class="team-photo" style="background-image:url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767044609/TaAD6LaaLbsBbyq__lpmK9HJX7ixv9bPH_wbqg2n.jpg'); background-size: cover;"></div>
+            <div class="team-name">Care Coordination</div>
+            <div class="team-role">Intake • Scheduling • Referrals</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section pt-0">
+    <div class="container container-narrow text-center">
+      <div class="pill"><i class="fa-solid fa-quote-left"></i> Testimonials</div>
+      <h3 class="section-title mt-2">What Partners & Families Say</h3>
+      <div class="divider"></div>
+
+      <div id="testimonialCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+          <div class="carousel-item active">
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <div class="testimonial-card p-4 shadow-lg rounded-4 position-relative bg-white">
+                  <span class="testimonial-quote-icon"><i class="fa-solid fa-quote-left"></i></span>
+                  <div class="testimonial-text">“The wound plan was simple, comfort-focused, and reduced odor and leakage. Caregivers felt confident after the teaching.”</div>
+                  <div class="testimonial-author mt-3 fw-bold">— Hospice RN Case Manager, Middle GA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <div class="testimonial-card p-4 shadow-lg rounded-4 position-relative bg-white">
+                  <span class="testimonial-quote-icon"><i class="fa-solid fa-quote-left"></i></span>
+                  <div class="testimonial-text">“They documented clearly and communicated changes quickly. It helped our team coordinate without delays.”</div>
+                  <div class="testimonial-author mt-3 fw-bold">— Hospice Supervisor</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <div class="testimonial-card p-4 shadow-lg rounded-4 position-relative bg-white">
+                  <span class="testimonial-quote-icon"><i class="fa-solid fa-quote-left"></i></span>
+                  <div class="testimonial-text">“The nurse explained everything in a calm way. Dressing changes became less stressful and less painful.”</div>
+                  <div class="testimonial-author mt-3 fw-bold">— Family Caregiver</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hospice Referral + Stats -->
+  <section class="section pt-0" id="hospice-referral">
+    <div class="container container-narrow">
+      <div class="consult">
+        <div class="row g-0">
+          <div class="col-lg-7 consult-left">
+            <div class="pill mb-3" style="background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.18); color:#fff;">
+              <i class="fa-solid fa-file-signature"></i> Hospice Referral / Partnership Request
+            </div>
+            <h4>Request a Partner Call</h4>
+            <p>Send your hospice contact info and a brief (non-PHI) summary. We will respond quickly.</p>
+
+            <form id="hospiceForm" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <input id="agencyName" name="agencyName" class="form-control" placeholder="Hospice agency name" required>
+                </div>
+                <div class="col-md-6">
+                  <input id="contactName" name="contactName" class="form-control" placeholder="Contact name & title" required>
+                </div>
+
+                <div class="col-md-6">
+                  <input id="phone" name="phone" class="form-control" placeholder="Phone" required>
+                </div>
+                <div class="col-md-6">
+                  <input id="email" name="email" class="form-control" placeholder="Email" type="email" required>
+                </div>
+
+                <div class="col-md-6">
+                  <select id="requestType" name="requestType" class="form-select" required>
+                    <option value="" selected disabled>Request type</option>
+                    <option>Patient referral</option>
+                    <option>Partnership onboarding</option>
+                    <option>Staff in-service / training</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select id="urgency" name="urgency" class="form-select" required>
+                    <option value="" selected disabled>Urgency</option>
+                    <option>Routine (3–5 days)</option>
+                    <option>Priority (24–48h)</option>
+                    <option>Same-day call back</option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <textarea id="message" name="message" class="form-control" rows="3" placeholder="Brief summary (avoid PHI). Example: pressure injury + heavy drainage + odor; caregiver needs teaching; hospice RN contact."></textarea>
+                </div>
+
+                <!-- Honeypot -->
+                <div class="col-12" style="display:none;">
+                  <input id="website" name="website" class="form-control" autocomplete="off" tabindex="-1" placeholder="Website">
+                </div>
+
+                <div class="col-12">
+                  <button id="submitBtn" class="btn-submit" type="submit">Submit Request</button>
+                  <div id="formStatus" class="small mt-2" style="opacity:.92;"></div>
+                </div>
+
+                <div class="col-12 small" style="opacity:.9;">
+                  By submitting, you agree we may contact you by phone/email. Please avoid sending sensitive medical details here. For urgent clinical changes, follow hospice escalation protocols.
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="col-lg-5 stats">
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="stat">
+                  <div class="num">SBAR</div>
+                  <div class="lbl">Clear communication notes</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="stat">
+                  <div class="num">Teach</div>
+                  <div class="lbl">Caregiver education support</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="stat">
+                  <div class="num">Odor</div>
+                  <div class="lbl">Symptom-focused strategies</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="stat">
+                  <div class="num">Plan</div>
+                  <div class="lbl">Comfort-first dressing plans</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <div class="pill"><i class="fa-solid fa-file-shield"></i> Compliance-first</div>
+              <p class="mt-2 mb-0" style="color:var(--phwc-muted);">
+                HIPAA-minded communication, documentation best-practices, and safety protocols for home visits.
+              </p>
+              <div class="mt-3" style="color:var(--phwc-muted); font-size:1.02rem;">
+                <b>Org NPI:</b> 1740152511 • <b>Individual NPI:</b> 1114898178
+              </div>
+            </div>
+          </div>
+        </div><!-- row -->
+      </div><!-- consult -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container container-narrow">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="brand" style="color:#fff;">Perry<span class="dot">.</span>Home Wound Care</div>
+          <p class="footer-muted mt-2">
+            Hospice wound support in Middle Georgia: comfort-centered plans, caregiver teaching, and clear documentation aligned with hospice goals of care.
+          </p>
+
+          <h6 class="mt-4">Have a Question?</h6>
+          <div class="footer-muted">
+            <div class="d-flex gap-2 align-items-start mb-2"><i class="fa-solid fa-location-dot mt-1"></i><span>211 Rusty Plow Ln, Perry, GA 31069</span></div>
+            <div class="d-flex gap-2 align-items-start mb-2"><i class="fa-solid fa-phone mt-1"></i><span>(478) 310-4446</span></div>
+            <div class="d-flex gap-2 align-items-start mb-2"><i class="fa-solid fa-envelope mt-1"></i><span>support@perryhomewoundcare.network</span></div>
+          </div>
+
+          <div class="d-flex gap-3 mt-3">
+            <a aria-label="Facebook" href="https://www.facebook.com/profile.php?id=61576348072431"><i class="fa-brands fa-facebook"></i></a>
+            <a aria-label="X" href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a aria-label="LinkedIn" href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a aria-label="Instagram" href="#"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <h6>Links</h6>
+          <div class="d-grid gap-2">
+            <a href="#partnership">Hospice Partnership</a>
+            <a href="#focus">Focus Areas</a>
+            <a href="#team">Team</a>
+            <a href="#hospice-referral">Referral</a>
+            <a href="../contact/contact.html">Contact</a>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <h6>Resources</h6>
+          <div class="d-grid gap-3">
+            <a href="#focus" class="d-flex gap-3 text-decoration-none">
+              <img alt="thumb" src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1767049353/FSLrjUkHKaPL7LWb_OVU-knaKaYcXBeXK_lzkkcp.jpg" width="56" height="44" style="border-radius:10px; object-fit:cover;">
+              <div>
+                <div class="small footer-muted">Odor & Drainage</div>
+                <div class="small">Comfort-first ideas</div>
+              </div>
+            </a>
+            <a href="#focus" class="d-flex gap-3 text-decoration-none">
+              <img alt="thumb" src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1767295087/take-care-of-yourself-as-a-caregiver-150dpi_flmzit.jpg" width="56" height="44" style="border-radius:10px; object-fit:cover;">
+              <div>
+                <div class="small footer-muted">Caregiver Support</div>
+                <div class="small">Teach-back approach</div>
+              </div>
+            </a>
+            <a href="#hospice-referral" class="d-flex gap-3 text-decoration-none">
+              <img alt="thumb" src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1767043094/tdGHd2wAze9Ltyvh_jypl-_iTUqs4tbqM_bnxmwt.jpg" width="56" height="44" style="border-radius:10px; object-fit:cover;">
+              <div>
+                <div class="small footer-muted">Referral</div>
+                <div class="small">Start partnership</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <h6>Availability</h6>
+          <div class="footer-muted">
+            <div class="d-flex justify-content-between mb-2"><span>Mon–Fri</span><span>8:00am – 5:00pm</span></div>
+            <div class="d-flex justify-content-between mb-2"><span>Saturday</span><span>By appointment</span></div>
+            <div class="d-flex justify-content-between mb-3"><span>Sunday</span><span>By appointment</span></div>
+            <div class="small">Call for hospice partnership coordination.</div>
+          </div>
+
+          <h6 class="mt-4">Subscribe</h6>
+          <form onsubmit="event.preventDefault(); alert('Subscribed!');">
+            <div class="input-group">
+              <input class="form-control" placeholder="Email address" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#fff;">
+              <button class="btn" type="submit" style="background:var(--phwc-blue); color:#fff; font-weight:900;">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-line text-center">
+        Copyright © <span id="year"></span> Perry Home Wound Care. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for on-page links
+    document.querySelectorAll('a.nav-link[href^="#"], a.btn[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const href = a.getAttribute('href');
+        if(!href || href === '#') return;
+        const el = document.querySelector(href);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+  </script>
+
+  <!-- Firebase (Firestore) - form submission -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdIpeMxhFMRpzNxmngoP3QY8ZZl2ABG_s",
+      authDomain: "credential-4f22b.firebaseapp.com",
+      projectId: "credential-4f22b",
+      storageBucket: "credential-4f22b.firebasestorage.app",
+      messagingSenderId: "107240797765",
+      appId: "1:107240797765:web:9ae5b37760081911ad952c",
+      measurementId: "G-XKYX4WC53E"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("hospiceForm");
+    const statusEl = document.getElementById("formStatus");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function setStatus(msg, ok = true){
+      if(!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.style.color = ok ? "#ffffff" : "#ffd1d1";
+    }
+
+    function normalizePhone(v){
+      return (v || "").toString().trim().replace(/[^0-9+]/g, "");
+    }
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Basic spam check (honeypot)
+      const hp = document.getElementById("website");
+      if (hp && hp.value) return;
+
+      const payload = {
+        agencyName: document.getElementById("agencyName")?.value?.trim() || "",
+        contactName: document.getElementById("contactName")?.value?.trim() || "",
+        phone: normalizePhone(document.getElementById("phone")?.value),
+        email: document.getElementById("email")?.value?.trim() || "",
+        requestType: document.getElementById("requestType")?.value || "",
+        urgency: document.getElementById("urgency")?.value || "",
+        message: document.getElementById("message")?.value?.trim() || "",
+        source: "hospice_landing",
+        pageUrl: window.location.href,
+        userAgent: navigator.userAgent,
+        createdAt: serverTimestamp()
+      };
+
+      // Minimal validation
+      if (!payload.agencyName || !payload.contactName || !payload.phone || !payload.email || !payload.requestType || !payload.urgency){
+        setStatus("Please fill in all required fields.", false);
+        return;
+      }
+
+      try {
+        if(submitBtn) submitBtn.disabled = true;
+        setStatus("Submitting...");
+
+        await addDoc(collection(db, "hospice_partner_requests"), payload);
+
+        setStatus("Thanks! We received your request and will contact you shortly.", true);
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        setStatus("Submission failed. Please try again or call (478) 310-4446.", false);
+      } finally {
+        if(submitBtn) submitBtn.disabled = false;
+      }
+    });
+  </script>
+
+  <script type="module" src="/nav-auth.js"></script>
+</body>
+</html>

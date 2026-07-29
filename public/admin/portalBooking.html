@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Booking — Nurse Portal</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    :root{
+      --ink:#0f172a;           /* headings / text */
+      --muted:#64748b;         /* secondary text */
+      --line:#e5e7eb;          /* borders */
+      --card:#ffffff;          /* card bg */
+      --bg:#f8fafc;            /* page bg */
+      --brand:#0ea5a4;         /* accent */
+    }
+  
+    /* Page */
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:14px/1.45 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+  
+    .wrap{
+      max-width:1100px;
+      margin:24px auto 48px;
+      padding:0 16px;
+    }
+  
+    h1{
+      font-size:28px;
+      line-height:1.2;
+      margin:0 0 16px;
+    }
+  
+    .muted{ color:var(--muted); }
+    .badge{
+      display:inline-block;
+      padding:2px 8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:12px;
+      background:#fff;
+    }
+  
+    /* Cards / blocks */
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      box-shadow:0 1px 0 rgba(15,23,42,.03);
+    }
+  
+    /* Two-column split that collapses on small screens */
+    .split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width: 880px){
+      .split{ grid-template-columns:1fr; }
+    }
+  
+    /* Tables */
+    .tbl{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+    .tbl th,
+    .tbl td{
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    .tbl thead th{
+      font-weight:600;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+      color:var(--muted);
+      background: #f9fafb;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    .tbl tbody tr:last-child td{ border-bottom:0; }
+  
+    /* Scroll on tiny screens */
+    .tablewrap{ overflow-x:auto; }
+    .tablewrap .tbl{ min-width:640px; } /* allow horizontal scroll if space is tight */
+  
+    /* Buttons */
+    .btn{
+      appearance:none;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px 12px;
+      cursor:pointer;
+      transition:background .15s ease, transform .02s ease;
+    }
+    .btn:hover{ background:#f8fafc }
+    .btn:active{ transform:translateY(1px) }
+    .btn.primary{
+      background:var(--brand);
+      color:#053b3a;
+      border-color:transparent;
+    }
+  
+    /* Section headings inside cards */
+    .card h3{
+      margin:0 0 10px;
+      font-size:16px;
+    }
+  
+    /* Little horizontal rule inside header card */
+    .hr{
+      height:1px;
+      background:var(--line);
+      margin:12px 0;
+    }
+  
+    /* Optional: dark mode */
+    @media (prefers-color-scheme: dark){
+      :root{
+        --ink:#e5e7eb;
+        --muted:#94a3b8;
+        --line:#2a2f3a;
+        --card:#0b1220;
+        --bg:#0a0f1a;
+      }
+      .tbl thead th{ background:#0e1626; }
+      .btn{ background:#0b1220 }
+      .btn:hover{ background:#0e1626 }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="row" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <a class="btn" href="/admin/portal.html">← Back</a>
+      <h1 id="title">Booking</h1>
+      <span></span>
+    </div>
+
+    <section id="bookingInfo" class="card" style="margin-top:10px"></section>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0">Booking Details</h3>
+          <button id="btnAddDetail" class="btn small">+ Add note</button>
+        </div>
+        <table class="tbl"><thead><tr><th>Title</th><th>Note</th><th>Created</th></tr></thead><tbody id="tblDetails"></tbody></table>
+      </section>
+
+      <section class="card">
+        <h3 style="margin-top:0">Tasks (from admin)</h3>
+        <table class="tbl"><thead><tr><th>Title</th><th>Assignee</th><th>Status</th><th>When</th></tr></thead><tbody id="tblTasks"></tbody></table>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="dlgDetail">
+    <form id="formDetail" method="dialog">
+      <h3>Add booking note</h3>
+      <input id="detailTitle" placeholder="Title" required />
+      <textarea id="detailNote" rows="4" placeholder="Note (optional)"></textarea>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+        <button class="btn" value="cancel">Cancel</button>
+        <button class="btn primary" value="save">Save</button>
+      </div>
+      <div id="detailMsg" class="muted small" style="margin-top:6px"></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/admin/portalBooking.js?v=1"></script>
+</body>
+</html>

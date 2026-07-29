@@ -1,0 +1,303 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    function adminPath(uid) {
+      return /databases/$(database)/documents/admins/$(uid);
+    }
+
+    function hasActiveUser() {
+      return signedIn()
+        && exists(userPath(request.auth.uid))
+        && get(userPath(request.auth.uid)).data.active == true;
+    }
+
+    function role() {
+      return hasActiveUser()
+        ? get(userPath(request.auth.uid)).data.role
+        : "";
+    }
+
+    function isAdmin() {
+      return signedIn() && (
+        (
+          exists(adminPath(request.auth.uid))
+          && get(adminPath(request.auth.uid)).data.active == true
+        )
+        || (hasActiveUser() && role() == "admin")
+      );
+    }
+
+    function isClinician() {
+      return hasActiveUser()
+        && role() in ["nurse", "lpn", "np", "caregiver"];
+    }
+
+    function shortString(value, max) {
+      return value is string && value.size() <= max;
+    }
+
+    function submittedNow() {
+      return request.resource.data.createdAt == request.time;
+    }
+
+    function publicSubmission() {
+      return request.auth == null && submittedNow();
+    }
+
+    match /contacts/{contactId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "name", "email", "phone", "reason", "message",
+          "createdAt", "status", "userAgent", "page"
+        ])
+        && request.resource.data.status == "new"
+        && shortString(request.resource.data.name, 120)
+        && shortString(request.resource.data.email, 254)
+        && shortString(request.resource.data.phone, 40)
+        && shortString(request.resource.data.reason, 80)
+        && shortString(request.resource.data.message, 3000)
+        && shortString(request.resource.data.userAgent, 600)
+        && shortString(request.resource.data.page, 500);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "serviceSlug", "serviceTitle", "patient", "preference",
+          "contact", "status", "createdAt", "userAgent"
+        ])
+        && request.resource.data.status == "pending"
+        && request.resource.data.patient is map
+        && request.resource.data.patient.keys().hasOnly([
+          "firstName", "lastName", "dob", "woundType", "notes"
+        ])
+        && shortString(request.resource.data.patient.firstName, 80)
+        && shortString(request.resource.data.patient.lastName, 80)
+        && shortString(request.resource.data.patient.dob, 10)
+        && shortString(request.resource.data.patient.woundType, 120)
+        && shortString(request.resource.data.patient.notes, 2000)
+        && request.resource.data.preference is map
+        && request.resource.data.preference.keys().hasOnly([
+          "mode", "preferredDate", "preferredTime", "address"
+        ])
+        && shortString(request.resource.data.preference.mode, 30)
+        && shortString(request.resource.data.preference.preferredDate, 10)
+        && shortString(request.resource.data.preference.preferredTime, 80)
+        && shortString(request.resource.data.preference.address, 300)
+        && request.resource.data.contact is map
+        && request.resource.data.contact.keys().hasOnly([
+          "name", "phone", "email", "refSource"
+        ])
+        && shortString(request.resource.data.contact.name, 120)
+        && shortString(request.resource.data.contact.phone, 40)
+        && shortString(request.resource.data.contact.email, 254)
+        && shortString(request.resource.data.contact.refSource, 120)
+        && (
+          request.resource.data.serviceSlug == null
+          || shortString(request.resource.data.serviceSlug, 120)
+        )
+        && (
+          request.resource.data.serviceTitle == null
+          || shortString(request.resource.data.serviceTitle, 160)
+        )
+        && shortString(request.resource.data.userAgent, 600);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+
+      match /bookingDetails/{detailId} {
+        allow read, create, update: if isAdmin();
+        allow delete: if false;
+      }
+
+      match /tasks/{taskId} {
+        allow read, create, update: if isAdmin();
+        allow delete: if false;
+      }
+    }
+
+    match /patientReferal/{referralId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "serviceSlug", "serviceTitle", "refType", "refName", "refOrg",
+          "refRole", "refEmail", "refPhone", "patientName", "patientDob",
+          "patientArea", "diagnosis", "urgency", "notes", "contactPref",
+          "consent", "createdAt", "status", "page", "userAgent"
+        ])
+        && request.resource.data.status == "new"
+        && request.resource.data.consent == true
+        && shortString(request.resource.data.serviceSlug, 120)
+        && shortString(request.resource.data.serviceTitle, 160)
+        && shortString(request.resource.data.refType, 40)
+        && shortString(request.resource.data.refName, 120)
+        && shortString(request.resource.data.refOrg, 160)
+        && shortString(request.resource.data.refRole, 100)
+        && shortString(request.resource.data.refEmail, 254)
+        && shortString(request.resource.data.refPhone, 40)
+        && shortString(request.resource.data.patientName, 40)
+        && shortString(request.resource.data.patientDob, 3)
+        && shortString(request.resource.data.patientArea, 180)
+        && shortString(request.resource.data.diagnosis, 200)
+        && shortString(request.resource.data.urgency, 30)
+        && shortString(request.resource.data.notes, 2500)
+        && shortString(request.resource.data.contactPref, 30)
+        && shortString(request.resource.data.page, 500)
+        && shortString(request.resource.data.userAgent, 600);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /consult_requests/{requestId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "firstName", "lastName", "phone", "email", "woundType",
+          "preferredTime", "message", "source", "pageUrl", "userAgent", "createdAt"
+        ])
+        && shortString(request.resource.data.firstName, 80)
+        && shortString(request.resource.data.lastName, 80)
+        && shortString(request.resource.data.phone, 40)
+        && shortString(request.resource.data.email, 254)
+        && shortString(request.resource.data.woundType, 120)
+        && shortString(request.resource.data.preferredTime, 80)
+        && shortString(request.resource.data.message, 1500)
+        && request.resource.data.source == "landing_page"
+        && shortString(request.resource.data.pageUrl, 500)
+        && shortString(request.resource.data.userAgent, 600);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /snf_referrals/{requestId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "facilityName", "contactName", "phone", "email", "dischargeTimeline",
+          "woundType", "message", "source", "pageUrl", "userAgent", "createdAt"
+        ])
+        && shortString(request.resource.data.facilityName, 160)
+        && shortString(request.resource.data.contactName, 120)
+        && shortString(request.resource.data.phone, 40)
+        && shortString(request.resource.data.email, 254)
+        && shortString(request.resource.data.dischargeTimeline, 80)
+        && shortString(request.resource.data.woundType, 120)
+        && shortString(request.resource.data.message, 1500)
+        && request.resource.data.source == "snf_landing"
+        && shortString(request.resource.data.pageUrl, 500)
+        && shortString(request.resource.data.userAgent, 600);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /hospice_partner_requests/{requestId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "agencyName", "contactName", "phone", "email", "requestType",
+          "urgency", "message", "source", "pageUrl", "userAgent", "createdAt"
+        ])
+        && shortString(request.resource.data.agencyName, 160)
+        && shortString(request.resource.data.contactName, 120)
+        && shortString(request.resource.data.phone, 40)
+        && shortString(request.resource.data.email, 254)
+        && shortString(request.resource.data.requestType, 100)
+        && shortString(request.resource.data.urgency, 40)
+        && shortString(request.resource.data.message, 1500)
+        && request.resource.data.source == "hospice_landing"
+        && shortString(request.resource.data.pageUrl, 500)
+        && shortString(request.resource.data.userAgent, 600);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /partner_referrals/{requestId} {
+      allow create: if publicSubmission()
+        && request.resource.data.keys().hasOnly([
+          "partnerType", "facilityName", "contactName", "contactRole", "phone",
+          "email", "woundCategory", "message", "source", "pageUrl",
+          "userAgent", "createdAt"
+        ])
+        && shortString(request.resource.data.partnerType, 40)
+        && shortString(request.resource.data.facilityName, 160)
+        && shortString(request.resource.data.contactName, 120)
+        && shortString(request.resource.data.contactRole, 100)
+        && shortString(request.resource.data.phone, 40)
+        && shortString(request.resource.data.email, 254)
+        && shortString(request.resource.data.woundCategory, 120)
+        && shortString(request.resource.data.message, 1500)
+        && request.resource.data.source == "partners_page"
+        && shortString(request.resource.data.pageUrl, 500)
+        && shortString(request.resource.data.userAgent, 600);
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /services/{serviceId} {
+      allow read: if isAdmin()
+        || (resource.data.active == true);
+      allow write: if isAdmin();
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /admins/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /tasks/{taskId} {
+      allow create, read, update: if isAdmin();
+      allow read: if isClinician() && resource.data.assignedTo == request.auth.uid;
+      allow update: if isClinician()
+        && resource.data.assignedTo == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(["status", "lastUpdatedAt", "scheduledAt"])
+        && request.resource.data.status in ["assigned", "in_progress", "done", "cancelled"];
+      allow delete: if false;
+
+      match /notes/{noteId} {
+        function assignedTask() {
+          return get(/databases/$(database)/documents/tasks/$(taskId)).data.assignedTo
+            == request.auth.uid;
+        }
+
+        allow read: if isAdmin() || (isClinician() && assignedTask());
+        allow create: if isAdmin() || (
+          isClinician()
+          && assignedTask()
+          && request.resource.data.createdBy == request.auth.uid
+          && request.resource.data.keys().hasOnly([
+            "createdAt", "createdBy", "text", "followUpAt"
+          ])
+          && request.resource.data.createdAt == request.time
+          && shortString(request.resource.data.text, 5000)
+          && (
+            request.resource.data.followUpAt == null
+            || request.resource.data.followUpAt is timestamp
+          )
+        );
+        allow update, delete: if false;
+      }
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

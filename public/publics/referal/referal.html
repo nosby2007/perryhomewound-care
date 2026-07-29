@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Refer a Patient — Perry Home Wound Care</title>
+  <meta name="description" content="Refer a patient for in-home or telehealth wound care."/>
+  <link rel="stylesheet" href="referal.css"/>
+</head>
+<body>
+  <!-- Simple Nav -->
+  <header class="nav">
+    <div class="navin">
+      <a class="brand" href="../../index.html">
+        <span class="logo">PH</span><span class="brandname">Perry Home Wound Care</span>
+      </a>
+      <nav class="navlinks">
+        <a class="btn ghost" href="../services/Service.html">Services</a>
+        <a class="btn primary" href="../booking/bookings.html">Book a Visit</a>
+        <a class="btn ghost" href="../../index.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Refer a Patient</h1>
+      <p>Healthcare professionals, facilities, or family caregivers: use this form to refer a patient to our wound-care nursing team.</p>
+      <div class="chips">
+        <span class="chip">Home & Telehealth</span>
+        <span class="chip">WOCNCB-certified</span>
+        <span class="chip">Rapid response</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="grid">
+      <!-- Info -->
+      <aside class="panel">
+        <h2>Information</h2>
+        <ul class="info">
+          <li><strong>Service area:</strong> Perry, Warner Robins, Houston County (GA)</li>
+          <li><strong>Phone:</strong> <a href="tel:+14783104446">(478) 310-4446</a></li>
+          <li><strong>Fax:</strong> <a href="tel:+14787219473">(478) 721-9473</a></li>
+          <li><strong>Email:</strong> <a href="mailto:support@perryhomewoundcare.network">support@perryhomewoundcare.network</a></li>
+        </ul>
+        <div class="note small muted">
+          ⚠️ Do not use this form for life-threatening emergencies. Call 911.
+        </div>
+      </aside>
+
+      <!-- Form -->
+      <section class="panel">
+        <h2>Referral Form</h2>
+        <form id="refForm" class="form" novalidate>
+          <!-- Optional prefill for service -->
+          <div class="row">
+            <label>Requested service
+              <input name="serviceTitle" id="serviceTitle" placeholder="(optional, e.g., Comprehensive Wound Management)"/>
+            </label>
+            <label>Service ID (slug)
+              <input name="serviceSlug" id="serviceSlug" placeholder="(optional, e.g., comprehensive-wound-management)"/>
+            </label>
+          </div>
+
+          <!-- Referrer -->
+          <fieldset class="fieldset">
+            <legend>Referrer</legend>
+            <div class="row">
+              <label>Referrer type*
+                <select name="refType" required>
+                  <option value="">Select…</option>
+                  <option value="facility">Facility / Organization</option>
+                  <option value="professional">Healthcare professional</option>
+                  <option value="family">Family / Caregiver</option>
+                  <option value="self">Self-referral</option>
+                </select>
+              </label>
+              <label>Referrer full name*
+                <input name="refName" required/>
+              </label>
+            </div>
+            <div class="row">
+              <label>Organization (if applicable)
+                <input name="refOrg" placeholder="Hospital, clinic, long-term care…"/>
+              </label>
+              <label>Role / Title
+                <input name="refRole" placeholder="MD, RN, Case Manager…"/>
+              </label>
+            </div>
+            <div class="row">
+              <label>Referrer email*
+                <input type="email" name="refEmail" required/>
+              </label>
+              <label>Referrer phone
+                <input type="tel" name="refPhone"/>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Patient -->
+          <fieldset class="fieldset">
+            <legend>Patient</legend>
+            <div class="row">
+              <label>Patient INITIAL*
+                <input name="patientName" required/>
+              </label>
+              <label>Patietnt Age*
+                <input type="number" name="patientDob" required/>
+              </label>
+            </div>
+            <label>Address (city / area)
+              <input name="patientArea" placeholder="City, ZIP code, access details…"/>
+            </label>
+            <div class="row">
+              <label>Primary wound / diagnosis*
+                <input name="diagnosis" required placeholder="e.g., venous ulcer, post-operative wound…"/>
+              </label>
+              <label>Urgency*
+                <select name="urgency" required>
+                  <option value="">Select…</option>
+                  <option value="routine">Routine (≤ 7 days)</option>
+                  <option value="priority">Priority (48–72h)</option>
+                  <option value="urgent">Urgent (24–48h)</option>
+                </select>
+              </label>
+            </div>
+            <label>Clinical details (brief)*
+              <textarea name="notes" rows="5" required placeholder="Location, stage, exudate, infection signs, current dressing… (no sensitive identifiers)"></textarea>
+            </label>
+          </fieldset>
+
+          <!-- Preferences / consent -->
+          <div class="row">
+            <label>Preferred contact
+              <select name="contactPref">
+                <option value="">No preference</option>
+                <option value="phone">Phone</option>
+                <option value="email">Email</option>
+              </select>
+            </label>
+            <label class="check">
+              <input type="checkbox" name="consent" required>
+              <span>I confirm I have authority and the necessary consent to share this information, and I acknowledge the <a href="../../privacy.html" target="_blank">Privacy Policy</a>.</span>
+            </label>
+          </div>
+
+
+          <!-- Anti-spam honeypot -->
+          <div class="hp" aria-hidden="true">
+            <label>Do not fill
+              <input name="website" tabindex="-1" autocomplete="off"/>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button id="sendBtn" class="btn primary" type="submit">Submit</button>
+            <div id="formStatus" class="status" role="status" aria-live="polite"></div>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- Success toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+      <div class="toast-inner">
+        <div class="tick" aria-hidden="true">✓</div>
+        <div>
+          <strong>Referral sent</strong>
+          <div class="small muted">We’ll contact you shortly.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="muted small">
+      &copy; <span id="yr"></span> Perry Home Wound Care ·
+      <a href="../../privacy.html">Privacy</a> ·
+      <a href="../../accessibility.html">Accessibility</a>
+    </div>
+  </footer>
+
+  <script type="module" src="./referal.js"></script>
+</body>
+</html>

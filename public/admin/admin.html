@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin — Contacts</title>
+  <link rel="stylesheet" href="./admin.css"/>
+</head>
+<body>
+  <header class="nav">
+    <div class="navin">
+      <h1>📋 Contact Messages (Admin)</h1>
+      <div class="nav-actions">
+        <span id="who" class="muted small"></span>
+        <a class="btn" href="/admin/login/admin-login.html" id="logoutBtn">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="filters">
+      <button class="filter-btn" data-status="all">All</button>
+      <button class="filter-btn" data-status="new">New</button>
+      <button class="filter-btn" data-status="read">Read</button>
+      <button class="filter-btn" data-status="archived">Archived</button>
+    </section>
+
+    <section id="messages" class="messages">
+      <div class="loading">Loading messages…</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="small muted">&copy; <span id="yr"></span> Perry Home Wound Care — Admin</div>
+  </footer>
+
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>

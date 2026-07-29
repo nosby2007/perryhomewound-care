@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Nurse Portal — Perry Home Wound Care</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    /* ---------- Design tokens ---------- */
+    :root{
+      --ink:#0f172a;           /* text */
+      --muted:#64748b;
+      --line:#e6eef6;          /* borders */
+      --brand:#0ea5a4;         /* primary */
+      --bg:#f8fbfd;
+  
+      /* Card gradient palettes */
+      --grad-assigned:   linear-gradient(145deg,#fff7ed 0%,#fde2c5 100%);  /* warm / amber */
+      --grad-inprogress: linear-gradient(145deg,#ecfeff 0%,#bfe6ea 100%);  /* teal / cyan */
+      --grad-done:       linear-gradient(145deg,#e8f5e9 0%,#c8e6c9 100%);  /* green */
+      --grad-cancelled:  linear-gradient(145deg,#f8fafc 0%,#e5e7eb 100%);  /* greyed */
+      --grad-pending:    linear-gradient(145deg,#faf5ff 0%,#e9d5ff 100%);  /* violet (for pending bookings) */
+    }
+  
+    /* ---------- Base ---------- */
+    * { box-sizing: border-box }
+    body{
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg); margin:0; color:var(--ink);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+  
+    .top{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      max-width:1100px; margin:16px auto; padding:0 16px;
+    }
+    .who{ color:var(--muted); font-size:12px }
+    .wrap{ max-width:1100px; margin:10px auto; padding:0 16px }
+  
+    /* ---------- Controls ---------- */
+    .filters{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 }
+    .inp,.sel{
+      border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:#fff; min-height:40px;
+    }
+  
+    /* ---------- Grid: fully responsive ---------- */
+    .grid{
+      display:grid; gap:12px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+  
+    /* ---------- Card ---------- */
+    .card{
+      background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px;
+      display:grid; gap:8px; transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .card:hover{ transform:translateY(-1px); box-shadow:0 4px 18px rgba(15,23,42,.06) }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center }
+    .small{ font-size:12px } .muted{ color:var(--muted) }
+  
+    /* ---------- Status-driven gradient cards (data-status set by JS) ---------- */
+    .card[data-status="assigned"]   { background-image:var(--grad-assigned) }
+    .card[data-status="pending"]    { background-image:var(--grad-pending) }
+    .card[data-status="in_progress"]{ background-image:var(--grad-inprogress) }
+    .card[data-status="done"]       { background-image:var(--grad-done) }
+    .card[data-status="cancelled"]  { background-image:var(--grad-cancelled) }
+  
+    /* Keep content readable on gradients */
+    .card[data-status] { border-color:transparent; }
+  
+    /* ---------- Badges ---------- */
+    .badge{
+      font-size:12px; border:1px solid #dfe6ef; border-radius:999px; padding:2px 10px; background:#fff;
+      line-height:20px; display:inline-block;
+    }
+    /* Optional: tinted badges per state */
+    .badge.assigned   { background:#fff7ed; border-color:#fde2c5 }
+    .badge.in_progress{ background:#ecfeff; border-color:#bfe6ea }
+    .badge.done       { background:#e8f5e9; border-color:#c8e6c9 }
+    .badge.cancelled  { background:#f1f5f9; border-color:#e2e8f0 }
+    .badge.pending    { background:#f3e8ff; border-color:#e9d5ff }
+  
+    /* ---------- Buttons ---------- */
+    .btn{
+      border:1px solid var(--line); background:#fff; border-radius:10px; padding:10px 14px; cursor:pointer;
+      min-height:40px; font-weight:500;
+    }
+    .btn.primary{ background:var(--brand); color:#053b3a; border-color:transparent }
+    .btn:focus-visible{ outline:3px solid #94f0f0; outline-offset:2px }
+  
+    /* ---------- Dialog ---------- */
+    dialog{ border:0; border-radius:14px; padding:16px; max-width:700px; width:min(700px,92vw) }
+    textarea,input[type="text"],input[type="date"]{
+      border:1px solid var(--line); border-radius:10px; padding:10px; width:100%; background:#fff;
+    }
+    label{ display:grid; gap:6px }
+  
+    /* ---------- Mobile tweaks ---------- */
+    @media (max-width:640px){
+      .top{ margin:10px auto }
+      h1{ font-size:20px; margin:0 }
+      .btn{ width:100% }                /* bigger touch targets */
+      .filters{ gap:6px }
+      .card{ padding:12px }
+    }
+  
+    /* ---------- Reduce motion ---------- */
+    @media (prefers-reduced-motion:reduce){
+      .card{ transition:none }
+    }
+  
+    /* ---------- Dark mode (optional, subtle) ---------- */
+    @media (prefers-color-scheme:dark){
+      :root{ --bg:#0b1220; --ink:#e5edf9; --muted:#9fb0c8; --line:#1b2a44 }
+      .badge{ background:#0f172a; color:#e5edf9; border-color:#243247 }
+      .btn{ background:#0f172a; color:#e5edf9; border-color:#243247 }
+      .card{ box-shadow:none }
+    }
+  </style>
+   
+</head>
+<body>
+  <header class="top">
+    <h1>🩺 Nurse Portal</h1>
+    <div class="row">
+      <span id="who" class="who"></span>
+      <button id="logoutBtn" class="btn">Sign out</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="filters">
+      <select id="fStatus" class="sel">
+        <option value="">All statuses</option>
+        <option value="assigned">Assigned</option>
+        <option value="in_progress">In progress</option>
+        <option value="done">Done</option>
+      </select>
+      <input id="q" class="inp" placeholder="Search patient/service/address…"/>
+    </section>
+
+    <section id="taskList" class="grid"></section>
+    <p id="empty" class="muted" style="display:none">No tasks yet.</p>
+  </main>
+
+  <aside class="wrap" style="max-width:1100px;margin:24px auto;padding:0 16px 28px">
+    <p class="muted">
+      New booking requests are reviewed by intake staff and appear above only after they are assigned to you as tasks.
+    </p>
+  </aside>
+
+
+  <!-- Single modal: Add Note / optional follow-up -->
+  <dialog id="dlgNote">
+    <form id="noteForm" method="dialog">
+      <h2>Add Note</h2>
+      <p class="small muted" id="noteMeta"></p>
+
+      <label>Progress note</label>
+      <textarea id="noteText" rows="6" placeholder="What was done / wound status / education provided…"></textarea>
+
+      <div class="row" style="margin-top:8px">
+        <label style="flex:1">Follow-up date (optional)
+          <input type="date" id="noteNextDate"/>
+        </label>
+      </div>
+
+      <div class="row" style="justify-content:flex-end;margin-top:10px">
+        <button class="btn" value="cancel">Close</button>
+        <button class="btn" id="btnSaveNote" value="save">Save Note</button>
+        <button class="btn primary" id="btnSaveNoteDone" value="saveDone">Save & Mark Done</button>
+      </div>
+      <div id="noteStatus" class="small muted" style="margin-top:6px"></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/admin/portal.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Referrals — Admin</title>
+    <link rel="stylesheet" href="/admin/admin-shared.css"/>
+    </head><body>
+      <!-- Sidebar -->
+<aside class="sidebar">
+    <div class="brand">
+      <div class="logo">PH</div>
+      <div class="btxt">
+        <strong>Perry Home</strong>
+        <span class="muted">Admin</span>
+      </div>
+    </div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks"    href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="users"    href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot">
+      <span id="who" class="small muted"></span>
+      <button id="logoutBtn" class="btn wfull">Sign out</button>
+    </div>
+  </aside>
+    
+      <div class="main">
+        <header class="topbar"><h1>Referrals</h1></header>
+        <section class="wrap">
+          <div class="phead">
+            <div class="filters">
+              <select id="fRefStatus"><option value="">All</option><option>new</option><option>reviewed</option><option>contacted</option><option>converted</option><option>archived</option></select>
+              <input id="qRef" class="inp" placeholder="Search referrer/patient/email…"/>
+            </div>
+          </div>
+          <div class="tablewrap">
+            <table class="tbl" id="tblRef">
+              <thead><tr><th>When</th><th>Referrer</th><th>Patient</th><th>Diagnosis</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    
+    <script type="module">
+      import { mountSidebar } from "/admin/admin-shared.js";
+      mountSidebar("referrals");
+    </script>
+    <script type="module" src="/admin/referrals.js"></script>
+    </body></html>
+    

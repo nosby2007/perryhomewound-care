@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Home Wound Care Services | Perry Home Wound Care</title>
+  <meta name="description" content="Explore in-home wound management, ostomy education, tele-wound follow-up, nursing, laboratory collection, and personal care services in Middle Georgia."/>
+  <link rel="canonical" href="https://perryhomewoundcare.network/publics/services/Service"/>
+  <link rel="stylesheet" href="./Service.css"/>
+</head>
+<body>
+  <header class="nav">
+    <div class="navin">
+      <a class="brand" href="../../index.html" aria-label="Perry Home Wound Care home">
+        <span class="logo" aria-hidden="true">PH</span>
+        <span class="brandname">Perry Home Wound Care</span>
+      </a>
+      <nav class="navlinks" aria-label="Primary navigation">
+        <a href="../../index.html" class="btn ghost">Home</a>
+        <a href="../referal/referal.html" class="btn ghost">Refer a Patient</a>
+        <a href="../booking/bookings.html" class="btn primary">Book a Visit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="subhero">
+      <p class="eyebrow">Care at home</p>
+      <h1>Services built around safe wound healing</h1>
+      <p>Search our clinician-led services, review what is included, and request a visit. Requests are confirmed by phone or email.</p>
+    </section>
+
+    <section class="toolbar" aria-label="Service filters">
+      <label class="sr-only" for="q">Search services</label>
+      <input id="q" class="input" type="search" placeholder="Search services…" autocomplete="off"/>
+      <label class="sr-only" for="category">Filter by category</label>
+      <select id="category" class="select">
+        <option value="">All categories</option>
+        <option value="wound">Wound Management</option>
+        <option value="ostomy">Ostomy</option>
+        <option value="virtual">Tele-Wound</option>
+        <option value="lab">Mobile Laboratory</option>
+        <option value="nursing">Nursing</option>
+        <option value="personal">Personal Care</option>
+        <option value="companion">Companion Care</option>
+      </select>
+      <button id="clear" class="btn" type="button">Clear</button>
+    </section>
+
+    <section class="wrap" aria-labelledby="servicesHeading">
+      <h2 id="servicesHeading" class="sr-only">Available services</h2>
+      <div class="grid cols-3" id="serviceGrid" aria-live="polite"></div>
+      <noscript>
+        <p class="card">JavaScript is required to display the service catalogue. Call <a href="tel:+14783104446">(478) 310-4446</a> for assistance.</p>
+      </noscript>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="fgrid">
+      <div class="brandline"><span class="logo" aria-hidden="true">PH</span><strong>Perry Home Wound Care</strong></div>
+      <div>
+        <a href="../../privacy.html">Privacy</a> ·
+        <a href="../../accessibility.html">Accessibility</a>
+      </div>
+      <div>&copy; <span id="yr"></span> Perry Home Wound Care</div>
+    </div>
+  </footer>
+
+  <script src="./Service.js" defer></script>
+</body>
+</html>

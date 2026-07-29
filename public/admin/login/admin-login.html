@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Sign in — Perry Home Wound Care</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    body{background:#f8fafc}
+    .auth-wrap{max-width:420px;margin:8vh auto;padding:20px;border:1px solid #e6eef6;border-radius:14px;background:#fff}
+    .auth-wrap h1{margin:0 0 12px}
+    .form label{display:grid;gap:6px;margin-bottom:10px}
+    .inp{border:1px solid #e6eef6;border-radius:10px;padding:10px 12px}
+    .btn{display:inline-flex;gap:8px;align-items:center;border:1px solid #e6eef6;border-radius:10px;padding:10px 12px;background:#fff;cursor:pointer}
+    .btn.primary{background:#0ea5a4;color:#053b3a;border-color:transparent}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .muted{color:#64748b}.small{font-size:12px}
+    .err{color:#b91c1c}.ok{color:#0f766e}
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <h1>Sign in</h1>
+    <p class="muted small">Admins and clinicians sign in here.</p>
+
+    <form id="emailForm" class="form" novalidate>
+      <label>Email
+        <input name="email" type="email" class="inp" required autocomplete="username"/>
+      </label>
+      <label>Password
+        <input name="password" type="password" class="inp" required autocomplete="current-password"/>
+      </label>
+      <div class="row">
+        <button id="emailBtn" class="btn primary" type="submit">Sign in</button>
+        <button id="googleBtn" class="btn" type="button">Sign in with Google</button>
+      </div>
+      <div class="row">
+        <a class="small" href="../../index.html">Back to site</a>
+      </div>
+      <div id="status" class="small" style="margin-top:8px"></div>
+    </form>
+  </div>
+
+  <script type="module" src="/admin/login/admin-login.js"></script>
+</body>
+</html>

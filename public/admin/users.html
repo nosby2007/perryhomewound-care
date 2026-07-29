@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Users — Admin</title>
+    <link rel="stylesheet" href="/admin/admin-shared.css"/>
+    </head><body>
+      <!-- Sidebar -->
+<aside class="sidebar">
+    <div class="brand">
+      <div class="logo">PH</div>
+      <div class="btxt">
+        <strong>Perry Home</strong>
+        <span class="muted">Admin</span>
+      </div>
+    </div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks"    href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="users"    href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot">
+      <span id="who" class="small muted"></span>
+      <button id="logoutBtn" class="btn wfull">Sign out</button>
+    </div>
+  </aside>
+    
+      <div class="main">
+        <header class="topbar"><h1>Users</h1></header>
+        <section class="wrap">
+          <div class="phead">
+            <div class="filters"><input id="qUsers" class="inp" placeholder="Search name/email/role…"/></div>
+          </div>
+          <div class="tablewrap">
+            <table class="tbl" id="tblUsers">
+              <thead><tr><th>When</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    
+    <script type="module">
+      import { mountSidebar } from "/admin/admin-shared.js";
+      mountSidebar("users");
+    </script>
+    <script type="module" src="/admin/users.js"></script>
+    </body></html>
+    

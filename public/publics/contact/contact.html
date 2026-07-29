@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Contact — Perry Home Wound Care</title>
+  <meta name="description" content="Contact Perry Home Wound Care. Call, email, or send a message for in-home or virtual wound care."/>
+  <link rel="stylesheet" href="./contact.css"/>
+</head>
+<body>
+  <!-- Top Nav (lightweight) -->
+  <header class="nav">
+    <div class="navin">
+      <a class="brand" href="../../index.html">
+        <span class="logo">PH</span><span class="brandname">Perry Home Wound Care</span>
+      </a>
+      <nav class="navlinks">
+        <a class="btn ghost" href="../../index.html">Home</a>
+        <a class="btn ghost" href="../services/Service.html">Services</a>
+        <a class="btn primary" href="../booking/bookings.html">Book</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>We’re here to help</h1>
+      <p>Questions about care, scheduling, or referrals? Call us, email us, or send a message—we’ll respond promptly.</p>
+      <div class="hero-chips">
+        <span class="chip">In-home & virtual</span>
+        <span class="chip">WOCNCB-certified</span>
+        <span class="chip">Same-week availability</span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="orb orb-c"></div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <main class="wrap">
+    <div class="grid">
+      <!-- Contact Info + Map -->
+      <aside class="panel">
+        <h2>Contact information</h2>
+        <ul class="info">
+          <li>
+            <div class="icon i-phone" aria-hidden="true"></div>
+            <div>
+              <div class="label">Phone</div>
+              <a href="tel:+14783104446">(478) 310-4446</a>
+              <div class="muted small">Mon–Fri 8:00–21:00</div>
+              
+            </div>
+          </li>
+          <li>
+            <div class="icon i-mail" aria-hidden="true"></div>
+            <div>
+              <div class="label">Email</div>
+              <a href="mailto:support@perryhomewoundcare.network">support@perryhomewoundcare.network</a>
+              <div class="muted small">We reply within 1 business day</div>
+            </div>
+          </li>
+          <li>
+            <div class="icon i-pin" aria-hidden="true"></div>
+            <div>
+              <div class="label">Service area</div>
+              Perry • Warner Robins • Fort Valley • Houston County, GA
+            </div>
+          </li>
+        </ul>
+
+        <div class="map-card">
+          <!-- Simple, fast map embed (no API key required). Replace q= with your address if needed. -->
+          <iframe
+            title="Service area map"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Perry%20GA&output=embed">
+          </iframe>
+        </div>
+      </aside>
+
+      <!-- Contact Form -->
+      <section class="panel">
+        <h2>Send us a message</h2>
+        <p class="muted">Tell us a bit about your needs and how to reach you. We’ll get back to you shortly.</p>
+        <form id="contactForm" class="form" novalidate>
+          <div class="row">
+            <label>Full name*
+              <input name="name" autocomplete="name" required/>
+            </label>
+            <label>Email*
+              <input name="email" type="email" autocomplete="email" required/>
+            </label>
+          </div>
+          <div class="row">
+            <label>Phone
+              <input name="phone" type="tel" autocomplete="tel"/>
+            </label>
+            <label>Reason
+              <select name="reason">
+                <option value="">Choose…</option>
+                <option value="Booking">Booking</option>
+                <option value="Clinical question">Clinical question</option>
+                <option value="Referral">Referral</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+          </div>
+
+          <label>Message*
+            <textarea name="message" rows="6" required
+              placeholder="How can we help? (Please don’t include sensitive health identifiers)."></textarea>
+          </label>
+
+          <!-- Honeypot (spam trap) -->
+          <div class="hp" aria-hidden="true">
+            <label>Do not fill this field <input name="website" autocomplete="off" tabindex="-1"/></label>
+          </div>
+
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" name="consent" required>
+              <span>I consent to be contacted about this inquiry and understand this is not an emergency service.</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button id="sendBtn" class="btn primary" type="submit">Send message</button>
+            <div id="formStatus" class="status" role="status" aria-live="polite"></div>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- Success toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+      <div class="toast-inner">
+        <div class="tick" aria-hidden="true">✓</div>
+        <div>
+          <strong>Message sent</strong>
+          <div class="small muted">Thanks—our team will reach out soon.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="muted small">
+      &copy; <span id="yr"></span> Perry Home Wound Care ·
+      <a href="../../privacy.html">Privacy</a> ·
+      <a href="../../accessibility.html">Accessibility</a>
+    </div>
+  </footer>
+
+  <!-- Firebase + page logic -->
+  <script type="module" src="./contact.js"></script>
+</body>
+</html>
