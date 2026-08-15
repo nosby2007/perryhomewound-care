@@ -54,10 +54,22 @@ export const mailto = (to, subject, body)=>{ const u = new URL("mailto:"+(to||""
 export const badge = (st)=> `<span class="badge status-${esc(st||'new')}">${esc(st||'new')}</span>`;
 export const go = (url)=> window.location.assign(url);
 
-// Sidebar current item highlight
+// Sidebar current item highlight + shared CRM navigation
 export function mountSidebar(activeId){
   const who = document.getElementById("who");
   const logoutBtn = document.getElementById("logoutBtn");
+  const nav = document.querySelector(".snav");
+
+  if(nav && !nav.querySelector('[data-target="crm"]')){
+    const crmLink = document.createElement("a");
+    crmLink.className = "sitem";
+    crmLink.dataset.target = "crm";
+    crmLink.href = "/admin/crm.html";
+    crmLink.textContent = "Outreach CRM";
+    const usersLink = nav.querySelector('[data-target="users"]');
+    if(usersLink) nav.insertBefore(crmLink, usersLink); else nav.appendChild(crmLink);
+  }
+
   document.querySelectorAll(".snav .sitem").forEach(btn=>{
     btn.classList.toggle("active", btn.dataset.target === activeId);
   });
