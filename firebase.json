@@ -13,7 +13,10 @@
       { "source": "/admin/referrals", "destination": "/admin/referrals.html" },
       { "source": "/admin/crm",       "destination": "/admin/crm.html" },
       { "source": "/admin/social-studio", "destination": "/admin/social-studio.html" },
-      { "source": "/admin/users",     "destination": "/admin/users.html" }
+      { "source": "/admin/blog-studio", "destination": "/admin/blog-studio.html" },
+      { "source": "/admin/users",     "destination": "/admin/users.html" },
+      { "source": "/blog", "destination": "/blog.html" },
+      { "source": "/blog/post", "destination": "/blog-post.html" }
     ],
     "headers": [
       {
@@ -40,5 +43,8 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
