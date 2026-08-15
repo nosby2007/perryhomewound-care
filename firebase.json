@@ -12,6 +12,7 @@
       { "source": "/admin/contacts",  "destination": "/admin/contacts.html" },
       { "source": "/admin/referrals", "destination": "/admin/referrals.html" },
       { "source": "/admin/crm",       "destination": "/admin/crm.html" },
+      { "source": "/admin/social-studio", "destination": "/admin/social-studio.html" },
       { "source": "/admin/users",     "destination": "/admin/users.html" }
     ],
     "headers": [
