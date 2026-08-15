@@ -1,0 +1,10 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+const app=initializeApp({apiKey:"AIzaSyCdIpeMxhFMRpzNxmngoP3QY8ZZl2ABG_s",authDomain:"credential-4f22b.firebaseapp.com",projectId:"credential-4f22b",storageBucket:"credential-4f22b.firebasestorage.app",messagingSenderId:"107240797765",appId:"1:107240797765:web:9ae5b37760081911ad952c"});
+const db=getFirestore(app),$=id=>document.getElementById(id);let posts=[];
+const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const date=ts=>ts?.toDate?.()?.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})||"";
+function render(){const q=$("blogSearch").value.trim().toLowerCase(),list=posts.filter(p=>[p.title,p.excerpt,p.category].join(" ").toLowerCase().includes(q));$("blogEmpty").hidden=!!list.length;$("blogGrid").innerHTML=list.map(p=>`<a class="blog-card" href="/blog/post?slug=${encodeURIComponent(p.slug||p.id)}">${p.coverUrl?`<img src="${esc(p.coverUrl)}" alt="${esc(p.coverAlt||p.title||"PHWC wound care article")}" loading="lazy"/>`:""}<div class="blog-card-body"><span class="category">${esc(p.category||"Wound Education")}</span><h3>${esc(p.title||"PHWC Wound Care Article")}</h3><p>${esc(p.excerpt||"")}</p><div class="meta">${esc(date(p.publishedAt||p.updatedAt))}</div><span class="read-more">Read article →</span></div></a>`).join("");}
+try{const snap=await getDocs(query(collection(db,"blogPosts"),where("status","==","Published")));posts=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.publishedAt?.seconds||b.updatedAt?.seconds||0)-(a.publishedAt?.seconds||a.updatedAt?.seconds||0));render();}catch(e){console.error(e);$("blogEmpty").hidden=false;$("blogEmpty").textContent="Blog articles are temporarily unavailable.";}
+$("blogSearch").addEventListener("input",render);
