@@ -17,6 +17,7 @@
       <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
       <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
       <a class="sitem" data-target="social" href="/admin/social-studio.html">Content Studio</a>
+      <a class="sitem" data-target="blog" href="/admin/blog-studio.html">Blog Studio</a>
       <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
     </nav>
     <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
@@ -32,6 +33,7 @@
         <article class="kcard"><div class="klabel">Referrals</div><div class="kvalue" id="kRef">–</div><div class="kmeta" id="kRefMeta">new: –</div></article>
         <article class="kcard"><div class="klabel">CRM Leads</div><div class="kvalue" id="kCrm">–</div><div class="kmeta">facility outreach</div></article>
         <article class="kcard"><div class="klabel">Social Posts</div><div class="kvalue" id="kSocial">–</div><div class="kmeta">drafts & publications</div></article>
+        <article class="kcard"><div class="klabel">Blog Articles</div><div class="kvalue" id="kBlog">–</div><div class="kmeta">education & SEO</div></article>
       </section>
 
       <div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr))">
@@ -40,7 +42,9 @@
         <a class="kcard sitem" href="/admin/contacts.html"><strong>Contacts</strong><div class="small muted">Lead inbox</div></a>
         <a class="kcard sitem" href="/admin/referrals.html"><strong>Referrals</strong><div class="small muted">Referrer pipeline</div></a>
         <a class="kcard sitem" href="/admin/crm.html"><strong>Outreach CRM</strong><div class="small muted">Facilities, follow-ups & partnerships</div></a>
-        <a class="kcard sitem" href="/admin/social-studio.html"><strong>Content Studio</strong><div class="small muted">Create social posts that support local growth</div></a>
+        <a class="kcard sitem" href="/admin/social-studio.html"><strong>Content Studio</strong><div class="small muted">Create social posts with photos</div></a>
+        <a class="kcard sitem" href="/admin/blog-studio.html"><strong>Blog Studio</strong><div class="small muted">Write and publish PHWC articles</div></a>
+        <a class="kcard sitem" href="/blog" target="_blank" rel="noopener"><strong>Public Blog</strong><div class="small muted">View published articles</div></a>
         <a class="kcard sitem" href="/admin/users.html"><strong>Users</strong><div class="small muted">Roles & access</div></a>
       </div>
     </main>
@@ -82,7 +86,8 @@
         getCountFromServer(query(collection(db,"contacts"))),
         getCountFromServer(query(collection(db,"patientReferal"))),
         getCountFromServer(query(collection(db,"crmLeads"))),
-        getCountFromServer(query(collection(db,"socialPosts")))
+        getCountFromServer(query(collection(db,"socialPosts"))),
+        getCountFromServer(query(collection(db,"blogPosts")))
       ]);
       setText("kTasks", counts[0].data().count);
       setText("kBookings", counts[1].data().count);
@@ -90,6 +95,7 @@
       setText("kRef", counts[3].data().count);
       setText("kCrm", counts[4].data().count);
       setText("kSocial", counts[5].data().count);
+      setText("kBlog", counts[6].data().count);
     })();
   </script>
 </body>
