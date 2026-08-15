@@ -54,7 +54,7 @@ export const mailto = (to, subject, body)=>{ const u = new URL("mailto:"+(to||""
 export const badge = (st)=> `<span class="badge status-${esc(st||'new')}">${esc(st||'new')}</span>`;
 export const go = (url)=> window.location.assign(url);
 
-// Sidebar current item highlight + shared CRM navigation
+// Sidebar current item highlight + shared growth navigation
 export function mountSidebar(activeId){
   const who = document.getElementById("who");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -68,6 +68,16 @@ export function mountSidebar(activeId){
     crmLink.textContent = "Outreach CRM";
     const usersLink = nav.querySelector('[data-target="users"]');
     if(usersLink) nav.insertBefore(crmLink, usersLink); else nav.appendChild(crmLink);
+  }
+
+  if(nav && !nav.querySelector('[data-target="social"]')){
+    const socialLink = document.createElement("a");
+    socialLink.className = "sitem";
+    socialLink.dataset.target = "social";
+    socialLink.href = "/admin/social-studio.html";
+    socialLink.textContent = "Content Studio";
+    const usersLink = nav.querySelector('[data-target="users"]');
+    if(usersLink) nav.insertBefore(socialLink, usersLink); else nav.appendChild(socialLink);
   }
 
   document.querySelectorAll(".snav .sitem").forEach(btn=>{
