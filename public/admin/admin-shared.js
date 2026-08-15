@@ -2,6 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 import { doc, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCdIpeMxhFMRpzNxmngoP3QY8ZZl2ABG_s",
@@ -14,7 +15,8 @@ export const firebaseConfig = {
 };
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db   = getFirestore(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export const adminReady = new Promise((resolve, reject)=>{
   let unsubscribe = ()=>{};
@@ -54,33 +56,27 @@ export const mailto = (to, subject, body)=>{ const u = new URL("mailto:"+(to||""
 export const badge = (st)=> `<span class="badge status-${esc(st||'new')}">${esc(st||'new')}</span>`;
 export const go = (url)=> window.location.assign(url);
 
+function addNavItem(nav, target, href, label){
+  if(!nav || nav.querySelector(`[data-target="${target}"]`)) return;
+  const link = document.createElement("a");
+  link.className = "sitem";
+  link.dataset.target = target;
+  link.href = href;
+  link.textContent = label;
+  const usersLink = nav.querySelector('[data-target="users"]');
+  if(usersLink) nav.insertBefore(link, usersLink); else nav.appendChild(link);
+}
+
 // Sidebar current item highlight + shared growth navigation
 export function mountSidebar(activeId){
   const who = document.getElementById("who");
   const logoutBtn = document.getElementById("logoutBtn");
   const nav = document.querySelector(".snav");
 
-  if(nav && !nav.querySelector('[data-target="crm"]')){
-    const crmLink = document.createElement("a");
-    crmLink.className = "sitem";
-    crmLink.dataset.target = "crm";
-    crmLink.href = "/admin/crm.html";
-    crmLink.textContent = "Outreach CRM";
-    const usersLink = nav.querySelector('[data-target="users"]');
-    if(usersLink) nav.insertBefore(crmLink, usersLink); else nav.appendChild(crmLink);
-  }
+  addNavItem(nav, "crm", "/admin/crm.html", "Outreach CRM");
+  addNavItem(nav, "social", "/admin/social-studio.html", "Content Studio");
+  addNavItem(nav, "blog", "/admin/blog-studio.html", "Blog Studio");
 
-  if(nav && !nav.querySelector('[data-target="social"]')){
-    const socialLink = document.createElement("a");
-    socialLink.className = "sitem";
-    socialLink.dataset.target = "social";
-    socialLink.href = "/admin/social-studio.html";
-    socialLink.textContent = "Content Studio";
-    const usersLink = nav.querySelector('[data-target="users"]');
-    if(usersLink) nav.insertBefore(socialLink, usersLink); else nav.appendChild(socialLink);
-  }
-
-  // Content Studio sharing helpers are loaded only on the Social Content page.
   if(activeId === "social" && !document.querySelector('script[data-phwc-social-share]')){
     const shareScript = document.createElement("script");
     shareScript.src = "/admin/social-share.js";
@@ -95,6 +91,8 @@ export function mountSidebar(activeId){
     if (who) who.textContent = user.email || user.uid;
   }).catch(()=>{});
   logoutBtn?.addEventListener("click", async (e)=>{
-    e.preventDefault(); await signOut(auth); go("/admin/login/admin-login.html");
+    e.preventDefault();
+    await signOut(auth);
+    go("/admin/login/admin-login.html");
   });
 }
