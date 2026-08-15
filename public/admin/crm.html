@@ -26,7 +26,8 @@
       <div><div class="eyebrow">GROWTH & PARTNERSHIPS</div><h1>PHWC Outreach CRM</h1><p>Central Georgia referral, facility and partnership pipeline</p></div>
       <div class="top-actions">
         <button id="btnAddLead" class="btn">+ Add lead</button>
-        <button id="btnSeed" class="btn primary">Import PHWC leads</button>
+        <button id="btnImport" class="btn primary">Import leads JSON</button>
+        <input id="leadImportFile" type="file" accept="application/json" hidden/>
       </div>
     </header>
 
@@ -51,9 +52,7 @@
       <section class="toolbar-card">
         <div class="searchbox"><span>⌕</span><input id="q" placeholder="Search facility, administrator, city, email…"/></div>
         <select id="fType"><option value="">All facility types</option></select>
-        <select id="fStatus">
-          <option value="">All statuses</option><option>New</option><option>Contacted</option><option>Email Sent</option><option>SMS Sent</option><option>Interested</option><option>Meeting</option><option>Partner</option><option>Not Interested</option><option>Email Bounced</option>
-        </select>
+        <select id="fStatus"><option value="">All statuses</option><option>New</option><option>Contacted</option><option>Email Sent</option><option>SMS Sent</option><option>Interested</option><option>Meeting</option><option>Partner</option><option>Not Interested</option><option>Email Bounced</option></select>
         <select id="fOwner"><option value="">All owners</option><option value="mine">Assigned to me</option><option value="unassigned">Unassigned</option></select>
         <select id="fSort"><option value="score">Priority score</option><option value="followup">Follow-up date</option><option value="name">Facility name</option><option value="updated">Recently updated</option></select>
       </section>
@@ -70,7 +69,7 @@
       <div class="list-head"><div><strong id="visibleCount">0</strong> leads shown <span id="syncState" class="sync-state">Loading…</span></div><button id="btnExport" class="btn soft">Export JSON</button></div>
       <section id="leadList" class="lead-list"></section>
       <section id="emptyState" class="empty-state" hidden>
-        <div class="empty-icon">◎</div><h3>No leads found</h3><p>Adjust filters or import the PHWC legacy lead list.</p><button class="btn primary" id="emptySeed">Import 207 leads</button>
+        <div class="empty-icon">◎</div><h3>No leads found</h3><p>Adjust filters or import your existing PHWC lead list.</p><button class="btn primary" id="emptyImport">Import leads JSON</button>
       </section>
     </main>
   </div>
@@ -98,14 +97,11 @@
       <header><div><span class="eyebrow">PERSONALIZED OUTREACH</span><h3>Email preview</h3></div><button class="icon-btn" value="cancel">×</button></header>
       <div class="email-meta" id="emailMeta"></div>
       <div id="emailPreview" class="email-preview"></div>
-      <footer><button class="btn" id="copyEmailBtn" type="button">Copy formatted email</button><button class="btn primary" id="openGmailBtn" type="button">Open Gmail</button></footer>
+      <footer><button class="btn" id="copyEmailBtn" type="button">Copy email</button><button class="btn primary" id="openGmailBtn" type="button">Open Gmail</button></footer>
     </form>
   </dialog>
 
-  <script type="module">
-    import { mountSidebar } from "/admin/admin-shared.js";
-    mountSidebar("crm");
-  </script>
+  <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("crm");</script>
   <script type="module" src="/admin/crm.js"></script>
 </body>
 </html>
