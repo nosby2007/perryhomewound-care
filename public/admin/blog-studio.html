@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Blog Studio — Perry Home Wound Care</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="/admin/blog-studio.css"/>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
+      <a class="sitem" data-target="social" href="/admin/social-studio.html">Content Studio</a>
+      <a class="sitem" data-target="blog" href="/admin/blog-studio.html">Blog Studio</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar blog-topbar">
+      <div><div class="eyebrow">CONTENT & SEO</div><h1>PHWC Blog Studio</h1><p>Create educational wound-care articles and publish them to the PHWC public blog.</p></div>
+      <div class="top-actions"><a class="btn" href="/blog" target="_blank" rel="noopener">Open public blog</a><a class="btn" href="/admin/social-studio.html">Social Studio</a><button id="newBlogBtn" class="btn primary">+ New article</button></div>
+    </header>
+
+    <main class="wrap blog-wrap">
+      <section class="blog-hero">
+        <div><span class="hero-badge">PHWC EDUCATION</span><h2>Build useful local wound-care content.</h2><p>Use educational language, avoid patient-identifying information, and never promise outcomes.</p></div>
+        <div class="hero-stats"><div><strong id="blogDrafts">0</strong><span>Drafts</span></div><div><strong id="blogPublished">0</strong><span>Published</span></div></div>
+      </section>
+
+      <section class="editor-grid">
+        <form id="blogForm" class="panel blog-form">
+          <input id="editingSlug" type="hidden"/>
+          <div class="panel-head"><div><span class="eyebrow">ARTICLE EDITOR</span><h3>Write an article</h3></div><button type="button" id="resetBlogBtn" class="btn">Reset</button></div>
+          <label>Title<input id="blogTitle" maxlength="160" required placeholder="Example: 5 signs a wound needs professional evaluation"/></label>
+          <div class="row2"><label>Slug<input id="blogSlug" maxlength="120" required placeholder="5-signs-wound-needs-evaluation"/></label><label>Category<select id="blogCategory"><option>Wound Education</option><option>Pressure Injuries</option><option>Diabetic Wounds</option><option>Vascular Wounds</option><option>Post-Surgical Care</option><option>Caregiver Education</option><option>Home Wound Care</option><option>Facility Partnerships</option></select></label></div>
+          <label>Short excerpt<textarea id="blogExcerpt" rows="3" maxlength="320" placeholder="Short description for the blog card and search preview"></textarea></label>
+          <label>Article body<textarea id="blogBody" rows="18" placeholder="Write the article here. Use blank lines between paragraphs. Start a line with ## for a heading and - for a bullet."></textarea></label>
+          <div class="row2"><label>SEO title<input id="seoTitle" maxlength="65"/></label><label>SEO description<input id="seoDescription" maxlength="160"/></label></div>
+          <div class="compliance-box"><strong>Clinical publishing guardrail</strong><span>Educational content only. Do not include PHI, individual treatment instructions, guaranteed results, or unsupported payer/coverage claims.</span></div>
+          <div class="editor-actions"><button id="saveBlogDraftBtn" type="button" class="btn">Save draft</button><button id="publishBlogBtn" type="button" class="btn primary">Publish article</button></div>
+        </form>
+
+        <section class="panel blog-preview-panel">
+          <div class="panel-head"><div><span class="eyebrow">COVER IMAGE</span><h3>Article image</h3></div><span id="blogUploadState" class="pill">No image</span></div>
+          <div id="coverPreviewWrap" class="cover-preview" hidden><img id="coverPreview" alt="Blog cover preview"/></div>
+          <input id="blogImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif"/>
+          <label>Image alt text<input id="blogImageAlt" maxlength="180" placeholder="Describe the image for accessibility"/></label>
+          <div class="editor-actions"><button id="uploadBlogImageBtn" type="button" class="btn">Upload cover image</button><button id="clearBlogImageBtn" type="button" class="btn">Remove image</button></div>
+
+          <div class="preview-card">
+            <span id="previewCategory" class="preview-category">Wound Education</span>
+            <h2 id="previewTitle">Article title</h2>
+            <p id="previewExcerpt">Your excerpt will appear here.</p>
+            <div id="previewBody" class="article-preview-body"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel library-panel">
+        <div class="panel-head"><div><span class="eyebrow">BLOG LIBRARY</span><h3>Articles</h3></div><select id="blogStatusFilter"><option value="">All statuses</option><option>Draft</option><option>Published</option></select></div>
+        <div id="blogLibrary" class="blog-library"></div>
+        <div id="blogEmpty" class="empty">No blog articles yet.</div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("blog");</script>
+  <script type="module" src="/admin/blog-studio.js"></script>
+</body>
+</html>
