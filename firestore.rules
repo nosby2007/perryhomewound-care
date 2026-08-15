@@ -301,6 +301,11 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    match /socialPosts/{postId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+
     match /auditLogs/{logId} {
       allow read: if isAdmin();
       allow write: if false;
