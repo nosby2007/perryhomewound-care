@@ -17,6 +17,7 @@
       <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
       <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
       <a class="sitem" data-target="social" href="/admin/social-studio.html">Content Studio</a>
+      <a class="sitem" data-target="blog" href="/admin/blog-studio.html">Blog Studio</a>
       <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
     </nav>
     <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
@@ -29,7 +30,10 @@
         <h1>PHWC Social Content Studio</h1>
         <p>Create local wound-care content for Facebook, Instagram and LinkedIn.</p>
       </div>
-      <button id="newPostBtn" class="btn primary">+ New publication</button>
+      <div class="builder-actions">
+        <a class="btn" href="/admin/blog-studio.html">Blog Studio</a>
+        <button id="newPostBtn" class="btn primary">+ New publication</button>
+      </div>
     </header>
 
     <main class="wrap studio-wrap">
@@ -66,9 +70,19 @@
           <div class="panel-head"><div><span class="eyebrow">LIVE PREVIEW</span><h3 id="previewPlatform">Facebook publication</h3></div><span id="charCount" class="char-count">0 chars</span></div>
           <div class="social-preview">
             <div class="post-brand"><div class="post-logo">PH</div><div><strong>Perry Home Wound Care</strong><span>Middle Georgia · Mobile wound care</span></div></div>
+            <div id="photoPreviewWrap" class="photo-preview-wrap" hidden><img id="photoPreview" alt="Selected publication image"/></div>
             <textarea id="postText" class="post-text" rows="15" placeholder="Your publication will appear here…"></textarea>
             <div id="hashtagPreview" class="hashtags"></div>
           </div>
+
+          <div class="media-uploader">
+            <div class="panel-head"><div><span class="eyebrow">PHOTO</span><h3>Add a photo</h3></div><span id="uploadState" class="char-count">No image</span></div>
+            <input id="postImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif"/>
+            <label>Photo alt text<input id="imageAlt" placeholder="Example: nurse discussing wound care plan with patient at home"/></label>
+            <div class="builder-actions"><button type="button" id="uploadImageBtn" class="btn">Upload photo</button><button type="button" id="clearImageBtn" class="btn soft">Remove photo</button><a id="openImageBtn" class="btn" target="_blank" rel="noopener" hidden>Open photo</a></div>
+            <p class="muted small">Use consented PHWC marketing images only. Do not upload patient-identifying images or clinical wound photos for social marketing.</p>
+          </div>
+
           <label>Image / Canva prompt<textarea id="imagePrompt" rows="4" placeholder="Optional visual concept"></textarea></label>
           <div class="preview-actions"><button id="copyPostBtn" type="button" class="btn primary">Copy publication</button><button id="copyImageBtn" type="button" class="btn">Copy image prompt</button><button id="saveDraftBtn" type="button" class="btn">Save draft</button><button id="readyBtn" type="button" class="btn">Mark ready</button></div>
         </section>
