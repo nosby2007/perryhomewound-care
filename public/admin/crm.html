@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Outreach CRM — Perry Home Wound Care</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="/admin/crm.css"/>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar crm-topbar">
+      <div><div class="eyebrow">GROWTH & PARTNERSHIPS</div><h1>PHWC Outreach CRM</h1><p>Central Georgia referral, facility and partnership pipeline</p></div>
+      <div class="top-actions">
+        <button id="btnAddLead" class="btn">+ Add lead</button>
+        <button id="btnSeed" class="btn primary">Import PHWC leads</button>
+      </div>
+    </header>
+
+    <main class="wrap crm-wrap">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <span class="hero-badge">Advanced Wound Care at Home</span>
+          <h2>Today’s outreach command center</h2>
+          <p>Work overdue follow-ups first, then interested leads and high-value local facilities.</p>
+        </div>
+        <div class="hero-date" id="todayLabel"></div>
+      </section>
+
+      <section class="metric-grid">
+        <button class="metric-card metric-danger" data-quick="overdue"><span>Overdue</span><strong id="mOverdue">0</strong><small>Needs attention</small></button>
+        <button class="metric-card metric-warn" data-quick="today"><span>Due today</span><strong id="mToday">0</strong><small>Follow up now</small></button>
+        <button class="metric-card metric-success" data-quick="interested"><span>Interested</span><strong id="mInterested">0</strong><small>Move to meeting</small></button>
+        <button class="metric-card" data-quick="meeting"><span>Meetings</span><strong id="mMeetings">0</strong><small>Active opportunities</small></button>
+        <button class="metric-card" data-quick="partner"><span>Partners</span><strong id="mPartners">0</strong><small>Converted</small></button>
+      </section>
+
+      <section class="toolbar-card">
+        <div class="searchbox"><span>⌕</span><input id="q" placeholder="Search facility, administrator, city, email…"/></div>
+        <select id="fType"><option value="">All facility types</option></select>
+        <select id="fStatus">
+          <option value="">All statuses</option><option>New</option><option>Contacted</option><option>Email Sent</option><option>SMS Sent</option><option>Interested</option><option>Meeting</option><option>Partner</option><option>Not Interested</option><option>Email Bounced</option>
+        </select>
+        <select id="fOwner"><option value="">All owners</option><option value="mine">Assigned to me</option><option value="unassigned">Unassigned</option></select>
+        <select id="fSort"><option value="score">Priority score</option><option value="followup">Follow-up date</option><option value="name">Facility name</option><option value="updated">Recently updated</option></select>
+      </section>
+
+      <section class="quick-row" id="quickRow">
+        <button class="quick active" data-quick="all">All leads</button>
+        <button class="quick" data-quick="overdue">Overdue</button>
+        <button class="quick" data-quick="today">Due today</button>
+        <button class="quick" data-quick="interested">Interested</button>
+        <button class="quick" data-quick="high">High priority</button>
+        <button class="quick" data-quick="email">Valid email</button>
+      </section>
+
+      <div class="list-head"><div><strong id="visibleCount">0</strong> leads shown <span id="syncState" class="sync-state">Loading…</span></div><button id="btnExport" class="btn soft">Export JSON</button></div>
+      <section id="leadList" class="lead-list"></section>
+      <section id="emptyState" class="empty-state" hidden>
+        <div class="empty-icon">◎</div><h3>No leads found</h3><p>Adjust filters or import the PHWC legacy lead list.</p><button class="btn primary" id="emptySeed">Import 207 leads</button>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="leadDialog" class="crm-dialog">
+    <form method="dialog" id="leadForm">
+      <header><div><span class="eyebrow">CRM LEAD</span><h3 id="leadDialogTitle">Add lead</h3></div><button class="icon-btn" value="cancel" type="submit">×</button></header>
+      <div class="dialog-body">
+        <input type="hidden" id="leadId"/>
+        <div class="row2"><label>Organization<input id="leadName" required/></label><label>Facility type<input id="leadType"/></label></div>
+        <div class="row2"><label>Decision maker<input id="leadAdmin"/></label><label>Assigned to<input id="leadAssigned" placeholder="team@perryhomewoundcare.network"/></label></div>
+        <div class="row2"><label>Email<input id="leadEmail" type="text"/></label><label>Phone<input id="leadPhone"/></label></div>
+        <div class="row2"><label>City<input id="leadCity"/></label><label>County<input id="leadCounty"/></label></div>
+        <label>Address<input id="leadAddress"/></label>
+        <div class="row2"><label>Tier<select id="leadTier"><option>High</option><option>Medium</option><option>Standard</option></select></label><label>Score<input id="leadScore" type="number" min="0" max="200" value="90"/></label></div>
+        <label>Opportunity<input id="leadOpportunity" placeholder="Referral + Wound Care Partnership"/></label>
+        <label>Notes<textarea id="leadNotes" rows="4"></textarea></label>
+      </div>
+      <footer><button class="btn" value="cancel" type="submit">Cancel</button><button id="saveLeadBtn" class="btn primary" value="default" type="submit">Save lead</button></footer>
+    </form>
+  </dialog>
+
+  <dialog id="emailDialog" class="crm-dialog email-dialog">
+    <form method="dialog">
+      <header><div><span class="eyebrow">PERSONALIZED OUTREACH</span><h3>Email preview</h3></div><button class="icon-btn" value="cancel">×</button></header>
+      <div class="email-meta" id="emailMeta"></div>
+      <div id="emailPreview" class="email-preview"></div>
+      <footer><button class="btn" id="copyEmailBtn" type="button">Copy formatted email</button><button class="btn primary" id="openGmailBtn" type="button">Open Gmail</button></footer>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { mountSidebar } from "/admin/admin-shared.js";
+    mountSidebar("crm");
+  </script>
+  <script type="module" src="/admin/crm.js"></script>
+</body>
+</html>
