@@ -306,6 +306,12 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /blogPosts/{postId} {
+      allow read: if resource.data.status == "Published" || isAdmin();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
     match /auditLogs/{logId} {
       allow read: if isAdmin();
       allow write: if false;
