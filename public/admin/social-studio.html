@@ -1,1 +1,96 @@
-temp
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Social Content Studio — Perry Home Wound Care</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="/admin/social-studio.css"/>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
+      <a class="sitem" data-target="social" href="/admin/social-studio.html">Content Studio</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar studio-topbar">
+      <div>
+        <div class="eyebrow">MARKETING & GROWTH</div>
+        <h1>PHWC Social Content Studio</h1>
+        <p>Create local wound-care content for Facebook, Instagram and LinkedIn.</p>
+      </div>
+      <button id="newPostBtn" class="btn primary">+ New publication</button>
+    </header>
+
+    <main class="wrap studio-wrap">
+      <section class="studio-hero">
+        <div>
+          <span class="hero-badge">Advanced Wound Care at Home</span>
+          <h2>Turn PHWC expertise into local awareness.</h2>
+          <p>Create educational, referral and partnership posts without using patient-identifying information or unsupported outcome claims.</p>
+        </div>
+        <div class="hero-mini-grid">
+          <div><strong id="draftCount">0</strong><span>Drafts</span></div>
+          <div><strong id="reviewCount">0</strong><span>Ready</span></div>
+          <div><strong id="publishedCount">0</strong><span>Published</span></div>
+        </div>
+      </section>
+
+      <section class="builder-grid">
+        <form id="builder" class="panel builder-panel">
+          <div class="panel-head"><div><span class="eyebrow">CONTENT BUILDER</span><h3>Create a publication</h3></div><button type="button" id="resetBtn" class="btn soft">Reset</button></div>
+          <div class="form-grid">
+            <label>Platform<select id="platform"><option>Facebook</option><option>Instagram</option><option>LinkedIn</option></select></label>
+            <label>Audience<select id="audience"><option value="patients">Patients & families</option><option value="caregivers">Family caregivers</option><option value="hha">Home health agencies</option><option value="snf">Skilled nursing facilities</option><option value="alf">Assisted living / personal care homes</option><option value="hospital">Hospital discharge teams</option><option value="providers">NPs, physicians & providers</option><option value="community">Middle Georgia community</option></select></label>
+            <label>Goal<select id="goal"><option value="education">Educate</option><option value="referral">Generate referrals</option><option value="partnership">Build partnerships</option><option value="awareness">Service awareness</option><option value="trust">Build trust</option></select></label>
+            <label>Service / topic<select id="topic"><option value="complex">Complex & non-healing wounds</option><option value="pressure">Pressure injury support</option><option value="diabetic">Diabetic wound care</option><option value="vascular">Vascular wound care</option><option value="surgical">Post-surgical wound follow-up</option><option value="home">Mobile wound care at home</option><option value="np">NP-led wound management</option><option value="facility">Facility wound-care support</option><option value="prevention">Wound prevention & education</option></select></label>
+            <label>Tone<select id="tone"><option value="professional">Professional</option><option value="warm">Warm & reassuring</option><option value="educational">Clinical education</option><option value="direct">Short & direct</option></select></label>
+            <label>Call to action<select id="cta"><option value="call">Call PHWC</option><option value="website">Visit website</option><option value="referral">Send a referral</option><option value="meeting">Book a partnership call</option><option value="message">Send us a message</option></select></label>
+          </div>
+          <label>Custom angle / idea <span class="muted">optional</span><textarea id="angle" rows="3" placeholder="Example: why early wound follow-up matters after discharge"></textarea></label>
+          <div class="builder-actions"><button type="button" id="generateBtn" class="btn primary">Generate publication</button><button type="button" id="variantBtn" class="btn">Another version</button></div>
+          <div class="compliance-note"><strong>PHWC marketing guardrail</strong><span>No patient-identifying information. No guaranteed healing claims. Keep clinical statements educational and route individual medical questions to the treating clinician.</span></div>
+        </form>
+
+        <section class="panel preview-panel">
+          <div class="panel-head"><div><span class="eyebrow">LIVE PREVIEW</span><h3 id="previewPlatform">Facebook publication</h3></div><span id="charCount" class="char-count">0 chars</span></div>
+          <div class="social-preview">
+            <div class="post-brand"><div class="post-logo">PH</div><div><strong>Perry Home Wound Care</strong><span>Middle Georgia · Mobile wound care</span></div></div>
+            <textarea id="postText" class="post-text" rows="15" placeholder="Your publication will appear here…"></textarea>
+            <div id="hashtagPreview" class="hashtags"></div>
+          </div>
+          <label>Image / Canva prompt<textarea id="imagePrompt" rows="4" placeholder="Optional visual concept"></textarea></label>
+          <div class="preview-actions"><button id="copyPostBtn" type="button" class="btn primary">Copy publication</button><button id="copyImageBtn" type="button" class="btn">Copy image prompt</button><button id="saveDraftBtn" type="button" class="btn">Save draft</button><button id="readyBtn" type="button" class="btn">Mark ready</button></div>
+        </section>
+      </section>
+
+      <section class="library panel">
+        <div class="panel-head library-head"><div><span class="eyebrow">CONTENT LIBRARY</span><h3>Saved publications</h3></div><div class="library-filters"><select id="statusFilter"><option value="">All statuses</option><option>Draft</option><option>Ready</option><option>Published</option></select><select id="platformFilter"><option value="">All platforms</option><option>Facebook</option><option>Instagram</option><option>LinkedIn</option></select></div></div>
+        <div id="postLibrary" class="post-library"></div>
+        <div id="libraryEmpty" class="library-empty">No publications saved yet.</div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="publishDialog" class="publish-dialog">
+    <form method="dialog" id="publishForm">
+      <header><div><span class="eyebrow">PUBLICATION STATUS</span><h3>Mark as published</h3></div><button value="cancel" class="icon-btn">×</button></header>
+      <div class="dialog-body"><input type="hidden" id="publishId"/><label>Published on<select id="publishPlatform"><option>Facebook</option><option>Instagram</option><option>LinkedIn</option></select></label><label>Publication URL <span class="muted">optional</span><input id="publishUrl" type="url" placeholder="https://..."/></label></div>
+      <footer><button value="cancel" class="btn">Cancel</button><button id="confirmPublishedBtn" value="default" class="btn primary">Mark published</button></footer>
+    </form>
+  </dialog>
+
+  <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("social");</script>
+  <script type="module" src="/admin/social-studio.js"></script>
+</body>
+</html>
