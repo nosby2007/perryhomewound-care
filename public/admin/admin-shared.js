@@ -80,6 +80,14 @@ export function mountSidebar(activeId){
     if(usersLink) nav.insertBefore(socialLink, usersLink); else nav.appendChild(socialLink);
   }
 
+  // Content Studio sharing helpers are loaded only on the Social Content page.
+  if(activeId === "social" && !document.querySelector('script[data-phwc-social-share]')){
+    const shareScript = document.createElement("script");
+    shareScript.src = "/admin/social-share.js";
+    shareScript.dataset.phwcSocialShare = "1";
+    document.head.appendChild(shareScript);
+  }
+
   document.querySelectorAll(".snav .sitem").forEach(btn=>{
     btn.classList.toggle("active", btn.dataset.target === activeId);
   });
