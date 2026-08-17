@@ -17,6 +17,7 @@
       <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
       <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
       <a class="sitem" data-target="social" href="/admin/social-studio.html">Content Studio</a>
+      <a class="sitem" data-target="blog" href="/admin/blog-studio.html">Blog Studio</a>
       <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
     </nav>
     <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
@@ -24,11 +25,11 @@
 
   <div class="main">
     <header class="topbar crm-topbar">
-      <div><div class="eyebrow">GROWTH & PARTNERSHIPS</div><h1>PHWC Outreach CRM</h1><p>Central Georgia referral, facility and partnership pipeline</p></div>
+      <div><div class="eyebrow">GROWTH & PARTNERSHIPS</div><h1>PHWC Outreach CRM</h1><p>Referral, facility, community and contact outreach pipeline</p></div>
       <div class="top-actions">
         <a href="/admin/social-studio" class="btn">Content Studio</a>
-        <button id="btnAddLead" class="btn">+ Add lead</button>
-        <button id="btnImport" class="btn primary">Import leads JSON</button>
+        <button id="btnAddLead" class="btn">+ Add contact</button>
+        <button id="btnImport" class="btn primary">Import contacts JSON</button>
         <input id="leadImportFile" type="file" accept="application/json" hidden/>
       </div>
     </header>
@@ -38,7 +39,7 @@
         <div class="hero-copy">
           <span class="hero-badge">Advanced Wound Care at Home</span>
           <h2>Today’s outreach command center</h2>
-          <p>Work overdue follow-ups first, then interested leads and high-value local facilities.</p>
+          <p>Manage facility leads, community contacts, follow-ups and outreach segments from one place.</p>
         </div>
         <div class="hero-date" id="todayLabel"></div>
       </section>
@@ -52,15 +53,15 @@
       </section>
 
       <section class="toolbar-card">
-        <div class="searchbox"><span>⌕</span><input id="q" placeholder="Search facility, administrator, city, email…"/></div>
-        <select id="fType"><option value="">All facility types</option></select>
+        <div class="searchbox"><span>⌕</span><input id="q" placeholder="Search organization, contact, city, email…"/></div>
+        <select id="fType"><option value="">All contact types</option></select>
         <select id="fStatus"><option value="">All statuses</option><option>New</option><option>Contacted</option><option>Email Sent</option><option>SMS Sent</option><option>Interested</option><option>Meeting</option><option>Partner</option><option>Not Interested</option><option>Email Bounced</option></select>
         <select id="fOwner"><option value="">All owners</option><option value="mine">Assigned to me</option><option value="unassigned">Unassigned</option></select>
-        <select id="fSort"><option value="score">Priority score</option><option value="followup">Follow-up date</option><option value="name">Facility name</option><option value="updated">Recently updated</option></select>
+        <select id="fSort"><option value="score">Priority score</option><option value="followup">Follow-up date</option><option value="name">Contact / organization name</option><option value="updated">Recently updated</option></select>
       </section>
 
       <section class="quick-row" id="quickRow">
-        <button class="quick active" data-quick="all">All leads</button>
+        <button class="quick active" data-quick="all">All contacts</button>
         <button class="quick" data-quick="overdue">Overdue</button>
         <button class="quick" data-quick="today">Due today</button>
         <button class="quick" data-quick="interested">Interested</button>
@@ -68,29 +69,29 @@
         <button class="quick" data-quick="email">Valid email</button>
       </section>
 
-      <div class="list-head"><div><strong id="visibleCount">0</strong> leads shown <span id="syncState" class="sync-state">Loading…</span></div><button id="btnExport" class="btn soft">Export JSON</button></div>
+      <div class="list-head"><div><strong id="visibleCount">0</strong> contacts shown <span id="syncState" class="sync-state">Loading…</span></div><button id="btnExport" class="btn soft">Export JSON</button></div>
       <section id="leadList" class="lead-list"></section>
       <section id="emptyState" class="empty-state" hidden>
-        <div class="empty-icon">◎</div><h3>No leads found</h3><p>Adjust filters or import your existing PHWC lead list.</p><button class="btn primary" id="emptyImport">Import leads JSON</button>
+        <div class="empty-icon">◎</div><h3>No contacts found</h3><p>Adjust filters or import a contact list.</p><button class="btn primary" id="emptyImport">Import contacts JSON</button>
       </section>
     </main>
   </div>
 
   <dialog id="leadDialog" class="crm-dialog">
     <form method="dialog" id="leadForm">
-      <header><div><span class="eyebrow">CRM LEAD</span><h3 id="leadDialogTitle">Add lead</h3></div><button class="icon-btn" value="cancel" type="submit">×</button></header>
+      <header><div><span class="eyebrow">CRM CONTACT</span><h3 id="leadDialogTitle">Add contact</h3></div><button class="icon-btn" value="cancel" type="submit">×</button></header>
       <div class="dialog-body">
         <input type="hidden" id="leadId"/>
-        <div class="row2"><label>Organization<input id="leadName" required/></label><label>Facility type<input id="leadType"/></label></div>
-        <div class="row2"><label>Decision maker<input id="leadAdmin"/></label><label>Assigned to<input id="leadAssigned" placeholder="team@perryhomewoundcare.network"/></label></div>
+        <div class="row2"><label>Organization / Contact<input id="leadName" required/></label><label>Contact type<input id="leadType" placeholder="Example: Hair Braids Contact"/></label></div>
+        <div class="row2"><label>Contact person<input id="leadAdmin"/></label><label>Assigned to<input id="leadAssigned" placeholder="team@perryhomewoundcare.network"/></label></div>
         <div class="row2"><label>Email<input id="leadEmail" type="text"/></label><label>Phone<input id="leadPhone"/></label></div>
         <div class="row2"><label>City<input id="leadCity"/></label><label>County<input id="leadCounty"/></label></div>
         <label>Address<input id="leadAddress"/></label>
         <div class="row2"><label>Tier<select id="leadTier"><option>High</option><option>Medium</option><option>Standard</option></select></label><label>Score<input id="leadScore" type="number" min="0" max="200" value="90"/></label></div>
-        <label>Opportunity<input id="leadOpportunity" placeholder="Referral + Wound Care Partnership"/></label>
+        <label>Opportunity / Segment<input id="leadOpportunity" placeholder="Referral + Wound Care Partnership"/></label>
         <label>Notes<textarea id="leadNotes" rows="4"></textarea></label>
       </div>
-      <footer><button class="btn" value="cancel" type="submit">Cancel</button><button id="saveLeadBtn" class="btn primary" value="default" type="submit">Save lead</button></footer>
+      <footer><button class="btn" value="cancel" type="submit">Cancel</button><button id="saveLeadBtn" class="btn primary" value="default" type="submit">Save contact</button></footer>
     </form>
   </dialog>
 
