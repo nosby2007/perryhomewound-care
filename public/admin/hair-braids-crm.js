@@ -19,7 +19,7 @@
     const styleText = service
       ? `You can book ${service} again or try a new look.`
       : "You can come back for your favorite style or try a fresh new look.";
-    return `Hi ${name}! ✨ It’s Sandra. Ready for a fresh braid style? We’d love to have you back. ${styleText} Reply here to check availability and book your next appointment. Reply STOP to opt out.`;
+    return `Hi ${name}! ✨ It’s Yolande. Ready for a fresh braid style? We’d love to have you back. ${styleText} Reply here to check availability and book your next appointment. Reply STOP to opt out.`;
   };
 
   const whatsappMessageFor = (card) => {
@@ -28,7 +28,7 @@
     const styleText = service
       ? `You can choose ${service} again or try something new.`
       : "You can choose your favorite style again or try something new.";
-    return `Hi ${name}! ✨ It’s Sandra. Ready for a fresh braid style? We’d love to have you back. ${styleText} Message me here and I’ll help you find an appointment that works for you. 💕`;
+    return `Hi ${name}! ✨ It’s Yolande. Ready for a fresh braid style? We’d love to have you back. ${styleText} Message me here and I’ll help you find an appointment that works for you. 💕`;
   };
 
   function enhanceCard(card) {
@@ -43,7 +43,7 @@
       const phone = raw.replace(/^sms:/i, "").split(/[?&]/)[0];
       const sep = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "&" : "?";
       sms.href = `sms:${phone}${sep}body=${encodeURIComponent(messageFor(card))}`;
-      sms.title = "Send Sandra's hair-braiding rebooking message";
+      sms.title = "Send Yolande's hair-braiding rebooking message";
     }
 
     const actions = card.querySelector(".crm-actions");
@@ -55,6 +55,7 @@
         wa.target = "_blank";
         wa.rel = "noopener";
         wa.textContent = "WHATSAPP";
+        wa.title = "Send Yolande's hair-braiding rebooking message on WhatsApp";
         wa.href = `https://wa.me/${phone}?text=${encodeURIComponent(whatsappMessageFor(card))}`;
         actions.appendChild(wa);
       }
