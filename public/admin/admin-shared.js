@@ -84,6 +84,13 @@ export function mountSidebar(activeId){
     document.head.appendChild(shareScript);
   }
 
+  if(activeId === "crm" && !document.querySelector('script[data-hair-braids-crm]')){
+    const hairScript = document.createElement("script");
+    hairScript.src = "/admin/hair-braids-crm.js";
+    hairScript.dataset.hairBraidsCrm = "1";
+    document.head.appendChild(hairScript);
+  }
+
   document.querySelectorAll(".snav .sitem").forEach(btn=>{
     btn.classList.toggle("active", btn.dataset.target === activeId);
   });
