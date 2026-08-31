@@ -32,7 +32,7 @@ jobs:
         run: ./scripts/check-site.ps1
 
   deploy-firebase:
-    name: Deploy Firebase Hosting and security rules
+    name: Deploy PHWC Firebase
     needs: validate
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -58,5 +58,16 @@ jobs:
       - name: Install Firebase CLI
         run: npm install --global firebase-tools
 
-      - name: Deploy Hosting, Firestore rules and Storage rules
-        run: firebase deploy --only hosting,firestore:rules,storage --project credential-4f22b --non-interactive
+      - name: Deploy Hosting and Firestore rules
+        run: firebase deploy --only hosting,firestore:rules --project credential-4f22b --non-interactive
+
+      - name: Deploy Storage rules
+        id: storage_rules
+        continue-on-error: true
+        run: firebase deploy --only storage --project credential-4f22b --non-interactive
+
+      - name: Storage deployment warning
+        if: steps.storage_rules.outcome == 'failure'
+        run: |
+          echo "::warning::PHWC Hosting and Firestore rules were deployed, but Storage rules were not."
+          echo "::warning::Grant the deployment service account permission to inspect/enable Firebase Storage API before enabling referral document uploads."
