@@ -56,6 +56,15 @@ export const mailto = (to, subject, body)=>{ const u = new URL("mailto:"+(to||""
 export const badge = (st)=> `<span class="badge status-${esc(st||'new')}">${esc(st||'new')}</span>`;
 export const go = (url)=> window.location.assign(url);
 
+function ensureAdminFormsStyles(){
+  if(document.querySelector('link[data-phwc-admin-forms]')) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = '/admin/admin-forms.css';
+  link.dataset.phwcAdminForms = '1';
+  document.head.appendChild(link);
+}
+
 function addNavItem(nav, target, href, label){
   if(!nav || nav.querySelector(`[data-target="${target}"]`)) return;
   const link = document.createElement("a");
@@ -79,6 +88,7 @@ function addCommandCenter(nav){
 
 // Sidebar current item highlight + shared growth navigation
 export function mountSidebar(activeId){
+  ensureAdminFormsStyles();
   const who = document.getElementById("who");
   const logoutBtn = document.getElementById("logoutBtn");
   const nav = document.querySelector(".snav");
