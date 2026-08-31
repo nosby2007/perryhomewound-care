@@ -50,7 +50,7 @@ export const adminReady = new Promise((resolve, reject)=>{
 });
 
 // -------- Utilities --------
-export const esc = (x)=> String(x ?? "").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#039;' }[m]));
+export const esc = (x)=> String(x ?? "").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot', "'":'&#039;' }[m]));
 export const fmt = (ts)=> ts?.toDate?.()?.toLocaleString?.() || "-";
 export const mailto = (to, subject, body)=>{ const u = new URL("mailto:"+(to||"")); if(subject)u.searchParams.set("subject",subject); if(body)u.searchParams.set("body",body); return u.toString(); };
 export const badge = (st)=> `<span class="badge status-${esc(st||'new')}">${esc(st||'new')}</span>`;
@@ -67,12 +67,23 @@ function addNavItem(nav, target, href, label){
   if(usersLink) nav.insertBefore(link, usersLink); else nav.appendChild(link);
 }
 
+function addCommandCenter(nav){
+  if(!nav || nav.querySelector('[data-target="command"]')) return;
+  const link = document.createElement("a");
+  link.className = "sitem";
+  link.dataset.target = "command";
+  link.href = "/admin/admin-dashboard.html";
+  link.textContent = "⌁ Command Center";
+  nav.insertBefore(link, nav.firstElementChild || null);
+}
+
 // Sidebar current item highlight + shared growth navigation
 export function mountSidebar(activeId){
   const who = document.getElementById("who");
   const logoutBtn = document.getElementById("logoutBtn");
   const nav = document.querySelector(".snav");
 
+  addCommandCenter(nav);
   addNavItem(nav, "crm", "/admin/crm.html", "Outreach CRM");
   addNavItem(nav, "social", "/admin/social-studio.html", "Content Studio");
   addNavItem(nav, "blog", "/admin/blog-studio.html", "Blog Studio");
