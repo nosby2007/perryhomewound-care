@@ -1,7 +1,7 @@
 // nav-auth.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 // Optionnel App Check en prod :
 // import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app-check.js";
 
@@ -20,6 +20,76 @@ const app  = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+// Keep public blog navigation independent from the homepage anchor layout.
+function fixBlogNavigation() {
+  document.querySelectorAll('a.nav-link[href="#blog"]').forEach(link => {
+    link.setAttribute('href', '/blog');
+  });
+
+  // Static homepage education cards are a fallback. Until a matching post is
+  // published, they should at least open the real blog instead of href="#".
+  document.querySelectorAll('.pc-article-card .pc-article-body a').forEach(link => {
+    if ((link.textContent || '').toLowerCase().includes('read article')) {
+      link.setAttribute('href', '/blog');
+    }
+  });
+
+  // Keep the "Recent Blog" footer useful even before individual slugs exist.
+  document.querySelectorAll('footer h6').forEach(heading => {
+    if ((heading.textContent || '').trim().toLowerCase() !== 'recent blog') return;
+    const column = heading.closest('.col-md-3');
+    column?.querySelectorAll('a[href="#"]').forEach(link => {
+      if (link.querySelector('img')) link.setAttribute('href', '/blog');
+    });
+  });
+}
+
+function postTime(post) {
+  return post?.publishedAt?.seconds || post?.updatedAt?.seconds || 0;
+}
+
+async function hydrateHomepageBlog() {
+  const cards = [...document.querySelectorAll('.pc-article-card')].slice(0, 3);
+  if (!cards.length) return;
+
+  const snap = await getDocs(
+    query(collection(db, 'blogPosts'), where('status', '==', 'Published'))
+  );
+
+  const published = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => postTime(b) - postTime(a))
+    .slice(0, cards.length);
+
+  if (!published.length) return;
+
+  published.forEach((post, index) => {
+    const card = cards[index];
+    const image = card.querySelector('.pc-article-img');
+    const category = card.querySelector('.pc-article-body > span');
+    const title = card.querySelector('.pc-article-body h3');
+    const excerpt = card.querySelector('.pc-article-body p');
+    const link = card.querySelector('.pc-article-body a');
+    const slug = post.slug || post.id;
+
+    if (image && post.coverUrl) {
+      image.style.backgroundImage = `url("${String(post.coverUrl).replace(/"/g, '%22')}")`;
+      image.setAttribute('role', 'img');
+      image.setAttribute('aria-label', post.coverAlt || post.title || 'PHWC wound care article');
+    }
+    if (category) category.textContent = post.category || 'Wound Education';
+    if (title) title.textContent = post.title || 'PHWC Wound Care Article';
+    if (excerpt) excerpt.textContent = post.excerpt || '';
+    if (link) link.setAttribute('href', `/blog/post?slug=${encodeURIComponent(slug)}`);
+  });
+}
+
+fixBlogNavigation();
+hydrateHomepageBlog().catch(err => {
+  // Navigation still works if Firestore is temporarily unavailable.
+  console.warn('Homepage blog preview unavailable:', err);
+});
 
 const el = document.getElementById("navAuth");
 if (el) el.innerHTML = `<a class="btn" href="./admin/login/admin-login.html">Sign in</a>`; // état initial
