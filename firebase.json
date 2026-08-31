@@ -15,6 +15,10 @@
       { "source": "/admin/social-studio", "destination": "/admin/social-studio.html" },
       { "source": "/admin/blog-studio", "destination": "/admin/blog-studio.html" },
       { "source": "/admin/users",     "destination": "/admin/users.html" },
+      { "source": "/admin/patient-portal", "destination": "/admin/patient-portal.html" },
+      { "source": "/portal", "destination": "/portal/index.html" },
+      { "source": "/portal/login", "destination": "/portal/login.html" },
+      { "source": "/portal/security-setup", "destination": "/portal/security-setup.html" },
       { "source": "/blog", "destination": "/blog.html" },
       { "source": "/blog/post", "destination": "/blog-post.html" }
     ],
@@ -24,7 +28,7 @@
         "headers": [
           { "key": "X-Content-Type-Options", "value": "nosniff" },
           { "key": "X-Frame-Options", "value": "DENY" },
-          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "Referrer-Policy", "value": "no-referrer" },
           { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
           { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" }
         ]
@@ -33,6 +37,14 @@
         "source": "/admin/**",
         "headers": [
           { "key": "Cache-Control", "value": "private, no-store, max-age=0" },
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        ]
+      },
+      {
+        "source": "/portal/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "private, no-store, max-age=0, must-revalidate" },
+          { "key": "Pragma", "value": "no-cache" },
           { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
         ]
       },
