@@ -42,7 +42,7 @@
       </div>
       <div class="topbar-actions">
         <div class="clock-block"><strong id="liveClock">--:--</strong><span id="liveDate">Loading date…</span></div>
-        <a class="cmd-btn secondary" href="/admin/referrals.html">Review referrals</a>
+        <a class="cmd-btn secondary" href="/admin/referrals.html">+ Add / Review Referral</a>
         <a class="cmd-btn accent" href="/admin/tasks.html">+ New task</a>
       </div>
     </header>
@@ -68,7 +68,7 @@
       <section class="metric-grid" aria-label="Operational metrics">
         <button class="metric-card danger" data-jump="priorityQueue"><span class="metric-icon">!</span><div><span>Needs action now</span><strong id="mUrgent">0</strong><small>highest-priority queue</small></div></button>
         <button class="metric-card" data-jump="todayBoard"><span class="metric-icon">◷</span><div><span>Today</span><strong id="mToday">0</strong><small>scheduled clinical work</small></div></button>
-        <a class="metric-card" href="/admin/referrals.html"><span class="metric-icon">↗</span><div><span>New referrals</span><strong id="mReferrals">0</strong><small>awaiting intake review</small></div></a>
+        <a class="metric-card" href="/admin/referrals.html"><span class="metric-icon">↗</span><div><span>Referral intake</span><strong id="mReferrals">0</strong><small>awaiting meaningful action</small></div></a>
         <a class="metric-card" href="/admin/bookings.html"><span class="metric-icon">▦</span><div><span>Pending bookings</span><strong id="mBookings">0</strong><small>need scheduling</small></div></a>
         <a class="metric-card warn" href="/admin/crm.html"><span class="metric-icon">◎</span><div><span>CRM overdue</span><strong id="mCrmOverdue">0</strong><small>follow-ups behind</small></div></a>
         <a class="metric-card" href="/admin/tasks.html"><span class="metric-icon">◇</span><div><span>Unassigned</span><strong id="mUnassigned">0</strong><small>tasks without owner</small></div></a>
@@ -138,5 +138,6 @@
   </div>
 
   <script type="module" src="/admin/admin-command-center.js"></script>
+  <script type="module" src="/admin/referral-dashboard.js"></script>
 </body>
 </html>

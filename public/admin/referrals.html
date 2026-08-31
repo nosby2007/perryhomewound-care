@@ -1,52 +1,132 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Referrals — Admin</title>
-    <link rel="stylesheet" href="/admin/admin-shared.css"/>
-    </head><body>
-      <!-- Sidebar -->
-<aside class="sidebar">
-    <div class="brand">
-      <div class="logo">PH</div>
-      <div class="btxt">
-        <strong>Perry Home</strong>
-        <span class="muted">Admin</span>
-      </div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>Referrals — PHWC Admin</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="/admin/referrals.css"/>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
     <nav class="snav">
-      <a class="sitem" data-target="tasks"    href="/admin/tasks.html">Tasks</a>
+      <a class="sitem" data-target="command" href="/admin/admin-dashboard.html">Command Center</a>
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
       <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
       <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
-      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
-      <a class="sitem" data-target="users"    href="/admin/users.html">Users</a>
+      <a class="sitem active" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
     </nav>
-    <div class="sfoot">
-      <span id="who" class="small muted"></span>
-      <button id="logoutBtn" class="btn wfull">Sign out</button>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar"><h1>Referral Management</h1></header>
+    <main class="referral-shell">
+      <section class="referral-head no-print">
+        <div><h1>Referral / Intake Log</h1><p class="muted">Track every referral received, including referrals that never become admissions.</p></div>
+        <div class="referral-actions"><button class="btn" id="printSurveyBtn">Print Survey Report</button><button class="btn primary" id="addReferralBtn">+ Add Referral</button></div>
+      </section>
+
+      <section class="referral-summary no-print">
+        <div class="ref-stat"><strong id="sumReceived">0</strong><span>Referrals Received</span></div>
+        <div class="ref-stat"><strong id="sumAdmitted">0</strong><span>Admitted</span></div>
+        <div class="ref-stat"><strong id="sumNotAdmitted">0</strong><span>Not Admitted</span></div>
+        <div class="ref-stat"><strong id="sumDeclined">0</strong><span>Declined</span></div>
+        <div class="ref-stat"><strong id="sumPending">0</strong><span>Pending</span></div>
+        <div class="ref-stat"><strong id="sumUnable">0</strong><span>Unable to Contact</span></div>
+        <div class="ref-stat"><strong id="sumInsurance">0</strong><span>Insurance / Network</span></div>
+      </section>
+
+      <section class="ref-filters no-print">
+        <input id="fFrom" type="date" aria-label="From date"/>
+        <input id="fTo" type="date" aria-label="To date"/>
+        <select id="fSource" aria-label="Referral source"><option value="">All sources</option></select>
+        <select id="fPayer" aria-label="Payer"><option value="">All payers</option></select>
+        <select id="fStatus" aria-label="Status"><option value="">All statuses</option></select>
+        <select id="fOutcome" aria-label="Outcome"><option value="">All outcomes</option><option value="admitted">Admitted</option><option value="not_admitted">Not Admitted</option><option value="pending">Pending</option></select>
+        <input id="qRef" class="wide" type="search" placeholder="Search source, referrer, patient, payer, status…"/>
+        <button class="btn" id="clearFiltersBtn">Clear filters</button>
+      </section>
+
+      <section class="ref-table-wrap no-print">
+        <table class="ref-table" id="tblRef">
+          <thead><tr><th>Received</th><th>Source / Facility</th><th>Requested Service</th><th>Primary Payer</th><th>Status</th><th>Assigned To</th><th>Last Activity</th><th>First Visit</th><th>Outcome</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="survey-report" id="surveyReport" aria-label="Referral survey report">
+        <div class="survey-head"><h1>Perry Home Wound Care LLC</h1><h2>Referral / Intake Survey Log</h2><p id="surveyPeriod">Reporting period: All referrals</p></div>
+        <div class="survey-totals">
+          <div><strong id="pReceived">0</strong><span>Total Received</span></div><div><strong id="pAdmitted">0</strong><span>Admitted</span></div><div><strong id="pNotAdmitted">0</strong><span>Not Admitted</span></div><div><strong id="pPending">0</strong><span>Pending</span></div>
+          <div><strong id="pDeclined">0</strong><span>Declined</span></div><div><strong id="pUnable">0</strong><span>Unable to Contact</span></div><div><strong id="pInsurance">0</strong><span>Insurance / Network</span></div><div><strong id="pConversion">0%</strong><span>Admission Conversion</span></div>
+        </div>
+        <div class="survey-meta"><span id="surveyRates">Referral-to-first-visit: 0% · Decline rate: 0%</span><span id="surveyGenerated"></span></div>
+        <table class="survey-table"><thead><tr><th>Referral Received</th><th>Referral Source</th><th>Requested Service</th><th>Payer</th><th>Status</th><th>Final Disposition</th><th>First Visit Date</th><th>Outcome</th></tr></thead><tbody id="surveyBody"></tbody></table>
+        <div class="survey-footer">Survey copy. Minimum necessary administrative data only. Sensitive clinical free-text notes are excluded by default.</div>
+      </section>
+    </main>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="ref-drawer" id="refDrawer" aria-hidden="true">
+    <div class="drawer-head"><div><strong id="drawerTitle">New Referral</strong><div class="muted2" id="drawerSubtitle">Referral intake</div></div><button class="btn" id="closeDrawerBtn">Close</button></div>
+    <div class="drawer-body">
+      <form id="referralForm">
+        <input type="hidden" id="referralId"/>
+        <section class="form-section"><h3>Referral information</h3><div class="form-grid">
+          <label>Date received<input id="receivedDate" type="date" required/></label><label>Time received<input id="receivedTime" type="time"/></label>
+          <label>Referral source<select id="referralSource"></select></label><label>Method received<select id="receivedMethod"></select></label>
+          <label>Referring facility / organization<input id="refOrg" maxlength="160"/></label><label>Referring provider<input id="referringProvider" maxlength="120"/></label>
+          <label>Referrer contact name<input id="refName" maxlength="120"/></label><label>Referrer phone<input id="refPhone" maxlength="40"/></label>
+          <label class="full">Referrer secure email<input id="refEmail" type="email" maxlength="254"/></label>
+        </div></section>
+
+        <section class="form-section"><h3>Patient minimum necessary intake</h3><div class="form-grid">
+          <label>Patient name<input id="patientName" maxlength="120"/></label><label>Date of birth<input id="patientDob" type="date"/></label>
+          <label>Phone<input id="patientPhone" maxlength="40"/></label><label>Service area / city<input id="patientArea" maxlength="180"/></label>
+          <label>Requested wound care service<input id="requestedService" maxlength="160" value="Wound Care"/></label><label>Urgency<select id="urgency"><option>Routine</option><option>Priority</option><option>Urgent</option></select></label>
+          <label class="full">Brief referral diagnosis / reason<textarea id="diagnosis" rows="2" maxlength="500"></textarea></label>
+        </div></section>
+
+        <section class="form-section"><h3>Insurance / eligibility</h3><div class="form-grid">
+          <label>Primary payer<input id="primaryPayer" maxlength="120"/></label><label>Secondary payer<input id="secondaryPayer" maxlength="120"/></label>
+          <div class="full check-row"><label><input id="medicarePartA" type="checkbox"/> Medicare Part A</label><label><input id="medicarePartB" type="checkbox"/> Medicare Part B</label><label><input id="medicareAdvantage" type="checkbox"/> Medicare Advantage</label></div>
+          <label>Eligibility status<select id="eligibilityStatus"></select></label><label>Authorization status<select id="authorizationStatus"></select></label>
+          <label>Authorization / reference #<input id="authorizationNumber" maxlength="120"/></label><label>Eligibility checked date<input id="eligibilityCheckedDate" type="date"/></label>
+          <label class="full">Eligibility checked by<input id="eligibilityCheckedBy" maxlength="120"/></label>
+        </div></section>
+
+        <section class="form-section"><h3>Workflow</h3><div class="form-grid">
+          <label>Current status<select id="status"></select></label><label>Assigned to<input id="assignedTo" maxlength="120"/></label>
+          <label>Scheduled date<input id="scheduledDate" type="date"/></label><label>First visit date<input id="firstVisitDate" type="date"/></label>
+          <div class="full check-row"><label><input id="admitted" type="checkbox"/> Admitted</label><label><input id="servicesRendered" type="checkbox"/> Services rendered</label></div>
+        </div></section>
+
+        <section class="form-section"><h3>Final disposition</h3><div class="form-grid">
+          <label>Disposition status<select id="dispositionStatus"></select></label><label>Disposition date<input id="dispositionDate" type="date"/></label>
+          <label>Disposition reason<input id="dispositionReason" maxlength="250"/></label><label>Disposition reported by<select id="dispositionReportedBy"></select></label>
+          <label class="full">Disposition notes<textarea id="dispositionNotes" rows="2" maxlength="1000"></textarea></label>
+        </div></section>
+
+        <section class="form-section"><h3>Contact attempt</h3><div class="form-grid">
+          <label>Method<select id="contactMethod"></select></label><label>Outcome<input id="contactOutcome" maxlength="200" placeholder="Reached, voicemail, no answer…"/></label>
+          <label class="full">Contact note<textarea id="contactNote" rows="2" maxlength="800"></textarea></label>
+          <div class="full"><button class="btn" type="button" id="addContactBtn">Add Contact Attempt</button></div>
+        </div><div class="activity-list" id="contactHistory"></div></section>
+
+        <section class="form-section"><h3>Status history</h3><div class="activity-list" id="statusHistory"></div></section>
+        <section class="form-section"><h3>Administrative notes</h3><textarea id="adminNotes" rows="3" maxlength="1500" style="width:100%;box-sizing:border-box"></textarea></section>
+        <div class="drawer-actions"><button class="btn" type="button" id="makeTaskBtn">Convert to Task</button><button class="btn primary" type="submit" id="saveReferralBtn">Save Referral</button></div>
+      </form>
     </div>
   </aside>
-    
-      <div class="main">
-        <header class="topbar"><h1>Referrals</h1></header>
-        <section class="wrap">
-          <div class="phead">
-            <div class="filters">
-              <select id="fRefStatus"><option value="">All</option><option>new</option><option>reviewed</option><option>contacted</option><option>converted</option><option>archived</option></select>
-              <input id="qRef" class="inp" placeholder="Search referrer/patient/email…"/>
-            </div>
-          </div>
-          <div class="tablewrap">
-            <table class="tbl" id="tblRef">
-              <thead><tr><th>When</th><th>Referrer</th><th>Patient</th><th>Diagnosis</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-    
-    <script type="module">
-      import { mountSidebar } from "/admin/admin-shared.js";
-      mountSidebar("referrals");
-    </script>
-    <script type="module" src="/admin/referrals.js"></script>
-    </body></html>
-    
+
+  <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("referrals");</script>
+  <script type="module" src="/admin/referrals.js"></script>
+</body>
+</html>
