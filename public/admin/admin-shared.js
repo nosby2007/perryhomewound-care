@@ -67,12 +67,23 @@ function addNavItem(nav, target, href, label){
   if(usersLink) nav.insertBefore(link, usersLink); else nav.appendChild(link);
 }
 
+function addCommandCenter(nav){
+  if(!nav || nav.querySelector('[data-target="command"]')) return;
+  const link = document.createElement("a");
+  link.className = "sitem";
+  link.dataset.target = "command";
+  link.href = "/admin/admin-dashboard.html";
+  link.textContent = "⌁ Command Center";
+  nav.insertBefore(link, nav.firstElementChild || null);
+}
+
 // Sidebar current item highlight + shared growth navigation
 export function mountSidebar(activeId){
   const who = document.getElementById("who");
   const logoutBtn = document.getElementById("logoutBtn");
   const nav = document.querySelector(".snav");
 
+  addCommandCenter(nav);
   addNavItem(nav, "crm", "/admin/crm.html", "Outreach CRM");
   addNavItem(nav, "social", "/admin/social-studio.html", "Content Studio");
   addNavItem(nav, "blog", "/admin/blog-studio.html", "Blog Studio");

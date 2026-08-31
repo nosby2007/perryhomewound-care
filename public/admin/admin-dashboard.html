@@ -2,101 +2,141 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Admin Dashboard — Perry Home Wound Care</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>PHWC Central Command — Admin</title>
   <link rel="stylesheet" href="/admin/admin-shared.css"/>
-  <link rel="stylesheet" href="./admin-dashboard.css"/>
+  <link rel="stylesheet" href="/admin/admin-dashboard.css"/>
 </head>
-<body>
-  <aside class="sidebar">
-    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
+<body class="command-body">
+  <aside class="sidebar command-sidebar">
+    <a class="brand" href="/admin/admin-dashboard.html" aria-label="PHWC Central Command">
+      <div class="logo">PH</div>
+      <div class="btxt"><strong>Perry Home</strong><span class="muted">Central Command</span></div>
+    </a>
+    <div class="nav-section-label">OPERATIONS</div>
     <nav class="snav">
-      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
-      <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
-      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
-      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
-      <a class="sitem" data-target="crm" href="/admin/crm.html">Outreach CRM</a>
-      <a class="sitem" data-target="social" href="/admin/social-studio.html">Content Studio</a>
-      <a class="sitem" data-target="blog" href="/admin/blog-studio.html">Blog Studio</a>
-      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
+      <a class="sitem active" data-target="command" href="/admin/admin-dashboard.html">⌁ <span>Command Center</span></a>
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">✓ <span>Tasks</span></a>
+      <a class="sitem" data-target="bookings" href="/admin/bookings.html">◷ <span>Bookings</span></a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">✉ <span>Contacts</span></a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">↗ <span>Referrals</span></a>
+      <a class="sitem" data-target="crm" href="/admin/crm.html">◎ <span>Outreach CRM</span></a>
+      <a class="sitem" data-target="social" href="/admin/social-studio.html">◫ <span>Content Studio</span></a>
+      <a class="sitem" data-target="blog" href="/admin/blog-studio.html">▤ <span>Blog Studio</span></a>
+      <a class="sitem" data-target="users" href="/admin/users.html">♙ <span>Users</span></a>
     </nav>
+    <div class="sidebar-pulse">
+      <span class="live-dot"></span>
+      <div><strong>Operations online</strong><span id="lastSync">Connecting…</span></div>
+    </div>
     <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
   </aside>
 
-  <div class="main">
-    <header class="topbar"><h1>Admin Dashboard</h1></header>
-    <main class="wrap">
-      <section class="cards">
-        <article class="kcard"><div class="klabel">Tasks</div><div class="kvalue" id="kTasks">–</div><div class="kmeta">assigned/in&nbsp;progress</div></article>
-        <article class="kcard"><div class="klabel">Bookings</div><div class="kvalue" id="kBookings">–</div><div class="kmeta" id="kBookingsMeta">pending: –</div></article>
-        <article class="kcard"><div class="klabel">Contacts</div><div class="kvalue" id="kContacts">–</div><div class="kmeta" id="kContactsMeta">new: –</div></article>
-        <article class="kcard"><div class="klabel">Referrals</div><div class="kvalue" id="kRef">–</div><div class="kmeta" id="kRefMeta">new: –</div></article>
-        <article class="kcard"><div class="klabel">CRM Leads</div><div class="kvalue" id="kCrm">–</div><div class="kmeta">facility outreach</div></article>
-        <article class="kcard"><div class="klabel">Social Posts</div><div class="kvalue" id="kSocial">–</div><div class="kmeta">drafts & publications</div></article>
-        <article class="kcard"><div class="klabel">Blog Articles</div><div class="kvalue" id="kBlog">–</div><div class="kmeta">education & SEO</div></article>
+  <div class="main command-main">
+    <header class="command-topbar">
+      <div class="command-search-wrap">
+        <span class="search-icon">⌕</span>
+        <input id="commandSearch" type="search" placeholder="Search today's command queue…" autocomplete="off"/>
+        <kbd>/</kbd>
+      </div>
+      <div class="topbar-actions">
+        <div class="clock-block"><strong id="liveClock">--:--</strong><span id="liveDate">Loading date…</span></div>
+        <a class="cmd-btn secondary" href="/admin/referrals.html">Review referrals</a>
+        <a class="cmd-btn accent" href="/admin/tasks.html">+ New task</a>
+      </div>
+    </header>
+
+    <main class="command-wrap">
+      <section class="command-hero">
+        <div>
+          <div class="eyebrow">PHWC OPERATIONS</div>
+          <h1>Central Command</h1>
+          <p>One operational picture across patient intake, scheduling, clinical work, referral growth, outreach and content.</p>
+          <div class="hero-actions">
+            <a href="#priorityQueue" class="cmd-btn light">Open priority queue</a>
+            <a href="/admin/crm.html" class="cmd-btn glass">Growth command</a>
+            <a href="/blog" class="cmd-btn glass" target="_blank" rel="noopener">Public education ↗</a>
+          </div>
+        </div>
+        <div class="hero-status-card">
+          <div class="status-ring"><span id="opsScore">--</span></div>
+          <div><strong>Operational readiness</strong><span id="opsLabel">Calculating from live queues…</span></div>
+        </div>
       </section>
 
-      <div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-        <a class="kcard sitem" href="/admin/tasks.html"><strong>Tasks</strong><div class="small muted">Plan & assign work</div></a>
-        <a class="kcard sitem" href="/admin/bookings.html"><strong>Bookings</strong><div class="small muted">Visits & scheduling</div></a>
-        <a class="kcard sitem" href="/admin/contacts.html"><strong>Contacts</strong><div class="small muted">Lead inbox</div></a>
-        <a class="kcard sitem" href="/admin/referrals.html"><strong>Referrals</strong><div class="small muted">Referrer pipeline</div></a>
-        <a class="kcard sitem" href="/admin/crm.html"><strong>Outreach CRM</strong><div class="small muted">Facilities, follow-ups & partnerships</div></a>
-        <a class="kcard sitem" href="/admin/social-studio.html"><strong>Content Studio</strong><div class="small muted">Create social posts with photos</div></a>
-        <a class="kcard sitem" href="/admin/blog-studio.html"><strong>Blog Studio</strong><div class="small muted">Write and publish PHWC articles</div></a>
-        <a class="kcard sitem" href="/blog" target="_blank" rel="noopener"><strong>Public Blog</strong><div class="small muted">View published articles</div></a>
-        <a class="kcard sitem" href="/admin/users.html"><strong>Users</strong><div class="small muted">Roles & access</div></a>
-      </div>
+      <section class="metric-grid" aria-label="Operational metrics">
+        <button class="metric-card danger" data-jump="priorityQueue"><span class="metric-icon">!</span><div><span>Needs action now</span><strong id="mUrgent">0</strong><small>highest-priority queue</small></div></button>
+        <button class="metric-card" data-jump="todayBoard"><span class="metric-icon">◷</span><div><span>Today</span><strong id="mToday">0</strong><small>scheduled clinical work</small></div></button>
+        <a class="metric-card" href="/admin/referrals.html"><span class="metric-icon">↗</span><div><span>New referrals</span><strong id="mReferrals">0</strong><small>awaiting intake review</small></div></a>
+        <a class="metric-card" href="/admin/bookings.html"><span class="metric-icon">▦</span><div><span>Pending bookings</span><strong id="mBookings">0</strong><small>need scheduling</small></div></a>
+        <a class="metric-card warn" href="/admin/crm.html"><span class="metric-icon">◎</span><div><span>CRM overdue</span><strong id="mCrmOverdue">0</strong><small>follow-ups behind</small></div></a>
+        <a class="metric-card" href="/admin/tasks.html"><span class="metric-icon">◇</span><div><span>Unassigned</span><strong id="mUnassigned">0</strong><small>tasks without owner</small></div></a>
+      </section>
+
+      <section class="command-grid primary-grid">
+        <article class="command-panel priority-panel" id="priorityQueue">
+          <header class="panel-head">
+            <div><span class="panel-kicker">ACTION ENGINE</span><h2>Priority Queue</h2><p>Ranked automatically from live operational signals.</p></div>
+            <div class="queue-filter" role="group" aria-label="Priority filter">
+              <button class="queue-chip active" data-queue-filter="all">All</button>
+              <button class="queue-chip" data-queue-filter="clinical">Clinical</button>
+              <button class="queue-chip" data-queue-filter="intake">Intake</button>
+              <button class="queue-chip" data-queue-filter="growth">Growth</button>
+            </div>
+          </header>
+          <div id="priorityList" class="priority-list"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div>
+          <div id="priorityEmpty" class="empty-command" hidden>Nothing urgent is waiting. The queue is clear.</div>
+        </article>
+
+        <aside class="command-panel today-panel" id="todayBoard">
+          <header class="panel-head compact"><div><span class="panel-kicker">TODAY</span><h2>Clinical Board</h2></div><a href="/admin/tasks.html">Open schedule →</a></header>
+          <div id="todayTimeline" class="timeline"></div>
+        </aside>
+      </section>
+
+      <section class="command-grid insight-grid">
+        <article class="command-panel">
+          <header class="panel-head compact"><div><span class="panel-kicker">INTAKE</span><h2>Referral Pipeline</h2></div><a href="/admin/referrals.html">Manage →</a></header>
+          <div id="referralPipeline" class="pipeline"></div>
+          <div id="latestReferrals" class="mini-feed"></div>
+        </article>
+
+        <article class="command-panel">
+          <header class="panel-head compact"><div><span class="panel-kicker">CAPACITY</span><h2>Team Load</h2></div><a href="/admin/users.html">Team →</a></header>
+          <div id="teamLoad" class="team-load"></div>
+        </article>
+
+        <article class="command-panel growth-panel">
+          <header class="panel-head compact"><div><span class="panel-kicker">GROWTH RADAR</span><h2>Partnership Momentum</h2></div><a href="/admin/crm.html">Open CRM →</a></header>
+          <div class="radar-grid">
+            <div><span>Overdue</span><strong id="gOverdue">0</strong></div>
+            <div><span>Due today</span><strong id="gToday">0</strong></div>
+            <div><span>Interested</span><strong id="gInterested">0</strong></div>
+            <div><span>Meetings</span><strong id="gMeeting">0</strong></div>
+            <div class="partner-count"><span>Partners</span><strong id="gPartner">0</strong></div>
+          </div>
+          <div id="growthNext" class="growth-next"></div>
+        </article>
+      </section>
+
+      <section class="command-grid signal-grid">
+        <article class="command-panel">
+          <header class="panel-head compact"><div><span class="panel-kicker">INBOX</span><h2>Recent Signals</h2></div><a href="/admin/contacts.html">Contacts →</a></header>
+          <div id="recentSignals" class="mini-feed"></div>
+        </article>
+        <article class="command-panel">
+          <header class="panel-head compact"><div><span class="panel-kicker">PUBLISHING</span><h2>Education & Content</h2></div><a href="/admin/blog-studio.html">Blog Studio →</a></header>
+          <div class="content-health">
+            <div><span>Blog articles</span><strong id="cBlog">0</strong><small id="cBlogMeta">—</small></div>
+            <div><span>Social posts</span><strong id="cSocial">0</strong><small id="cSocialMeta">—</small></div>
+          </div>
+          <div class="content-actions"><a href="/admin/blog-studio.html" class="cmd-btn secondary">Create article</a><a href="/admin/social-studio.html" class="cmd-btn secondary">Create post</a></div>
+        </article>
+      </section>
     </main>
   </div>
 
-  <dialog id="dlgBookingDetails" class="dlg">
-    <form method="dialog" class="dlg-inner">
-      <header class="dlg-head"><h3 id="dlgTitle">Booking</h3><button value="cancel" class="btn soft small">booking</button></header>
-      <section id="dlgBody" class="dlg-body"></section>
-      <footer class="dlg-foot"><button value="cancel" class="btn">Close</button></footer>
-    </form>
-  </dialog>
-
-<style>
-  .dlg { border: none; padding: 0; border-radius: 14px; max-width: 860px; width: 92%; }
-  .dlg::backdrop { background: rgb(0 0 0 / .45); }
-  .dlg-inner { padding: 0; }
-  .dlg-head, .dlg-foot { padding: 12px 16px; border-bottom: 1px solid #e6e9ef; background: #fff; }
-  .dlg-foot { border-top: 1px solid #e6e9ef; border-bottom: 0; }
-  .dlg-head h3 { margin: 0; font-weight: 800; }
-  .dlg-body { padding: 14px 16px; background: #fafbfe; max-height: 70vh; overflow: auto; }
-  .kv { display:grid; grid-template-columns: 180px 1fr; gap: 6px 12px; margin-bottom: 12px; }
-  .kv .k { color:#6b7280; }
-  .subgrid { display:grid; gap:8px; }
-  .box { background:#fff; border:1px solid #e6e9ef; border-radius:12px; padding:10px 12px; }
-  .box h4 { margin:0 0 6px; font-size:.95rem; }
-  .muted { color:#6b7280; }.small { font-size:.875rem; }.btn.small { padding:6px 10px; border-radius:10px; }
-</style>
-
-  <script type="module">
-    import { db, mountSidebar } from "/admin/admin-shared.js";
-    import { collection, query, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-    mountSidebar("");
-    (async () => {
-      const setText = (id, v)=>{ const el=document.getElementById(id); if(el) el.textContent=String(v); };
-      const counts = await Promise.all([
-        getCountFromServer(query(collection(db,"tasks"))),
-        getCountFromServer(query(collection(db,"bookings"))),
-        getCountFromServer(query(collection(db,"contacts"))),
-        getCountFromServer(query(collection(db,"patientReferal"))),
-        getCountFromServer(query(collection(db,"crmLeads"))),
-        getCountFromServer(query(collection(db,"socialPosts"))),
-        getCountFromServer(query(collection(db,"blogPosts")))
-      ]);
-      setText("kTasks", counts[0].data().count);
-      setText("kBookings", counts[1].data().count);
-      setText("kContacts", counts[2].data().count);
-      setText("kRef", counts[3].data().count);
-      setText("kCrm", counts[4].data().count);
-      setText("kSocial", counts[5].data().count);
-      setText("kBlog", counts[6].data().count);
-    })();
-  </script>
+  <script type="module" src="/admin/admin-command-center.js"></script>
 </body>
 </html>
