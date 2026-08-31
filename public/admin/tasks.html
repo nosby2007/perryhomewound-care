@@ -17,11 +17,11 @@
     </div>
   </div>
   <nav class="snav">
-    <a class="sitem" data-target="tasks"    href="/admin/tasks.html">Tasks</a>
+    <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
     <a class="sitem" data-target="bookings" href="/admin/bookings.html">Bookings</a>
     <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
     <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
-    <a class="sitem" data-target="users"    href="/admin/users.html">Users</a>
+    <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
   </nav>
   <div class="sfoot">
     <span id="who" class="small muted"></span>
@@ -29,18 +29,17 @@
   </div>
 </aside>
 
-
   <div class="main">
     <header class="topbar">
-      <h1>Tasks</h1>
+      <div><div class="eyebrow">CLINICAL OPERATIONS</div><h1>Tasks</h1></div>
       <div></div>
     </header>
 
     <section class="wrap">
       <div class="phead">
         <div class="filters">
-          <select id="fTaskStatus"><option value="">All</option><option>assigned</option><option>in_progress</option><option>done</option><option>cancelled</option></select>
-          <input id="qTasks" class="inp" placeholder="Search patient/service/assignee…"/>
+          <select id="fTaskStatus" aria-label="Filter tasks by status"><option value="">All statuses</option><option>assigned</option><option>in_progress</option><option>done</option><option>cancelled</option></select>
+          <input id="qTasks" class="inp" type="search" placeholder="Search patient, service or assignee…" aria-label="Search tasks"/>
         </div>
         <button id="btnAddTask" class="btn primary">+ Add Task</button>
       </div>
@@ -56,39 +55,59 @@
     <footer class="wrap small muted">&copy; <span id="yr"></span> Perry Home Wound Care — Admin</footer>
   </div>
 
-  <!-- Add Task modal -->
   <dialog id="dlgTask">
     <form id="createTaskForm" method="dialog" class="form">
-      <h3>Create Task</h3>
+      <h3>Create clinical task</h3>
+      <p class="small muted" style="margin:0 0 16px;">Create an actionable work item, assign ownership, and place it on the operational schedule.</p>
+
       <fieldset class="fieldset">
-        <legend>Assignee & Schedule</legend>
-        <label>Assign to (clinician)* <select id="ctAssignedToSel" required><option value="">Select clinician…</option></select></label>
-        <label>Scheduled At (YYYY-MM-DD HH:mm) <input id="ctWhen" placeholder="2025-10-01 09:30"/></label>
-      </fieldset>
-      <fieldset class="fieldset">
-        <legend>Patient</legend>
-        <label>Patient Name* <input id="ctPName" required/></label>
-        <label>Patient Phone <input id="ctPPhone"/></label>
-        <label>Patient Address <input id="ctPAddr"/></label>
-      </fieldset>
-      <fieldset class="fieldset">
-        <legend>Service & Source</legend>
-        <label>Service Title <input id="ctSTitle" list="servicesList"/></label>
-        <label>Service Slug <input id="ctSSlug"/></label>
-        <datalist id="servicesList"></datalist>
+        <legend>Ownership & schedule</legend>
         <div class="row2">
-          <label>Source Type
-            <select id="ctSrcType"><option value="manual">manual</option><option value="booking">booking</option><option value="referral">referral</option></select>
+          <label>Assigned clinician *
+            <select id="ctAssignedToSel" required><option value="">Select clinician…</option></select>
           </label>
-          <label>Source Id <input id="ctSrcId"/></label>
+          <label>Scheduled date & time
+            <input id="ctWhen" type="datetime-local"/>
+          </label>
         </div>
       </fieldset>
-      <label>Notes <textarea id="ctNotes" rows="3"></textarea></label>
+
+      <fieldset class="fieldset">
+        <legend>Patient</legend>
+        <label>Patient name * <input id="ctPName" required autocomplete="off" placeholder="Patient name"/></label>
+        <div class="row2">
+          <label>Phone <input id="ctPPhone" type="tel" inputmode="tel" placeholder="(478) 555-0123"/></label>
+          <label>Address <input id="ctPAddr" autocomplete="off" placeholder="Service location"/></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend>Service & source</legend>
+        <div class="row2">
+          <label>Service
+            <input id="ctSTitle" list="servicesList" placeholder="Select or type a service"/>
+          </label>
+          <label>Service slug
+            <input id="ctSSlug" placeholder="Generated automatically"/>
+          </label>
+        </div>
+        <datalist id="servicesList"></datalist>
+        <div class="row2">
+          <label>Source
+            <select id="ctSrcType"><option value="manual">Manual</option><option value="booking">Booking</option><option value="referral">Referral</option></select>
+          </label>
+          <label>Source record ID <input id="ctSrcId" placeholder="Optional"/></label>
+        </div>
+      </fieldset>
+
+      <label>Operational notes
+        <textarea id="ctNotes" rows="4" placeholder="What does the clinician need to know or complete?"></textarea>
+      </label>
+      <div id="ctStatus" class="small muted" aria-live="polite"></div>
       <div class="row-end">
         <button class="btn" value="cancel" type="submit">Cancel</button>
-        <button class="btn primary" value="save"  type="submit">Save task</button>
+        <button class="btn primary" value="save" type="submit">Create task</button>
       </div>
-      <div id="ctStatus" class="small muted" aria-live="polite"></div>
     </form>
   </dialog>
 
