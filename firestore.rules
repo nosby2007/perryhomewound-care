@@ -127,7 +127,8 @@ service cloud.firestore {
     }
 
     match /patientReferal/{referralId} {
-      allow create: if publicSubmission()
+      allow create: if isAdmin() || (
+        publicSubmission()
         && request.resource.data.keys().hasOnly([
           "serviceSlug", "serviceTitle", "refType", "refName", "refOrg",
           "refRole", "refEmail", "refPhone", "patientName", "patientDob",
@@ -152,7 +153,8 @@ service cloud.firestore {
         && shortString(request.resource.data.notes, 2500)
         && shortString(request.resource.data.contactPref, 30)
         && shortString(request.resource.data.page, 500)
-        && shortString(request.resource.data.userAgent, 600);
+        && shortString(request.resource.data.userAgent, 600)
+      );
       allow read, update: if isAdmin();
       allow delete: if false;
     }
