@@ -43,7 +43,7 @@
         <div class="json-import-grid">
           <div>
             <label>Paste article JSON
-              <textarea id="blogJsonInput" rows="13" spellcheck="false" placeholder='{"title":"Choosing the Right Dressing for Exudative Wounds","category":"Wound Education","excerpt":"...","body":"## Clinical considerations\n..."}'></textarea>
+              <textarea id="blogJsonInput" rows="13" spellcheck="false" placeholder='{"title":"Choosing the Right Dressing for Exudative Wounds","sections":[{"heading":"Clinical considerations","paragraphs":["..."],"media":[{"type":"image","url":"https://...","alt":"...","caption":"..."}]}]}'></textarea>
             </label>
             <div class="editor-actions">
               <button id="loadJsonBtn" type="button" class="btn primary">Load into editor</button>
@@ -60,20 +60,22 @@
             <h4>Accepted format</h4>
             <pre>{
   "title": "Article title",
-  "slug": "optional-custom-slug",
-  "category": "Wound Education",
-  "excerpt": "Short summary",
-  "body": "## Heading\nParagraph\n- Bullet",
+  "sections": [{
+    "heading": "Assessment",
+    "paragraphs": ["..."],
+    "media": [{
+      "type": "image",
+      "url": "https://...",
+      "alt": "Accessible description",
+      "caption": "Clinical caption"
+    }]
+  }],
   "seo": {
     "title": "SEO title",
     "description": "SEO description"
-  },
-  "cover": {
-    "url": "https://...",
-    "alt": "Accessible image description"
   }
 }</pre>
-            <p>You may replace <code>body</code> with a <code>sections</code> array. Arrays or <code>{"articles":[...]}</code> can be imported as multiple drafts.</p>
+            <p>Supported media types: <code>image</code>, <code>infographic</code>, <code>gallery</code>, and <code>before_after</code>. Arrays or <code>{"articles":[...]}</code> can be imported as multiple drafts.</p>
           </div>
         </div>
       </section>
@@ -85,9 +87,26 @@
           <label>Title<input id="blogTitle" maxlength="160" required placeholder="Example: 5 signs a wound needs professional evaluation"/></label>
           <div class="row2"><label>Slug<input id="blogSlug" maxlength="120" required placeholder="5-signs-wound-needs-evaluation"/></label><label>Category<select id="blogCategory"><option>Wound Education</option><option>Pressure Injuries</option><option>Diabetic Wounds</option><option>Vascular Wounds</option><option>Post-Surgical Care</option><option>Caregiver Education</option><option>Home Wound Care</option><option>Facility Partnerships</option></select></label></div>
           <label>Short excerpt<textarea id="blogExcerpt" rows="3" maxlength="320" placeholder="Short description for the blog card and search preview"></textarea></label>
-          <label>Article body<textarea id="blogBody" rows="18" placeholder="Write the article here. Use blank lines between paragraphs. Start a line with ## for a heading and - for a bullet."></textarea></label>
+          <label>Article body<textarea id="blogBody" rows="18" placeholder="Write the article here. Use blank lines between paragraphs. Start a line with ## for a heading and - for a bullet. Inline media markers are inserted automatically."></textarea></label>
+
+          <section class="inline-media-editor" aria-labelledby="inlineMediaTitle">
+            <div class="panel-head media-head"><div><span class="eyebrow">INLINE MEDIA</span><h3 id="inlineMediaTitle">Add illustrations inside the article</h3><p class="panel-note">Place the cursor in the article body where the media should appear, then upload. Blog Studio inserts the media marker automatically.</p></div><span id="inlineMediaCount" class="pill">0 media</span></div>
+            <div class="media-form-grid">
+              <label>Media layout<select id="inlineMediaType"><option value="image">Image / supply photo</option><option value="infographic">Infographic / illustration</option><option value="gallery">Gallery</option><option value="before_after">Before & after / comparison</option></select></label>
+              <label>Choose image file(s)<input id="inlineMediaFiles" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif"/></label>
+              <label>Alt text<input id="inlineMediaAlt" maxlength="180" placeholder="Describe what is visible for accessibility"/></label>
+              <label>Caption<input id="inlineMediaCaption" maxlength="320" placeholder="Optional clinical or educational caption"/></label>
+              <label>Credit / source<input id="inlineMediaCredit" maxlength="160" placeholder="Example: Perry Home Wound Care"/></label>
+              <label>Image classification<select id="inlineMediaClass"><option value="general">General / supply / illustration</option><option value="clinical">Clinical wound image</option></select></label>
+            </div>
+            <label id="clinicalMediaConsentWrap" class="clinical-media-check" hidden><input id="clinicalMediaConsent" type="checkbox"/> <span>I confirm this clinical image is de-identified and authorized for publication.</span></label>
+            <div class="editor-actions"><button id="uploadInlineMediaBtn" type="button" class="btn primary">Upload & insert at cursor</button></div>
+            <div id="inlineMediaStatus" class="json-status" role="status" aria-live="polite"></div>
+            <div id="inlineMediaLibrary" class="inline-media-library"></div>
+          </section>
+
           <div class="row2"><label>SEO title<input id="seoTitle" maxlength="65"/></label><label>SEO description<input id="seoDescription" maxlength="160"/></label></div>
-          <div class="compliance-box"><strong>Clinical publishing guardrail</strong><span>Educational content only. Do not include PHI, individual treatment instructions, guaranteed results, or unsupported payer/coverage claims.</span></div>
+          <div class="compliance-box"><strong>Clinical publishing guardrail</strong><span>Educational content only. Do not include PHI, individual treatment instructions, guaranteed results, or unsupported payer/coverage claims. Clinical photos must be de-identified and authorized for publication.</span></div>
           <div class="editor-actions"><button id="saveBlogDraftBtn" type="button" class="btn">Save draft</button><button id="publishBlogBtn" type="button" class="btn primary">Publish article</button></div>
         </form>
 
