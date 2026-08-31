@@ -13,6 +13,17 @@ function activeReferralId(){ return $("referralId")?.value || ""; }
 function safeName(name){ return String(name || "document").replace(/[^a-zA-Z0-9._-]+/g,"-").slice(0,120); }
 function fmt(ts){ return ts?.toDate?.().toLocaleString?.() || "Pending"; }
 
+function addPortalManagerLink(){
+  const actions=document.querySelector(".referral-actions");
+  if(!actions || actions.querySelector("[data-portal-manager-link]")) return;
+  const link=document.createElement("a");
+  link.href="/admin/patient-portal";
+  link.className="btn";
+  link.dataset.portalManagerLink="1";
+  link.textContent="Patient Portal Manager";
+  actions.insertBefore(link,actions.firstChild);
+}
+
 function watchDocuments(){
   stopDocuments?.(); stopDocuments = null;
   const referralId = activeReferralId();
@@ -95,9 +106,9 @@ document.addEventListener("click",(e)=>{
   const print = e.target.closest("[data-doc-print]"); if(print){ e.preventDefault(); e.stopPropagation(); openSecureFile(print.dataset.docPrint,true); }
 },true);
 
-// Refresh when a drawer is opened for a row or a new referral.
 document.addEventListener("click",(e)=>{
   if(e.target.closest("#addReferralBtn") || e.target.closest("[data-id]")) setTimeout(watchDocuments,80);
 },true);
 $("saveReferralBtn")?.addEventListener("click",()=>setTimeout(watchDocuments,700));
+addPortalManagerLink();
 watchDocuments();
