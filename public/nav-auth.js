@@ -134,14 +134,14 @@ hydrateHomepageBlog().catch(err => {
 });
 
 const el = document.getElementById("navAuth");
-if (el) el.innerHTML = `<a class="btn" href="./admin/login/admin-login.html">Sign in</a>`; // état initial
+if (el) el.innerHTML = `<a class="btn" href="/admin/login/admin-login.html">Sign in</a>`; // état initial
 
 onAuthStateChanged(auth, async (user) => {
   if (!el) return;
 
   if (!user) {
     // Déconnecté → bouton Sign in
-    el.innerHTML = `<a class="btn" href="./admin/login/admin-login.html">Sign in</a>`;
+    el.innerHTML = `<a class="btn" href="/admin/login/admin-login.html">Sign in</a>`;
     return;
   }
 
