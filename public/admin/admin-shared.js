@@ -112,6 +112,14 @@ export function mountSidebar(activeId){
     document.head.appendChild(hairScript);
   }
 
+  // Referral intake null-safety hotfix. The capture-phase click handler opens a
+  // blank drawer without passing null into the legacy receivedValue() helper.
+  if(activeId === "referrals"){
+    import("/admin/referrals-add-hotfix.js").catch((error)=>{
+      console.error("Unable to load referral intake helper", error);
+    });
+  }
+
   document.querySelectorAll(".snav .sitem").forEach(btn=>{
     btn.classList.toggle("active", btn.dataset.target === activeId);
   });
