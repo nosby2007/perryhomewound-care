@@ -41,6 +41,32 @@ function bindReadingProgress(){
   window.addEventListener("scroll",update,{passive:true});window.addEventListener("resize",update);update();
 }
 
+function coverFrom(post){
+  const nested=post.cover&&typeof post.cover==="object"?post.cover:{};
+  return post.coverUrl||nested.url||post.imageUrl||post.featuredImage||post.heroImage||"";
+}
+
+function coverAltFrom(post){
+  const nested=post.cover&&typeof post.cover==="object"?post.cover:{};
+  return post.coverAlt||nested.alt||post.imageAlt||post.title||"PHWC blog article image";
+}
+
+function showCover(post){
+  const url=coverFrom(post);
+  const wrap=$("coverWrap"),img=$("cover"),fallback=$("coverFallback");
+  if(url){
+    img.src=url;
+    img.alt=coverAltFrom(post);
+    img.addEventListener("error",()=>{wrap.hidden=true;fallback.hidden=false;},{once:true});
+    wrap.hidden=false;
+    fallback.hidden=true;
+    return;
+  }
+  $("coverFallbackCategory").textContent=(post.category||"PHWC Clinical Education").toUpperCase();
+  $("coverFallbackTitle").textContent=post.title||"Wound Care Education";
+  fallback.hidden=false;
+}
+
 try{
   if(!slug)throw new Error("Missing article slug");
   const snap=await getDoc(doc(db,"blogPosts",slug));
@@ -56,7 +82,7 @@ try{
   $("readTime").textContent=`${minutes} min read`;
   $("authorName").textContent=p.author||"Perry Home Wound Care";
   $("articleBody").innerHTML=bodyHtml(p.body||"");
-  if(p.coverUrl){$("cover").src=p.coverUrl;$("cover").alt=p.coverAlt||p.title||"PHWC blog article image";$("coverWrap").hidden=false;}
+  showCover(p);
   if(p.sponsorDisclosure){$("sponsorDisclosure").textContent=p.sponsorDisclosure;$("sponsorDisclosure").hidden=false;}
   document.querySelectorAll("[data-share]").forEach(b=>b.addEventListener("click",()=>share(b.dataset.share,p.title||"PHWC Wound Care Article")));
   $("article").hidden=false;$("loading").hidden=true;bindReadingProgress();
