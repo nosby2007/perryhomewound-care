@@ -1,0 +1,358 @@
+/* PHWC Admin — operational form system
+   Loaded after module styles so forms feel like one product across the admin. */
+:root{
+  --af-navy:#12384d;
+  --af-navy-2:#184c62;
+  --af-sage:#5f7f72;
+  --af-peach:#d87b49;
+  --af-cream:#fbfaf7;
+  --af-paper:#ffffff;
+  --af-ink:#18313f;
+  --af-muted:#6d7d84;
+  --af-line:#dde5e5;
+  --af-line-strong:#cad7d6;
+  --af-danger:#b42318;
+  --af-success:#18724f;
+  --af-focus:rgba(95,127,114,.18);
+  --af-shadow:0 20px 55px rgba(18,56,77,.12);
+}
+
+/* ----- Form surfaces ----- */
+.form,
+.blog-form,
+.builder-panel,
+.json-import-panel,
+.media-uploader,
+.crm-dialog form,
+.publish-dialog form,
+dialog form{
+  color:var(--af-ink);
+}
+
+.form,
+.blog-form,
+.builder-panel{
+  position:relative;
+}
+
+.form label,
+.blog-form label,
+.builder-panel label,
+.json-import-panel label,
+.media-uploader label,
+.dialog-body label,
+.publish-dialog label,
+.crm-dialog label{
+  display:grid;
+  gap:7px;
+  margin:0 0 15px;
+  color:#405761;
+  font-size:11px;
+  line-height:1.35;
+  font-weight:850;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+
+.form label .muted,
+.blog-form label .muted,
+.builder-panel label .muted,
+.publish-dialog label .muted{
+  font-weight:650;
+  text-transform:none;
+  letter-spacing:0;
+}
+
+.form input,
+.form select,
+.form textarea,
+.blog-form input,
+.blog-form select,
+.blog-form textarea,
+.builder-panel input,
+.builder-panel select,
+.builder-panel textarea,
+.json-import-panel input,
+.json-import-panel select,
+.json-import-panel textarea,
+.media-uploader input,
+.media-uploader select,
+.media-uploader textarea,
+.crm-dialog input,
+.crm-dialog select,
+.crm-dialog textarea,
+.publish-dialog input,
+.publish-dialog select,
+.publish-dialog textarea,
+.filters .inp,
+.filters select,
+.toolbar-card input,
+.toolbar-card select,
+.library-filters select{
+  width:100%;
+  min-height:48px;
+  border:1.5px solid var(--af-line)!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  color:var(--af-ink)!important;
+  padding:11px 13px!important;
+  font:600 14px/1.35 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif!important;
+  box-shadow:0 1px 0 rgba(18,56,77,.02);
+  transition:border-color .16s ease,box-shadow .16s ease,background .16s ease,transform .16s ease;
+  outline:none;
+}
+
+.form textarea,
+.blog-form textarea,
+.builder-panel textarea,
+.json-import-panel textarea,
+.crm-dialog textarea,
+.publish-dialog textarea{
+  min-height:112px;
+  resize:vertical;
+  line-height:1.58!important;
+}
+
+.form input:hover,
+.form select:hover,
+.form textarea:hover,
+.blog-form input:hover,
+.blog-form select:hover,
+.blog-form textarea:hover,
+.builder-panel input:hover,
+.builder-panel select:hover,
+.builder-panel textarea:hover,
+.crm-dialog input:hover,
+.crm-dialog select:hover,
+.crm-dialog textarea:hover,
+.publish-dialog input:hover,
+.publish-dialog select:hover,
+.publish-dialog textarea:hover,
+.filters .inp:hover,
+.filters select:hover{
+  border-color:var(--af-line-strong)!important;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus,
+.blog-form input:focus,
+.blog-form select:focus,
+.blog-form textarea:focus,
+.builder-panel input:focus,
+.builder-panel select:focus,
+.builder-panel textarea:focus,
+.json-import-panel input:focus,
+.json-import-panel textarea:focus,
+.media-uploader input:focus,
+.crm-dialog input:focus,
+.crm-dialog select:focus,
+.crm-dialog textarea:focus,
+.publish-dialog input:focus,
+.publish-dialog select:focus,
+.filters .inp:focus,
+.filters select:focus,
+.toolbar-card input:focus,
+.toolbar-card select:focus{
+  border-color:var(--af-sage)!important;
+  box-shadow:0 0 0 4px var(--af-focus)!important;
+  background:#fff!important;
+}
+
+input::placeholder,textarea::placeholder{color:#9aa8ad;opacity:1;font-weight:500}
+
+/* Native controls */
+input[type="date"],input[type="datetime-local"],input[type="time"]{color-scheme:light}
+input[type="file"]{
+  min-height:52px!important;
+  padding:6px!important;
+  background:var(--af-cream)!important;
+  cursor:pointer;
+}
+input[type="file"]::file-selector-button{
+  border:0;
+  border-radius:9px;
+  margin-right:10px;
+  padding:9px 12px;
+  background:var(--af-navy);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+input[type="checkbox"]{accent-color:var(--af-sage)}
+
+/* ----- Grouping / hierarchy ----- */
+.fieldset,
+.form fieldset{
+  margin:0 0 16px!important;
+  padding:18px!important;
+  border:1px solid var(--af-line)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#fff,var(--af-cream))!important;
+}
+.fieldset legend,
+.form fieldset legend{
+  padding:0 8px!important;
+  color:var(--af-navy)!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+
+.row2,.form-grid,.media-form-grid{
+  gap:14px!important;
+}
+
+.compliance-box,
+.compliance-note,
+.clinical-media-check{
+  border:1px solid #d9e3dc!important;
+  border-radius:14px!important;
+  background:#f3f7f4!important;
+  color:#3d5c50!important;
+  padding:13px 15px!important;
+}
+.compliance-box strong,.compliance-note strong{color:var(--af-navy)!important}
+
+/* ----- Headers / sections inside forms ----- */
+.panel-head{
+  gap:14px;
+}
+.panel-head h3{color:var(--af-navy);letter-spacing:-.015em}
+.panel-note{color:var(--af-muted)!important;line-height:1.5}
+.eyebrow{color:var(--af-sage)!important}
+
+.inline-media-editor,
+.media-uploader{
+  border:1px solid var(--af-line)!important;
+  border-radius:17px!important;
+  background:var(--af-cream)!important;
+  padding:16px!important;
+  margin-top:18px;
+}
+
+/* ----- Buttons / action bars ----- */
+.editor-actions,
+.builder-actions,
+.preview-actions,
+.row-end{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.editor-actions .btn,
+.builder-actions .btn,
+.preview-actions .btn,
+.row-end .btn,
+.crm-dialog footer .btn,
+.publish-dialog footer .btn{
+  min-height:43px;
+  padding:9px 15px;
+}
+
+.btn.primary,
+.editor-actions .btn.primary,
+.builder-actions .btn.primary,
+.preview-actions .btn.primary{
+  background:var(--af-peach)!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  box-shadow:0 8px 18px rgba(216,123,73,.18)!important;
+}
+.btn.primary:hover{filter:brightness(.97)}
+
+/* ----- Dialogs ----- */
+dialog,
+.crm-dialog,
+.publish-dialog{
+  width:min(820px,94vw)!important;
+  max-width:94vw!important;
+  border:0!important;
+  border-radius:22px!important;
+  padding:0!important;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 34px 90px rgba(10,35,48,.3)!important;
+}
+dialog::backdrop,.crm-dialog::backdrop,.publish-dialog::backdrop{
+  background:rgba(9,30,40,.62)!important;
+  backdrop-filter:blur(5px);
+}
+
+dialog form>h3{
+  margin:0;
+  padding:20px 22px 8px;
+  color:var(--af-navy);
+  font-size:22px;
+}
+dialog form.form{padding:0 22px 22px}
+.crm-dialog form>header,.publish-dialog form>header{
+  padding:18px 20px!important;
+  background:#fff!important;
+  border-bottom:1px solid var(--af-line)!important;
+}
+.crm-dialog form>header h3,.publish-dialog form>header h3{color:var(--af-navy)}
+.dialog-body{
+  padding:20px!important;
+  background:var(--af-cream)!important;
+  max-height:min(70vh,720px);
+  overflow:auto;
+}
+.crm-dialog form>footer,.publish-dialog form>footer{
+  position:sticky;
+  bottom:0;
+  padding:13px 18px!important;
+  background:rgba(255,255,255,.96)!important;
+  border-top:1px solid var(--af-line)!important;
+  backdrop-filter:blur(10px);
+}
+
+/* ----- Filter bars are mini-forms too ----- */
+.filters{
+  padding:8px;
+  border:1px solid var(--af-line);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 5px 15px rgba(18,56,77,.04);
+}
+.filters .inp,.filters select{min-width:180px}
+
+/* ----- Feedback ----- */
+.json-status,
+#ctStatus,
+#formStatus{
+  min-height:22px;
+  margin-top:8px;
+  font-size:12px;
+  font-weight:750;
+  color:var(--af-muted);
+}
+
+input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="true"]{
+  border-color:var(--af-danger)!important;
+  box-shadow:0 0 0 4px rgba(180,35,24,.09)!important;
+}
+
+/* ----- Compact forms on operational pages ----- */
+.toolbar-card{border-color:var(--af-line)!important;background:#fff!important}
+.toolbar-card input,.toolbar-card select{min-height:44px!important;padding:9px 11px!important}
+
+@media(max-width:760px){
+  dialog,.crm-dialog,.publish-dialog{
+    width:calc(100vw - 18px)!important;
+    max-width:calc(100vw - 18px)!important;
+    max-height:92vh;
+    border-radius:18px!important;
+  }
+  dialog form.form{padding:0 14px 16px}
+  dialog form>h3{padding:17px 14px 8px;font-size:20px}
+  .dialog-body{padding:15px!important;max-height:68vh}
+  .row2,.form-grid,.media-form-grid,.json-import-grid{grid-template-columns:1fr!important}
+  .editor-actions,.builder-actions,.preview-actions,.row-end{align-items:stretch}
+  .editor-actions .btn,.builder-actions .btn,.preview-actions .btn,.row-end .btn{flex:1 1 140px;justify-content:center}
+  .filters{width:100%;display:grid!important;grid-template-columns:1fr!important;padding:8px}
+  .filters .inp,.filters select{width:100%;min-width:0}
+}
