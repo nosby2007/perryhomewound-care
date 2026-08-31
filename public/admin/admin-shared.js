@@ -112,6 +112,12 @@ export function mountSidebar(activeId){
     document.head.appendChild(hairScript);
   }
 
+  if(activeId === "referrals"){
+    import("/admin/referrals-add-hotfix.js").catch((error)=>{
+      console.error("Unable to load referral intake helper", error);
+    });
+  }
+
   document.querySelectorAll(".snav .sitem").forEach(btn=>{
     btn.classList.toggle("active", btn.dataset.target === activeId);
   });
