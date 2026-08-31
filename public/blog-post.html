@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/blog-post.css"/>
+  <link rel="stylesheet" href="/blog-post-desktop.css"/>
 </head>
 <body>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgress"></span></div>
@@ -63,6 +64,13 @@
           <figure id="coverWrap" class="cover-wrap" hidden>
             <img id="cover" class="cover" alt=""/>
           </figure>
+          <section id="coverFallback" class="cover-fallback" hidden aria-label="PHWC clinical education cover">
+            <div class="cover-fallback-copy">
+              <span class="cover-fallback-label" id="coverFallbackCategory">PHWC CLINICAL EDUCATION</span>
+              <h2 id="coverFallbackTitle">Wound Care Education</h2>
+              <p>Evidence-informed guidance for patients, caregivers, and healthcare teams.</p>
+            </div>
+          </section>
 
           <div id="sponsorDisclosure" class="sponsor-disclosure" hidden></div>
           <div id="articleBody" class="article-body"></div>
