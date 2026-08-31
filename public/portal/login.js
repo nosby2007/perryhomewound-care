@@ -9,9 +9,9 @@ const $=(id)=>document.getElementById(id); const err=$("loginError");
 function message(text){err.textContent=text||"";}
 async function authorize(user){
   if(!user.emailVerified){await signOut(auth);throw new Error("Please verify your email before using the patient portal.");}
-  if((multiFactor(user).enrolledFactors||[]).length<1){await signOut(auth);throw new Error("Multi-factor authentication is required. Contact Perry Home Wound Care to complete portal security setup.");}
   const profile=await getDoc(doc(db,"portalUsers",user.uid));
   if(!profile.exists()||profile.data()?.active!==true||!profile.data()?.patientId){await signOut(auth);throw new Error("This account is not authorized for patient portal access. Contact Perry Home Wound Care.");}
+  if((multiFactor(user).enrolledFactors||[]).length<1){location.replace("/portal/security-setup");return;}
   location.replace("/portal");
 }
 
