@@ -1,3 +1,4 @@
+@import url('/blog-post-media.css');
 .article-main{min-width:0;width:100%}
 .cover-fallback{position:relative;overflow:hidden;min-height:360px;aspect-ratio:16/8.5;margin:0 0 38px;border-radius:28px;background:linear-gradient(135deg,#0d2f3f 0%,#16485a 54%,#5e7c70 100%);box-shadow:0 24px 70px rgba(13,47,63,.16);color:#fff;padding:clamp(28px,5vw,58px);display:flex;align-items:flex-end}
 .cover-fallback:before{content:"";position:absolute;width:380px;height:380px;border-radius:50%;border:1px solid rgba(255,255,255,.13);right:-110px;top:-155px;box-shadow:0 0 0 65px rgba(255,255,255,.035),0 0 0 130px rgba(255,255,255,.025)}
