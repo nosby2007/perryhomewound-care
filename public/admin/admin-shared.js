@@ -50,7 +50,7 @@ export const adminReady = new Promise((resolve, reject)=>{
 });
 
 // -------- Utilities --------
-export const esc = (x)=> String(x ?? "").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot', "'":'&#039;' }[m]));
+export const esc = (x)=> String(x ?? "").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#039;' }[m]));
 export const fmt = (ts)=> ts?.toDate?.()?.toLocaleString?.() || "-";
 export const mailto = (to, subject, body)=>{ const u = new URL("mailto:"+(to||"")); if(subject)u.searchParams.set("subject",subject); if(body)u.searchParams.set("body",body); return u.toString(); };
 export const badge = (st)=> `<span class="badge status-${esc(st||'new')}">${esc(st||'new')}</span>`;
