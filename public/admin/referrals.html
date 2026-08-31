@@ -113,6 +113,19 @@
           <label class="full">Disposition notes<textarea id="dispositionNotes" rows="2" maxlength="1000"></textarea></label>
         </div></section>
 
+        <section class="form-section" id="referralDocumentsSection">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+            <div><h3 style="margin-bottom:4px">Referral documents</h3><div class="muted2">Face sheet, referral/order, insurance card, discharge summary and other intake records.</div></div>
+            <button class="btn" type="button" id="printDocumentListBtn">Print document list</button>
+          </div>
+          <div class="form-grid" style="margin-top:12px">
+            <label>Document type<select id="refDocumentType"><option>Face Sheet</option><option>Referral / Order</option><option>Insurance Card</option><option>Discharge Summary</option><option>Medication List</option><option>Prior Wound Report</option><option>Authorization</option><option>Other</option></select></label>
+            <label>Choose file<input id="refDocumentFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp"/></label>
+            <div class="full"><button class="btn primary" type="button" id="uploadReferralDocumentBtn">Add Document</button> <span id="refDocumentMessage" class="muted2"></span></div>
+          </div>
+          <div id="refDocumentList" class="activity-list" style="margin-top:12px"><div class="muted2">Save the referral before attaching documents.</div></div>
+        </section>
+
         <section class="form-section"><h3>Contact attempt</h3><div class="form-grid">
           <label>Method<select id="contactMethod"></select></label><label>Outcome<input id="contactOutcome" maxlength="200" placeholder="Reached, voicemail, no answer…"/></label>
           <label class="full">Contact note<textarea id="contactNote" rows="2" maxlength="800"></textarea></label>
@@ -128,5 +141,6 @@
 
   <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("referrals");</script>
   <script type="module" src="/admin/referrals.js"></script>
+  <script type="module" src="/admin/referral-documents.js"></script>
 </body>
 </html>
