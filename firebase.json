@@ -15,6 +15,7 @@
       { "source": "/admin/social-studio", "destination": "/admin/social-studio.html" },
       { "source": "/admin/blog-studio", "destination": "/admin/blog-studio.html" },
       { "source": "/admin/users",     "destination": "/admin/users.html" },
+      { "source": "/admin/patient-portal", "destination": "/admin/patient-portal.html" },
       { "source": "/portal", "destination": "/portal/index.html" },
       { "source": "/portal/login", "destination": "/portal/login.html" },
       { "source": "/portal/security-setup", "destination": "/portal/security-setup.html" },
