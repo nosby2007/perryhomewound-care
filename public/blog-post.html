@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/blog-post.css"/>
+  <link rel="stylesheet" href="/blog-post-desktop.css"/>
 </head>
 <body>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgress"></span></div>
@@ -63,6 +64,13 @@
           <figure id="coverWrap" class="cover-wrap" hidden>
             <img id="cover" class="cover" alt=""/>
           </figure>
+          <section id="coverFallback" class="cover-fallback" hidden aria-label="PHWC clinical education cover">
+            <div class="cover-fallback-copy">
+              <span class="cover-fallback-label" id="coverFallbackCategory">PHWC CLINICAL EDUCATION</span>
+              <h2 id="coverFallbackTitle">Wound Care Education</h2>
+              <p>Evidence-informed guidance for patients, caregivers, and healthcare teams.</p>
+            </div>
+          </section>
 
           <div id="sponsorDisclosure" class="sponsor-disclosure" hidden></div>
           <div id="articleBody" class="article-body"></div>
@@ -74,13 +82,56 @@
 
           <aside class="cta-box">
             <div><span>LOCAL WOUND CARE SUPPORT</span><strong>Need help with a wound-care referral or home visit?</strong><p>Talk with the PHWC team about service availability and next steps.</p></div>
-            <div class="cta-actions"><a class="cta-primary" href="tel:+14783104446">Call 478-310-4446</a><a class="cta-secondary" href="/publics/referal/referal">Refer a patient</a></div>
+            <div class="cta-actions"><a class="cta-primary" href="/publics/booking/bookings">Book a visit</a><a class="cta-secondary" href="/publics/referal/referal">Refer a patient</a></div>
           </aside>
 
           <p class="disclaimer"><strong>Clinical education notice:</strong> This article is for general education and does not replace individualized medical evaluation, diagnosis, or treatment advice. Care decisions should be based on the patient’s clinical condition and the treating healthcare team’s plan of care.</p>
 
           <div class="article-end-nav"><a href="/blog"><span aria-hidden="true">←</span> View all PHWC articles</a></div>
         </div>
+
+        <aside class="service-rail" aria-label="Perry Home Wound Care services">
+          <div class="service-sticky">
+            <div class="service-rail-head">
+              <span>NEED WOUND CARE?</span>
+              <h2>Care while you read.</h2>
+              <p>Explore PHWC services and book a visit without leaving the article experience.</p>
+            </div>
+
+            <a class="service-card" href="/publics/booking/bookings">
+              <span class="service-icon">01</span>
+              <strong>Advanced Wound Care at Home</strong>
+              <small>Clinical wound assessment and treatment in the comfort of home.</small>
+              <b>Book a visit →</b>
+            </a>
+
+            <a class="service-card" href="/publics/booking/bookings">
+              <span class="service-icon">02</span>
+              <strong>Post-Surgical & Complex Wounds</strong>
+              <small>Support for difficult-to-heal, draining, or post-procedure wounds.</small>
+              <b>Book a visit →</b>
+            </a>
+
+            <a class="service-card" href="/publics/booking/bookings">
+              <span class="service-icon">03</span>
+              <strong>Pressure Injury Management</strong>
+              <small>Assessment, prevention planning, offloading, and wound-care follow-up.</small>
+              <b>Book a visit →</b>
+            </a>
+
+            <a class="service-card" href="/publics/booking/bookings">
+              <span class="service-icon">04</span>
+              <strong>Facility & SNF Wound Support</strong>
+              <small>Clinical wound-care support for healthcare facilities and care teams.</small>
+              <b>Book / request care →</b>
+            </a>
+
+            <div class="service-rail-actions">
+              <a class="service-all" href="/publics/services/Service">View all services</a>
+              <a class="service-call" href="tel:+14783104446">Call 478-310-4446</a>
+            </div>
+          </div>
+        </aside>
       </div>
     </article>
     <div id="loading" class="loading"><div class="loading-mark">PH</div><span>Loading clinical education…</span></div>
