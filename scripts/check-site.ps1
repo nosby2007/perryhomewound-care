@@ -26,6 +26,26 @@ foreach ($file in $jsFiles) {
   }
 }
 
+function Test-PublicReference([string]$target) {
+  if (Test-Path -LiteralPath $target) {
+    return $true
+  }
+
+  # Firebase Hosting uses cleanUrls=true. A route such as /blog resolves
+  # public/blog.html and /folder/page resolves public/folder/page.html.
+  if ([string]::IsNullOrWhiteSpace([System.IO.Path]::GetExtension($target))) {
+    if (Test-Path -LiteralPath ($target + ".html")) {
+      return $true
+    }
+    $indexPath = Join-Path $target "index.html"
+    if (Test-Path -LiteralPath $indexPath) {
+      return $true
+    }
+  }
+
+  return $false
+}
+
 Write-Host "Checking HTML document structure and local references..."
 $htmlFiles = Get-ChildItem -LiteralPath $publicRoot -Recurse -File -Filter "*.html"
 foreach ($file in $htmlFiles) {
@@ -65,7 +85,7 @@ foreach ($file in $htmlFiles) {
       $target = Join-Path $file.DirectoryName $clean
     }
 
-    if (-not (Test-Path -LiteralPath $target)) {
+    if (-not (Test-PublicReference $target)) {
       $failures.Add("Broken local reference in ${relative}: $reference")
     }
   }
