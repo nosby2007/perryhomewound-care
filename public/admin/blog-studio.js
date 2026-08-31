@@ -11,6 +11,7 @@ let coverPath="";
 
 const slugify=s=>String(s||"").toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,120);
 const safeFileName=name=>String(name||"image").toLowerCase().replace(/[^a-z0-9._-]+/g,"-").replace(/-+/g,"-").slice(-90);
+const clean=(value,max=10000)=>String(value??"").trim().slice(0,max);
 
 function articleHtml(text){
   const lines=String(text||"").split(/\r?\n/),out=[];let list=false;
@@ -92,11 +93,154 @@ function renderLibrary(){
 
 function editArticle(id){
   const p=posts.find(x=>x.id===id);if(!p)return;
-  $("editingSlug").value=p.slug||p.id;$("blogTitle").value=p.title||"";$("blogSlug").value=p.slug||p.id;$("blogCategory").value=p.category||"Wound Education";$("blogExcerpt").value=p.excerpt||"";$("blogBody").value=p.body||"";$("seoTitle").value=p.seoTitle||"";$("seoDescription").value=p.seoDescription||"";setCover(p.coverUrl||"",p.coverPath||"",p.coverAlt||"");syncPreview();window.scrollTo({top:0,behavior:"smooth"});
+  $("editingSlug").value=p.slug||p.id;$("blogTitle").value=p.title||"";$("blogSlug").value=p.slug||p.id;setCategory(p.category||"Wound Education");$("blogExcerpt").value=p.excerpt||"";$("blogBody").value=p.body||"";$("seoTitle").value=p.seoTitle||"";$("seoDescription").value=p.seoDescription||"";setCover(p.coverUrl||"",p.coverPath||"",p.coverAlt||"");syncPreview();window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function reset(){
   $("blogForm").reset();$("editingSlug").value="";$("blogImage").value="";setCover("","","");syncPreview();
+}
+
+function setCategory(value){
+  const category=clean(value,80)||"Wound Education";
+  const select=$("blogCategory");
+  if(![...select.options].some(o=>o.value===category)){
+    const option=document.createElement("option");option.value=category;option.textContent=category;select.append(option);
+  }
+  select.value=category;
+}
+
+function sectionsToBody(sections){
+  if(!Array.isArray(sections))return "";
+  const out=[];
+  for(const section of sections){
+    if(typeof section==="string"){if(section.trim())out.push(section.trim());continue;}
+    if(!section||typeof section!=="object")continue;
+    const heading=clean(section.heading||section.title,180);if(heading)out.push(`## ${heading}`);
+    const paragraphValues=[];
+    if(typeof section.paragraph==="string")paragraphValues.push(section.paragraph);
+    if(typeof section.content==="string")paragraphValues.push(section.content);
+    if(Array.isArray(section.paragraphs))paragraphValues.push(...section.paragraphs);
+    if(Array.isArray(section.content))paragraphValues.push(...section.content);
+    paragraphValues.map(x=>clean(x,12000)).filter(Boolean).forEach(x=>out.push(x));
+    if(Array.isArray(section.bullets))section.bullets.map(x=>clean(x,2000)).filter(Boolean).forEach(x=>out.push(`- ${x}`));
+    out.push("");
+  }
+  return out.join("\n").trim();
+}
+
+function validCoverUrl(value){
+  const url=clean(value,1200);if(!url)return "";
+  if(url.startsWith("/")||/^https?:\/\//i.test(url))return url;
+  return "";
+}
+
+function normalizeImportedArticle(raw){
+  if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("Each article must be a JSON object.");
+  const source=raw.article&&typeof raw.article==="object"?raw.article:raw;
+  const title=clean(source.title,160);
+  const slug=slugify(source.slug||title);
+  const body=typeof source.body==="string"?clean(source.body,100000):sectionsToBody(source.sections);
+  if(!title)throw new Error("Every imported article needs a title.");
+  if(!slug)throw new Error(`Could not create a slug for: ${title}`);
+  if(!body)throw new Error(`Article \"${title}\" needs body text or a sections array.`);
+  const seo=source.seo&&typeof source.seo==="object"?source.seo:{};
+  const cover=source.cover&&typeof source.cover==="object"?source.cover:{};
+  const excerpt=clean(source.excerpt||source.summary,320);
+  return {
+    title,
+    slug,
+    category:clean(source.category,80)||"Wound Education",
+    excerpt,
+    body,
+    seoTitle:clean(source.seoTitle||seo.title||title,65),
+    seoDescription:clean(source.seoDescription||seo.description||excerpt,160),
+    coverUrl:validCoverUrl(source.coverUrl||cover.url),
+    coverPath:"",
+    coverAlt:clean(source.coverAlt||cover.alt,180)
+  };
+}
+
+function parseJsonArticles(){
+  const text=$("blogJsonInput").value.trim();
+  if(!text)throw new Error("Paste JSON or choose a JSON file first.");
+  let parsed;
+  try{parsed=JSON.parse(text);}catch(e){throw new Error(`Invalid JSON: ${e.message}`);}
+  let items;
+  if(Array.isArray(parsed))items=parsed;
+  else if(Array.isArray(parsed?.articles))items=parsed.articles;
+  else items=[parsed];
+  if(!items.length)throw new Error("The JSON does not contain any articles.");
+  return items.map(normalizeImportedArticle);
+}
+
+function setJsonStatus(message,type="success"){
+  const el=$("jsonImportStatus");el.textContent=message||"";el.className=`json-status ${type}`;
+}
+
+function populateEditorFromImport(article){
+  reset();
+  $("blogTitle").value=article.title;
+  $("blogSlug").value=article.slug;
+  setCategory(article.category);
+  $("blogExcerpt").value=article.excerpt;
+  $("blogBody").value=article.body;
+  $("seoTitle").value=article.seoTitle;
+  $("seoDescription").value=article.seoDescription;
+  setCover(article.coverUrl,"",article.coverAlt);
+  syncPreview();
+  document.querySelector(".editor-grid")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function loadJsonIntoEditor(){
+  try{
+    const articles=parseJsonArticles();
+    populateEditorFromImport(articles[0]);
+    setJsonStatus(articles.length===1?"JSON validated and loaded into the editor. Review it, then save or publish.":`JSON contains ${articles.length} articles. The first article was loaded into the editor; use “Import as draft(s)” to create all of them.`,articles.length===1?"success":"warn");
+  }catch(e){console.error(e);setJsonStatus(e.message||"Could not import JSON.","error");}
+}
+
+async function importJsonDrafts(){
+  try{
+    if(!currentUser)throw new Error("Blog Studio is still loading your admin session.");
+    const articles=parseJsonArticles();
+    $("importJsonDraftsBtn").disabled=true;
+    let created=0,skipped=0;
+    for(const article of articles){
+      const ref=doc(db,COL,article.slug);
+      const existing=await getDoc(ref);
+      if(existing.exists()){skipped++;continue;}
+      const actor=currentUser.email||currentUser.uid||"admin";
+      await setDoc(ref,{...article,status:"Draft",createdAt:serverTimestamp(),updatedAt:serverTimestamp(),createdBy:actor,updatedBy:actor});
+      created++;
+    }
+    await loadPosts();
+    setJsonStatus(`Import complete: ${created} draft${created===1?"":"s"} created${skipped?`; ${skipped} skipped because the slug already exists`:""}.`,skipped?"warn":"success");
+  }catch(e){console.error(e);setJsonStatus(e.message||"Could not import JSON drafts.","error");}
+  finally{$("importJsonDraftsBtn").disabled=false;}
+}
+
+function insertJsonExample(){
+  const example={
+    title:"Choosing the Right Dressing for Exudative Wounds",
+    category:"Wound Education",
+    excerpt:"A practical clinical overview of exudate assessment, periwound protection, and dressing-selection considerations.",
+    sections:[
+      {heading:"Why exudate assessment matters",paragraphs:["Exudate is one part of the overall wound assessment. Its amount, character, and change over time can influence dressing selection and follow-up."],bullets:["Assess the wound and periwound skin","Consider drainage amount and change over time","Reassess when the clinical picture changes"]},
+      {heading:"Clinical takeaway",paragraphs:["Dressing selection should be individualized to the wound, the patient, and the broader plan of care."]}
+    ],
+    seo:{title:"Dressing Selection for Exudative Wounds",description:"Clinical considerations for assessing exudate and selecting wound dressings."},
+    cover:{url:"",alt:"Clinician preparing wound care supplies"}
+  };
+  $("blogJsonInput").value=JSON.stringify(example,null,2);setJsonStatus("Example JSON inserted. Edit it or load it into the article editor.","success");
+}
+
+async function loadJsonFile(file){
+  if(!file)return;
+  if(file.size>2*1024*1024)throw new Error("JSON file must be 2 MB or smaller.");
+  const text=await file.text();
+  JSON.parse(text);
+  $("blogJsonInput").value=text;
+  setJsonStatus(`Loaded ${file.name}. Click “Load into editor” or “Import as draft(s)”.`,"success");
 }
 
 $("blogTitle").addEventListener("input",()=>{if(!$("editingSlug").value)$("blogSlug").value=slugify($("blogTitle").value);if(!$("seoTitle").value)$("seoTitle").value=$("blogTitle").value.slice(0,65);syncPreview();});
@@ -109,5 +253,10 @@ $("saveBlogDraftBtn").addEventListener("click",()=>saveArticle("Draft").catch(e=
 $("publishBlogBtn").addEventListener("click",()=>saveArticle("Published").catch(e=>{console.error(e);alert("Could not publish article.");}));
 $("resetBlogBtn").addEventListener("click",reset);$("newBlogBtn").addEventListener("click",reset);$("blogStatusFilter").addEventListener("change",renderLibrary);
 $("blogLibrary").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.editBlog)editArticle(b.dataset.editBlog);if(b.dataset.publishBlog){const p=posts.find(x=>x.id===b.dataset.publishBlog);if(p){editArticle(p.id);saveArticle("Published").catch(console.error);}}});
+$("loadJsonBtn").addEventListener("click",loadJsonIntoEditor);
+$("importJsonDraftsBtn").addEventListener("click",()=>importJsonDrafts());
+$("exampleJsonBtn").addEventListener("click",insertJsonExample);
+$("clearJsonBtn").addEventListener("click",()=>{$("blogJsonInput").value="";$("blogJsonFile").value="";setJsonStatus("");});
+$("blogJsonFile").addEventListener("change",e=>loadJsonFile(e.target.files?.[0]).catch(err=>{console.error(err);setJsonStatus(err.message||"Could not read JSON file.","error");}));
 
 adminReady.then(async user=>{currentUser=user;reset();await loadPosts();}).catch(console.error);
