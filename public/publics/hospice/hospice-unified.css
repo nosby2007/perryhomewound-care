@@ -1,0 +1,78 @@
+/* Homepage-aligned visual layer for the existing Hospice partnership page. */
+body.phwc-hospice{font-size:1rem!important;background:var(--phwc-bg)!important;color:var(--phwc-ink)!important}
+body.phwc-hospice .container-narrow{max-width:1320px!important}
+body.phwc-hospice .topbar{background:var(--phwc-blue-deep)!important;color:rgba(255,255,255,.88)!important;border:0!important}
+body.phwc-hospice .topbar .chip{color:rgba(255,255,255,.88)!important;font-size:.92rem!important;padding:.68rem 0!important}
+body.phwc-hospice .topbar i{color:#f0b18c!important}
+body.phwc-hospice .navbar{position:sticky!important;top:0!important;z-index:60!important;background:rgba(255,253,249,.96)!important;border-bottom:1px solid var(--phwc-border)!important;box-shadow:0 8px 24px rgba(20,63,85,.05)!important;backdrop-filter:blur(14px)}
+body.phwc-hospice .navbar .brand{font-family:Georgia,'Times New Roman',serif!important;color:var(--phwc-blue-deep)!important;font-size:1.75rem!important;letter-spacing:-.03em!important}
+body.phwc-hospice .navbar .dot{color:var(--phwc-orange)!important}
+body.phwc-hospice .navbar .nav-link{font-size:.96rem!important;color:#36505d!important;padding:1.05rem .82rem!important;border-radius:8px!important}
+body.phwc-hospice .navbar .nav-link:hover{color:var(--phwc-blue-deep)!important;background:#e8eee9!important}
+body.phwc-hospice .navbar .btn-cta{background:var(--phwc-orange)!important;color:#fff!important;border-radius:12px!important;box-shadow:none!important;padding:.78rem 1.05rem!important;font-size:.92rem!important}
+
+body.phwc-hospice .hero{min-height:660px!important;display:flex!important;align-items:center!important;padding:7rem 0 7.5rem!important;background:linear-gradient(96deg,rgba(248,245,239,.99) 0%,rgba(248,245,239,.97) 45%,rgba(248,245,239,.78) 62%,rgba(248,245,239,.18) 100%),url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767049351/dNk0l81Mq3DxRS8C_d320YG0yizPVycul_gsubuz.jpg')!important;background-size:cover!important;background-position:center right!important;border-bottom:0!important}
+body.phwc-hospice .hero .pill{display:inline-flex!important;align-items:center!important;gap:.55rem!important;background:rgba(255,253,249,.9)!important;border:1px solid var(--phwc-border)!important;color:var(--phwc-blue)!important;border-radius:999px!important;padding:.58rem .9rem!important;font-size:.82rem!important;font-weight:800!important}
+body.phwc-hospice .hero .kicker{color:var(--phwc-orange)!important;font-size:.78rem!important;letter-spacing:.15em!important;font-weight:900!important;text-transform:uppercase!important;margin-bottom:1rem!important}
+body.phwc-hospice .hero h1{font-family:Georgia,'Times New Roman',serif!important;color:var(--phwc-blue-deep)!important;font-size:clamp(3rem,5.8vw,5.7rem)!important;line-height:.98!important;letter-spacing:-.04em!important;max-width:850px!important;font-weight:500!important}
+body.phwc-hospice .hero p{color:#52666e!important;font-size:1.12rem!important;line-height:1.76!important;max-width:790px!important}
+body.phwc-hospice .attention-blink{background:transparent!important;color:var(--phwc-blue-deep)!important;box-shadow:none!important;padding:.7rem 0!important;border-radius:0!important;font-size:.94rem!important;gap:.7rem!important;flex-wrap:wrap!important}
+body.phwc-hospice .attention-blink i{color:var(--phwc-orange)!important}
+body.phwc-hospice .attention-blink span{font-size:1em!important}
+body.phwc-hospice .btn-primary-soft{background:var(--phwc-blue-2)!important;color:#fff!important;border:0!important;border-radius:12px!important;padding:1rem 1.3rem!important;font-size:.95rem!important;box-shadow:0 14px 32px rgba(20,63,85,.18)!important}
+body.phwc-hospice .btn-outline-primary{color:var(--phwc-blue-deep)!important;border:1.5px solid rgba(20,63,85,.28)!important;background:rgba(255,253,249,.76)!important;border-radius:12px!important;padding:.96rem 1.25rem!important;font-size:.95rem!important}
+
+body.phwc-hospice .feature-row{margin-top:-56px!important;padding:0 1rem!important;position:relative!important;z-index:4!important;background:transparent!important}
+body.phwc-hospice .feature-row>.container{background:var(--phwc-card)!important;border:1px solid var(--phwc-border)!important;border-radius:24px!important;box-shadow:var(--phwc-shadow)!important;overflow:hidden!important;padding:0!important}
+body.phwc-hospice .feature-tile{background:transparent!important;color:var(--phwc-ink)!important;border-radius:0!important;box-shadow:none!important;border-right:1px solid var(--phwc-border)!important;padding:2rem 1.55rem!important;min-height:225px!important}
+body.phwc-hospice .feature-row .col-md-3:last-child .feature-tile{border-right:0!important}
+body.phwc-hospice .feature-tile .ico{width:52px!important;height:52px!important;border-radius:14px!important;background:#e8eee9!important;color:var(--phwc-blue)!important;font-size:1.35rem!important;box-shadow:none!important}
+body.phwc-hospice .feature-tile h6{color:var(--phwc-blue-deep)!important;font-size:1.05rem!important;margin-bottom:.55rem!important}
+body.phwc-hospice .feature-tile p{color:var(--phwc-muted)!important;font-size:.93rem!important;line-height:1.6!important}
+body.phwc-hospice .animated-tile:hover{background:#fff!important;transform:translateY(-3px)!important;box-shadow:none!important}
+
+body.phwc-hospice .section{padding:6rem 0!important}
+body.phwc-hospice .section:nth-of-type(even){background:var(--phwc-card)}
+body.phwc-hospice .section-title{font-family:Georgia,'Times New Roman',serif!important;color:var(--phwc-blue-deep)!important;font-size:clamp(2.2rem,4vw,3.55rem)!important;line-height:1.05!important;font-weight:500!important}
+body.phwc-hospice .section-sub{color:var(--phwc-muted)!important;font-size:1.05rem!important;line-height:1.75!important}
+body.phwc-hospice .divider{width:82px!important;height:3px!important;border-radius:99px!important;background:linear-gradient(90deg,var(--phwc-blue),var(--phwc-orange))!important}
+body.phwc-hospice .section .pill{display:inline-flex!important;align-items:center!important;gap:.55rem!important;border:1px solid var(--phwc-border)!important;background:var(--phwc-card)!important;color:var(--phwc-blue)!important;border-radius:999px!important;padding:.55rem .9rem!important;font-size:.8rem!important;font-weight:800!important;box-shadow:0 8px 24px rgba(20,63,85,.05)!important}
+body.phwc-hospice #partnership img{border:6px solid var(--phwc-card)!important;border-radius:28px!important;box-shadow:var(--phwc-shadow)!important;max-height:590px!important;width:100%!important;object-fit:cover!important}
+body.phwc-hospice #partnership li{font-size:1rem!important;color:#425b66!important;line-height:1.65!important}
+body.phwc-hospice #partnership .text-primary{color:var(--phwc-blue)!important}
+body.phwc-hospice #partnership .alert-primary{background:#eef2ee!important;color:var(--phwc-blue-deep)!important;border:1px solid var(--phwc-border)!important}
+
+body.phwc-hospice .cta-band{background:var(--phwc-blue-deep)!important;color:#fff!important;padding:3.2rem 0!important}
+body.phwc-hospice .cta-band h4{font-family:Georgia,'Times New Roman',serif!important;font-size:clamp(1.7rem,3vw,2.5rem)!important;color:#fff!important}
+body.phwc-hospice .cta-band p{color:rgba(255,255,255,.72)!important}
+body.phwc-hospice .btn-cta-outline{border:1px solid rgba(255,255,255,.5)!important;border-radius:12px!important;color:#fff!important;background:transparent!important}
+
+body.phwc-hospice .about-card,body.phwc-hospice .dept-wrap,body.phwc-hospice .testimonial-card{background:var(--phwc-card)!important;border:1px solid var(--phwc-border)!important;border-radius:24px!important;box-shadow:var(--phwc-shadow)!important;overflow:hidden!important}
+body.phwc-hospice .mini-feature .badge-ico{background:#e8eee9!important;color:var(--phwc-blue)!important}
+body.phwc-hospice .mini-feature h6{color:var(--phwc-blue-deep)!important}
+body.phwc-hospice .mini-feature p{color:var(--phwc-muted)!important}
+body.phwc-hospice .nav-dept{border:1px solid var(--phwc-border)!important;border-radius:14px!important;background:var(--phwc-card)!important}
+body.phwc-hospice .nav-dept .nav-link{color:#52666e!important;background:transparent!important;border-radius:10px!important;font-size:.92rem!important}
+body.phwc-hospice .nav-dept .nav-link.active{background:var(--phwc-blue-2)!important;color:#fff!important}
+body.phwc-hospice .dept-img{border:1px solid var(--phwc-border)!important;border-radius:20px!important;box-shadow:0 16px 42px rgba(20,63,85,.08)!important}
+
+body.phwc-hospice .consult{border-radius:28px!important;overflow:hidden!important;box-shadow:var(--phwc-shadow)!important;background:var(--phwc-card)!important;border:1px solid var(--phwc-border)!important}
+body.phwc-hospice .consult-left{background:var(--phwc-blue-deep)!important;padding:clamp(28px,4vw,52px)!important}
+body.phwc-hospice .consult-left h4{font-family:Georgia,'Times New Roman',serif!important;color:#fff!important;font-size:clamp(2rem,3.5vw,3rem)!important}
+body.phwc-hospice .consult-left p{color:rgba(255,255,255,.76)!important}
+body.phwc-hospice .consult-left .form-control,body.phwc-hospice .consult-left .form-select{background:rgba(255,255,255,.98)!important;color:var(--phwc-ink)!important;border:1px solid rgba(255,255,255,.5)!important;border-radius:12px!important;min-height:48px!important}
+body.phwc-hospice .consult-left .btn-submit{display:inline-flex!important;align-items:center!important;justify-content:center!important;border:0!important;border-radius:12px!important;background:var(--phwc-orange)!important;color:#fff!important;font-weight:900!important;padding:.9rem 1.25rem!important;min-height:48px!important}
+body.phwc-hospice .stats{background:var(--phwc-card)!important;padding:clamp(28px,4vw,48px)!important}
+body.phwc-hospice .stat{background:#f1f3ed!important;border:1px solid var(--phwc-border)!important;border-radius:18px!important;padding:20px!important;height:100%!important}
+body.phwc-hospice .stat .num{color:var(--phwc-orange)!important;font-family:Georgia,'Times New Roman',serif!important;font-size:1.65rem!important}
+body.phwc-hospice .stat .lbl{color:var(--phwc-muted)!important;font-size:.86rem!important}
+
+body.phwc-hospice footer{background:var(--phwc-blue-deep)!important;color:#fff!important;margin-top:0!important}
+body.phwc-hospice footer .brand{font-family:Georgia,'Times New Roman',serif!important}
+body.phwc-hospice footer a{color:#e7eeeb!important}
+body.phwc-hospice footer .footer-muted{color:#b9c9c4!important}
+body.phwc-hospice footer h6{color:#fff!important}
+body.phwc-hospice footer .footer-line{border-color:rgba(255,255,255,.12)!important;color:#b9c9c4!important}
+
+@media(max-width:991px){body.phwc-hospice .hero{min-height:auto!important;padding:5.5rem 0 6rem!important;background:linear-gradient(96deg,rgba(248,245,239,.98),rgba(248,245,239,.91)),url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1767049351/dNk0l81Mq3DxRS8C_d320YG0yizPVycul_gsubuz.jpg')!important;background-size:cover!important}.feature-row{margin-top:-36px!important}body.phwc-hospice .feature-tile{border-right:0!important;border-bottom:1px solid var(--phwc-border)!important;min-height:auto!important}body.phwc-hospice .feature-row .col-md-3:last-child .feature-tile{border-bottom:0!important}}
+@media(max-width:680px){body.phwc-hospice .hero{padding:4.2rem 0 5rem!important}body.phwc-hospice .hero h1{font-size:2.65rem!important}body.phwc-hospice .hero p{font-size:1rem!important}body.phwc-hospice .attention-blink{display:grid!important;grid-template-columns:auto 1fr!important;align-items:center!important}body.phwc-hospice .attention-blink .fa-arrow-right{display:none!important}body.phwc-hospice .section{padding:4.5rem 0!important}body.phwc-hospice .section-title{font-size:2.35rem!important}body.phwc-hospice .dept-wrap{padding:16px!important}body.phwc-hospice .nav-dept{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;width:100%!important;padding:5px!important}body.phwc-hospice .nav-dept .nav-link{white-space:nowrap!important}body.phwc-hospice .consult{border-radius:20px!important}}

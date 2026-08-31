@@ -21,6 +21,15 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
+function ensureStylesheet(id, href) {
+  if (document.getElementById(id)) return;
+  const link = document.createElement('link');
+  link.id = id;
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
 // Keep public blog navigation independent from the homepage anchor layout.
 function fixBlogNavigation() {
   document.querySelectorAll('a.nav-link[href="#blog"]').forEach(link => {
@@ -43,6 +52,37 @@ function fixBlogNavigation() {
       if (link.querySelector('img')) link.setAttribute('href', '/blog');
     });
   });
+}
+
+// The original homepage used referral query strings as placeholders for several
+// partner pages. Replace those placeholders with the dedicated partner landing pages.
+function fixPartnerNavigation() {
+  const partnerRoutes = [
+    ['home-health-partnership', '/publics/partener/home-health'],
+    ['primary-care-partnership', '/publics/partener/pcp'],
+    ['assisted-living-partnership', '/publics/partener/acf'],
+    ['hospital-discharge-referral', '/publics/partener/hospitals']
+  ];
+
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    for (const [service, destination] of partnerRoutes) {
+      if (href.includes(`service=${service}`)) {
+        link.setAttribute('href', destination);
+        break;
+      }
+    }
+  });
+}
+
+// Hospice already has its own clinical content and working Firestore form.
+// Apply the shared homepage design as a late visual layer instead of replacing
+// that functionality or duplicating the form implementation.
+function applyHospiceUnifiedDesign() {
+  if (!window.location.pathname.toLowerCase().includes('/publics/hospice/')) return;
+  document.body.classList.add('phwc-public', 'phwc-hospice');
+  ensureStylesheet('phwc-public-styles', '/phwc-public.css');
+  ensureStylesheet('phwc-hospice-styles', '/publics/hospice/hospice-unified.css');
 }
 
 function postTime(post) {
@@ -86,20 +126,22 @@ async function hydrateHomepageBlog() {
 }
 
 fixBlogNavigation();
+fixPartnerNavigation();
+applyHospiceUnifiedDesign();
 hydrateHomepageBlog().catch(err => {
   // Navigation still works if Firestore is temporarily unavailable.
   console.warn('Homepage blog preview unavailable:', err);
 });
 
 const el = document.getElementById("navAuth");
-if (el) el.innerHTML = `<a class="btn" href="./admin/login/admin-login.html">Sign in</a>`; // état initial
+if (el) el.innerHTML = `<a class="btn" href="/admin/login/admin-login.html">Sign in</a>`; // état initial
 
 onAuthStateChanged(auth, async (user) => {
   if (!el) return;
 
   if (!user) {
     // Déconnecté → bouton Sign in
-    el.innerHTML = `<a class="btn" href="./admin/login/admin-login.html">Sign in</a>`;
+    el.innerHTML = `<a class="btn" href="/admin/login/admin-login.html">Sign in</a>`;
     return;
   }
 

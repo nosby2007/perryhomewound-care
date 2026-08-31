@@ -4,7 +4,7 @@
   --bg:#f7fafc; --card:#ffffff; --radius:18px; --shadow:0 12px 28px rgba(2,6,23,.06),0 3px 10px rgba(2,6,23,.05);
 }
 *{box-sizing:border-box}
-html,body{margin:0}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
 body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
 a{color:var(--brand-2);text-decoration:none} a:hover{opacity:.9}
 img{max-width:100%;display:block}
@@ -21,7 +21,7 @@ img{max-width:100%;display:block}
 .btn.primary:hover{filter:brightness(.98)} .btn.ghost:hover{border-color:#cfeaf0}
 
 /* Layout helpers */
-.wrap{max-width:1200px;margin:auto;padding:42px 16px}
+.wrap{max-width:1200px;margin:auto;padding:42px 16px;width:100%;min-width:0}
 .small{font-size:12px;color:#8aa0b5}
 .muted{color:#8aa0b5}
 
@@ -38,20 +38,24 @@ img{max-width:100%;display:block}
 .input{flex:1;min-width:190px}.select{min-width:180px}
 
 /* Grid + cards */
-.grid{display:grid;gap:16px}
+.grid{display:grid;gap:20px;width:100%;min-width:0}
 .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media (max-width:960px){.grid.cols-3{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:640px){.grid.cols-3{grid-template-columns:1fr}}
+@media (max-width:960px){.grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.grid.cols-3{grid-template-columns:minmax(0,1fr)}}
 
-.card{background:var(--card);border:1px solid #e8eef5;border-radius:var(--radius);padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;gap:14px;flex-direction:column}
-.service-media{border-radius:14px;overflow:hidden;border:1px solid #e6eef6;aspect-ratio:16/9}
-.service-media img{width:100%;height:100%;object-fit:cover}
+.card{background:var(--card);border:1px solid #e8eef5;border-radius:var(--radius);padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;gap:14px;flex-direction:column;min-width:0;max-width:100%;overflow:hidden}
+/* Keep service photos inside a fixed 16:9 viewport. Absolute positioning prevents
+   the image's intrinsic dimensions from stretching the flex card on mobile. */
+.service-media{position:relative;width:100%;max-width:100%;min-width:0;aspect-ratio:16/9;min-height:0;flex:0 0 auto;margin:0;border-radius:14px;overflow:hidden;border:1px solid #e6eef6;background:#eef4fb}
+.service-media img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center;display:block;transform:none!important;transition:none!important;pointer-events:none;user-select:none;-webkit-user-drag:none}
 
-.card h3{margin:8px 0 6px;font-size:18px}
-.card p{margin:0;color:#64748b;font-size:14px}
-.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.badge{font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid #dfeaf4;background:#fff;color:#0f4c5c}
-.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.card>div{min-width:0;width:100%}
+.card h3{margin:8px 0 6px;font-size:18px;overflow-wrap:anywhere}
+.card p{margin:0;color:#64748b;font-size:14px;overflow-wrap:anywhere}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;min-width:0}
+.badge{font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid #dfeaf4;background:#fff;color:#0f4c5c;max-width:100%;white-space:normal}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;min-width:0}
+.cta-row .btn{max-width:100%;text-align:center}
 .btn.block{width:100%;justify-content:center}
 
 /* Footer */
@@ -62,7 +66,12 @@ img{max-width:100%;display:block}
 @media (max-width:640px){
   .navin{align-items:flex-start;flex-direction:column}
   .navlinks{width:100%;gap:8px}
-  .navlinks .btn{flex:1;justify-content:center;padding:9px 10px;text-align:center}
+  .navlinks .btn{flex:1;justify-content:center;padding:9px 10px;text-align:center;min-width:0}
   .toolbar{align-items:stretch;flex-direction:column}
   .input,.select{width:100%;min-width:0}
+  .wrap{padding:28px 14px 42px}
+  .card{padding:12px;border-radius:16px}
+  .service-media{border-radius:13px}
+  .cta-row{display:grid;grid-template-columns:1fr}
+  .cta-row .btn{width:100%;justify-content:center}
 }
