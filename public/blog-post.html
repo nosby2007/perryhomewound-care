@@ -5,44 +5,88 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Wound Care Article | Perry Home Wound Care</title>
   <meta id="metaDescription" name="description" content="Wound care education from Perry Home Wound Care."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/blog-post.css"/>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="readingProgress"></span></div>
   <header class="site-header">
-    <a class="brand" href="/"><span class="logo">PH</span><span><strong>Perry Home Wound Care</strong><small>Advanced Wound Care at Home</small></span></a>
-    <nav><a href="/">Home</a><a href="/publics/services/Service">Services</a><a href="/blog">Blog</a><a class="cta" href="/publics/contact/Contact">Contact</a></nav>
+    <a class="brand" href="/" aria-label="Perry Home Wound Care home">
+      <span class="logo">PH</span>
+      <span><strong>Perry Home Wound Care</strong><small>Advanced Wound Care at Home</small></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/publics/services/Service">Services</a>
+      <a class="active" href="/blog">Education</a>
+      <a href="/publics/referal/referal">Referral</a>
+      <a class="cta" href="/publics/contact/Contact">Contact</a>
+    </nav>
   </header>
 
   <main>
     <article id="article" class="article" hidden>
-      <a class="back" href="/blog">← Back to Blog</a>
-      <div class="category" id="category"></div>
-      <h1 id="title"></h1>
-      <p class="excerpt" id="excerpt"></p>
-      <div class="meta" id="articleMeta"></div>
-      <img id="cover" class="cover" alt="" hidden/>
-      <div id="articleBody" class="article-body"></div>
+      <header class="article-hero">
+        <div class="article-hero-inner">
+          <a class="back" href="/blog"><span aria-hidden="true">←</span> Back to Clinical Education</a>
+          <div class="category" id="category"></div>
+          <h1 id="title"></h1>
+          <p class="excerpt" id="excerpt"></p>
+          <div class="byline-row">
+            <div class="author-mark">PH</div>
+            <div class="author-copy"><strong id="authorName">Perry Home Wound Care</strong><span>Clinical Education</span></div>
+            <div class="byline-divider"></div>
+            <div class="meta" id="articleMeta"></div>
+            <div class="read-time" id="readTime"></div>
+          </div>
+        </div>
+      </header>
 
-      <div class="share-box">
-        <strong>Share this article</strong>
-        <div class="share-actions">
-          <button type="button" data-share="whatsapp">WhatsApp</button>
-          <button type="button" data-share="linkedin">LinkedIn</button>
-          <button type="button" data-share="facebook">Facebook</button>
+      <div class="article-layout">
+        <aside class="article-rail">
+          <div class="rail-sticky">
+            <span class="rail-label">SHARE</span>
+            <div class="share-actions">
+              <button type="button" data-share="linkedin" aria-label="Share on LinkedIn">in</button>
+              <button type="button" data-share="facebook" aria-label="Share on Facebook">f</button>
+              <button type="button" data-share="whatsapp" aria-label="Share on WhatsApp">wa</button>
+            </div>
+            <div class="rail-rule"></div>
+            <span class="rail-label">PHWC EDUCATION</span>
+            <p>Practical wound-care education for patients, caregivers, and care teams.</p>
+          </div>
+        </aside>
+
+        <div class="article-main">
+          <figure id="coverWrap" class="cover-wrap" hidden>
+            <img id="cover" class="cover" alt=""/>
+          </figure>
+
+          <div id="sponsorDisclosure" class="sponsor-disclosure" hidden></div>
+          <div id="articleBody" class="article-body"></div>
+
+          <section class="author-card" aria-label="Publisher information">
+            <div class="author-card-mark">PH</div>
+            <div><span class="author-card-label">PUBLISHED BY</span><h3>Perry Home Wound Care</h3><p>Clinician-led wound care and practical education for patients, caregivers, and healthcare partners across Middle Georgia.</p></div>
+          </section>
+
+          <aside class="cta-box">
+            <div><span>LOCAL WOUND CARE SUPPORT</span><strong>Need help with a wound-care referral or home visit?</strong><p>Talk with the PHWC team about service availability and next steps.</p></div>
+            <div class="cta-actions"><a class="cta-primary" href="tel:+14783104446">Call 478-310-4446</a><a class="cta-secondary" href="/publics/referal/referal">Refer a patient</a></div>
+          </aside>
+
+          <p class="disclaimer"><strong>Clinical education notice:</strong> This article is for general education and does not replace individualized medical evaluation, diagnosis, or treatment advice. Care decisions should be based on the patient’s clinical condition and the treating healthcare team’s plan of care.</p>
+
+          <div class="article-end-nav"><a href="/blog"><span aria-hidden="true">←</span> View all PHWC articles</a></div>
         </div>
       </div>
-
-      <aside class="cta-box">
-        <div><strong>Need local wound-care support?</strong><p>Perry Home Wound Care serves patients and care partners across Middle Georgia.</p></div>
-        <a href="tel:+14783104446">Call 478-310-4446</a>
-      </aside>
-
-      <p class="disclaimer">This article is for general education and does not replace individualized medical evaluation, diagnosis, or treatment advice.</p>
     </article>
-    <div id="loading" class="loading">Loading article…</div>
+    <div id="loading" class="loading"><div class="loading-mark">PH</div><span>Loading clinical education…</span></div>
   </main>
 
-  <footer><strong>Perry Home Wound Care LLC</strong><span>Perry, Georgia · Serving Middle Georgia</span></footer>
+  <footer><div><strong>Perry Home Wound Care LLC</strong><span>Perry, Georgia · Serving Middle Georgia</span></div><div class="footer-links"><a href="/blog">Clinical Education</a><a href="tel:+14783104446">478-310-4446</a><a href="mailto:support@perryhomewoundcare.network">support@perryhomewoundcare.network</a></div></footer>
   <script type="module" src="/blog-post.js"></script>
 </body>
 </html>

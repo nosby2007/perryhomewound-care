@@ -6,27 +6,105 @@
   <title>Wound Care Blog | Perry Home Wound Care</title>
   <meta name="description" content="Practical wound-care education, caregiver guidance, and local care resources from Perry Home Wound Care in Middle Georgia."/>
   <link rel="canonical" href="https://perryhomewoundcare.network/blog"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/blog.css"/>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/"><span class="logo">PH</span><span><strong>Perry Home Wound Care</strong><small>Advanced Wound Care at Home</small></span></a>
-    <nav><a href="/">Home</a><a href="/publics/services/Service">Services</a><a class="active" href="/blog">Blog</a><a class="cta" href="/publics/contact/Contact">Contact</a></nav>
+    <a class="brand" href="/" aria-label="Perry Home Wound Care home">
+      <span class="logo">PH</span>
+      <span><strong>Perry Home Wound Care</strong><small>Advanced Wound Care at Home</small></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/publics/services/Service">Services</a>
+      <a class="active" href="/blog">Education</a>
+      <a href="/publics/referal/referal">Referral</a>
+      <a class="cta" href="/publics/contact/Contact">Contact</a>
+    </nav>
   </header>
 
   <main>
     <section class="hero">
-      <div class="hero-inner"><span class="eyebrow">PHWC EDUCATION</span><h1>Wound care knowledge for patients, families, and care teams.</h1><p>Practical education from Perry Home Wound Care for Middle Georgia. Articles are educational and do not replace individualized medical advice.</p></div>
+      <div class="hero-shell">
+        <div class="hero-copy">
+          <span class="eyebrow">PHWC CLINICAL EDUCATION</span>
+          <h1>Wound care knowledge designed for real-world care.</h1>
+          <p>Clear, practical education for patients, caregivers, nurses, providers, and healthcare partners across Middle Georgia.</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#articles">Explore articles <span aria-hidden="true">↓</span></a>
+            <a class="secondary-action" href="/publics/referal/referal">Refer a patient</a>
+          </div>
+          <div class="hero-proof" aria-label="Education principles">
+            <span><b>01</b> Evidence-informed</span>
+            <span><b>02</b> Clinician-led</span>
+            <span><b>03</b> Patient-centered</span>
+          </div>
+        </div>
+
+        <aside class="hero-editorial" aria-label="About PHWC education">
+          <div class="editorial-kicker">FROM THE FIELD</div>
+          <h2>Education that connects wound assessment, prevention, dressing choices, and follow-up.</h2>
+          <p>Our editorial approach focuses on practical decision-making and communication across the care team — without replacing individualized medical evaluation.</p>
+          <div class="editorial-stats">
+            <div><strong id="articleCount">—</strong><span>Published articles</span></div>
+            <div><strong>Middle GA</strong><span>Local clinical focus</span></div>
+          </div>
+        </aside>
+      </div>
     </section>
 
-    <section class="content-wrap">
-      <div class="section-head"><div><span class="eyebrow">LATEST ARTICLES</span><h2>PHWC Wound Care Blog</h2></div><input id="blogSearch" type="search" placeholder="Search articles…"/></div>
-      <div id="blogGrid" class="blog-grid"></div>
-      <div id="blogEmpty" class="empty" hidden>No published articles found.</div>
+    <section class="content-wrap" id="articles">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">LATEST EDUCATION</span>
+          <h2>Explore the PHWC library.</h2>
+          <p>Search by clinical topic or browse the latest published education.</p>
+        </div>
+        <label class="search-box" for="blogSearch">
+          <span aria-hidden="true">⌕</span>
+          <input id="blogSearch" type="search" placeholder="Search wound care topics…" autocomplete="off"/>
+        </label>
+      </div>
+
+      <div class="category-filters" id="categoryFilters" aria-label="Filter articles by category">
+        <button type="button" class="filter-chip active" data-category="all">All topics</button>
+        <button type="button" class="filter-chip" data-category="Wound Education">Wound Education</button>
+        <button type="button" class="filter-chip" data-category="Pressure Injuries">Pressure Injuries</button>
+        <button type="button" class="filter-chip" data-category="Diabetic Wounds">Diabetic Wounds</button>
+        <button type="button" class="filter-chip" data-category="Post-Surgical Care">Post-Surgical Care</button>
+        <button type="button" class="filter-chip" data-category="Caregiver Education">Caregiver Education</button>
+      </div>
+
+      <div id="blogGrid" class="blog-grid" aria-live="polite"></div>
+      <div id="blogEmpty" class="empty" hidden>
+        <div class="empty-icon">PH</div>
+        <h3>No matching articles yet.</h3>
+        <p>Try another topic or clear your search to view the full education library.</p>
+      </div>
+    </section>
+
+    <section class="education-cta">
+      <div class="education-cta-inner">
+        <div>
+          <span class="eyebrow">NEED CLINICAL SUPPORT?</span>
+          <h2>Bring wound-focused care closer to home.</h2>
+          <p>PHWC supports patients, caregivers, and healthcare partners with clinician-led wound care and coordinated follow-up.</p>
+        </div>
+        <div class="education-cta-actions">
+          <a class="cta-light" href="tel:+14783104446">Call 478-310-4446</a>
+          <a class="cta-outline" href="/publics/referal/referal">Start a referral</a>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer><div><strong>Perry Home Wound Care LLC</strong><span>Perry, Georgia · Serving Middle Georgia</span></div><div><a href="tel:+14783104446">478-310-4446</a><a href="mailto:support@perryhomewoundcare.network">support@perryhomewoundcare.network</a></div></footer>
+  <footer>
+    <div><strong>Perry Home Wound Care LLC</strong><span>Perry, Georgia · Serving Middle Georgia</span></div>
+    <div class="footer-links"><a href="/blog">Clinical Education</a><a href="tel:+14783104446">478-310-4446</a><a href="mailto:support@perryhomewoundcare.network">support@perryhomewoundcare.network</a></div>
+  </footer>
   <script type="module" src="/blog.js"></script>
 </body>
 </html>
