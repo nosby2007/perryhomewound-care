@@ -6,21 +6,27 @@
   <title>Book a Visit — Perry Home Wound Care</title>
   <meta name="description" content="Book an in-home or virtual wound care visit with Perry Home Wound Care."/>
   <link rel="stylesheet" href="./bookings.css"/>
+  <link rel="stylesheet" href="/phwc-public.css"/>
 </head>
-<body>
+<body class="phwc-public">
   <header class="nav">
     <div class="navin">
       <a class="brand" href="/"><span class="logo">PH</span><span class="brandname">Perry Home Wound Care</span></a>
-      <nav class="navlinks">
+      <nav class="navlinks" aria-label="Main navigation">
+        <a class="btn ghost" href="/">Home</a>
         <a class="btn ghost" href="../services/Service.html">Services</a>
-        <a class="btn primary" href="./bookings.html">Book</a>
+        <a class="btn ghost" href="/blog">Education</a>
+        <a class="btn ghost" href="../referal/referal.html">Referral</a>
+        <a class="btn ghost" href="../contact/contact.html">Contact</a>
+        <a class="btn primary" href="./bookings.html">Book a Visit</a>
       </nav>
     </div>
   </header>
 
   <section class="book-hero">
+    <p class="eyebrow">REQUEST CARE</p>
     <h1>Book your wound care visit</h1>
-    <p class="muted">Tell us about the patient and pick a preferred date/time. We’ll confirm by phone/email.</p>
+    <p class="muted">Tell us about the patient and pick a preferred date/time. We’ll confirm by phone or email.</p>
     <div class="svc-pill" id="svcPill">Service: <strong id="svcTitle">Any service</strong></div>
   </section>
 
@@ -94,17 +100,14 @@
       <p>Thanks! Your booking request for <strong id="succSvc">—</strong> has been submitted.</p>
       <p class="muted">We’ll contact you soon to confirm date/time and next steps.</p>
       <div class="cta-row">
-        <a class="btn" href="../services/Service.html">Back to Services</a>
+        <a class="btn ghost" href="../services/Service.html">Back to Services</a>
         <a class="btn primary" href="../contact/contact.html">Contact us</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
-    <div class="muted small">
-      <a href="../../privacy.html">Privacy</a> ·
-      <a href="../../accessibility.html">Accessibility</a>
-    </div>
+    <div class="small">Perry Home Wound Care LLC · Perry, Georgia · <a href="../../privacy.html">Privacy</a> · <a href="../../accessibility.html">Accessibility</a></div>
   </footer>
 
   <script type="module" src="./bookings.js"></script>
