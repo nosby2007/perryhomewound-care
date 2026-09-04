@@ -25,6 +25,7 @@ const ELIGIBILITY = ["Not Checked","Pending","Verified","Coverage Issue","Out of
 const AUTH_STATUS = ["Not Required","Unknown","Required","Pending","Approved","Denied"];
 const REPORTED_BY = ["","Patient","Family/Caregiver","Referring Facility","Referring Provider","Insurance/Payer","PHWC Staff","Other"];
 const CONTACT_METHODS = ["Call","Voicemail","SMS if authorized","Secure Email","Referring Facility","Other"];
+const ELIGIBILITY_CONTACT_METHODS = ["Phone","Payer Portal","Fax","Secure Email","Other"];
 const FINAL_STATUSES = ["","Admitted","Declined","Unable to Contact","Insurance / Network Issue","Authorization Denied","Outside Service Area","Hospitalized","Duplicate","Withdrawn","Not Clinically Appropriate","Other / Not Admitted"];
 const CLOSED = new Set(["admitted","declined","unable_to_contact","insurance_network_issue","authorization_denied","outside_service_area","hospitalized","duplicate","withdrawn","not_clinically_appropriate","other_not_admitted","archived"]);
 const NOT_ADMITTED = new Set(["declined","unable_to_contact","insurance_network_issue","authorization_denied","outside_service_area","hospitalized","duplicate","withdrawn","not_clinically_appropriate","other_not_admitted"]);
@@ -85,6 +86,7 @@ optionize($("eligibilityStatus"),ELIGIBILITY);
 optionize($("authorizationStatus"),AUTH_STATUS);
 optionize($("dispositionReportedBy"),REPORTED_BY);
 optionize($("contactMethod"),CONTACT_METHODS);
+optionize($("eligContactMethod"),ELIGIBILITY_CONTACT_METHODS);
 optionize($("dispositionStatus"),FINAL_STATUSES);
 $("fSource").innerHTML += SOURCES.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");
 $("fStatus").innerHTML += STATUSES.map(v=>`<option value="${esc(v)}">${esc(statusLabel(v))}</option>`).join("");
@@ -151,7 +153,7 @@ async function saveReferral(e){
       if(previous!==next){ payload.statusHistory=arrayUnion({from:previous,to:next,changedAt:Timestamp.now(),changedBy:uid(),note:text(payload.dispositionReason)}); }
       await updateDoc(doc(db,"patientReferal",id),payload);
     }else{
-      await addDoc(collection(db,"patientReferal"),{...payload,createdAt:serverTimestamp(),createdBy:uid(),statusHistory:[{from:"",to:payload.status,changedAt:Timestamp.now(),changedBy:uid(),note:"Referral created by PHWC Admin"}],contactAttempts:[],source:"admin"});
+      await addDoc(collection(db,"patientReferal"),{...payload,createdAt:serverTimestamp(),createdBy:uid(),statusHistory:[{from:"",to:payload.status,changedAt:Timestamp.now(),changedBy:uid(),note:"Referral created by PHWC Admin"}],contactAttempts:[],eligibilityChecks:[],source:"admin"});
     }
     closeDrawer();
   }catch(err){ alert("Unable to save referral. Please verify your access and try again."); }
@@ -167,11 +169,28 @@ async function addContactAttempt(){
   $("contactOutcome").value=""; $("contactNote").value="";
 }
 
+async function addEligibilityCheck(){
+  const id=$("referralId").value;
+  if(!id) return alert("Save the referral before adding an eligibility check.");
+  const agentName=text($("eligAgentName").value); const authorizationNumber=text($("eligAuthNumber").value);
+  const referenceNumber=text($("eligRefNumber").value); const caseNumber=text($("eligCaseNumber").value); const note=text($("eligNote").value);
+  if(!agentName && !authorizationNumber && !referenceNumber && !caseNumber && !note) return alert("Enter at least one eligibility check detail.");
+  const checkDate=$("eligCheckDate").value ? Timestamp.fromDate(new Date(`${$("eligCheckDate").value}T12:00:00`)) : Timestamp.now();
+  const entry={date:checkDate,method:$("eligContactMethod").value,agentName,authorizationNumber,referenceNumber,caseNumber,note,staffUid:uid()};
+  await updateDoc(doc(db,"patientReferal",id),{eligibilityChecks:arrayUnion(entry),updatedAt:serverTimestamp(),updatedBy:uid()});
+  $("eligCheckDate").value=""; $("eligAgentName").value=""; $("eligAuthNumber").value=""; $("eligRefNumber").value=""; $("eligCaseNumber").value=""; $("eligNote").value="";
+}
+
 function renderHistories(d){
   const contacts=Array.isArray(d?.contactAttempts)?[...d.contactAttempts].reverse():[];
   $("contactHistory").innerHTML=contacts.length?contacts.map(x=>`<div class="activity-item"><strong>${esc(x.method||"Contact")}</strong> · ${esc(x.outcome||"")}<div class="muted2">${esc(dateTimeLabel(x.date))}${x.note?` · ${esc(x.note)}`:""}</div></div>`).join(""):`<div class="muted2">No contact attempts recorded.</div>`;
   const hist=Array.isArray(d?.statusHistory)?[...d.statusHistory].reverse():[];
   $("statusHistory").innerHTML=hist.length?hist.map(x=>`<div class="activity-item"><strong>${esc(statusLabel(x.to))}</strong><div class="muted2">${esc(dateTimeLabel(x.changedAt))}${x.note?` · ${esc(x.note)}`:""}</div></div>`).join(""):`<div class="muted2">No status history recorded for this legacy referral.</div>`;
+  const elig=Array.isArray(d?.eligibilityChecks)?[...d.eligibilityChecks].reverse():[];
+  $("eligibilityCheckHistory").innerHTML=elig.length?elig.map(x=>{
+    const details=[x.agentName?`Agent: ${esc(x.agentName)}`:"",x.authorizationNumber?`Auth #: ${esc(x.authorizationNumber)}`:"",x.referenceNumber?`Ref #: ${esc(x.referenceNumber)}`:"",x.caseNumber?`Case #: ${esc(x.caseNumber)}`:""].filter(Boolean).join(" · ");
+    return `<div class="activity-item"><strong>${esc(x.method||"Eligibility Check")}</strong><div class="muted2">${esc(dateTimeLabel(x.date))}${details?` · ${details}`:""}${x.note?` · ${esc(x.note)}`:""}</div></div>`;
+  }).join(""):`<div class="muted2">No eligibility checks recorded.</div>`;
 }
 
 async function makeTask(){
@@ -231,7 +250,7 @@ function bind(){
 }
 
 $("addReferralBtn").addEventListener("click",()=>openDrawer()); $("closeDrawerBtn").addEventListener("click",closeDrawer); $("drawerBackdrop").addEventListener("click",closeDrawer);
-$("referralForm").addEventListener("submit",saveReferral); $("addContactBtn").addEventListener("click",addContactAttempt); $("makeTaskBtn").addEventListener("click",makeTask);
+$("referralForm").addEventListener("submit",saveReferral); $("addContactBtn").addEventListener("click",addContactAttempt); $("addEligibilityCheckBtn").addEventListener("click",addEligibilityCheck); $("makeTaskBtn").addEventListener("click",makeTask);
 $("printSurveyBtn").addEventListener("click",()=>{renderSurvey();window.print();});
 ["fFrom","fTo","fSource","fPayer","fStatus","fOutcome"].forEach(id=>$(id).addEventListener("change",applyFilters)); $("qRef").addEventListener("input",applyFilters);
 $("clearFiltersBtn").addEventListener("click",()=>{["fFrom","fTo","fSource","fPayer","fStatus","fOutcome","qRef"].forEach(id=>$(id).value="");applyFilters();});

@@ -101,6 +101,14 @@
           <label class="full">Eligibility checked by<input id="eligibilityCheckedBy" maxlength="120"/></label>
         </div></section>
 
+        <section class="form-section"><h3>Insurance eligibility check log</h3><div class="form-grid">
+          <label>Check date<input id="eligCheckDate" type="date"/></label><label>Contact method<select id="eligContactMethod"></select></label>
+          <label>Insurance contact / agent name<input id="eligAgentName" maxlength="120"/></label><label>Authorization number<input id="eligAuthNumber" maxlength="120"/></label>
+          <label>Reference number<input id="eligRefNumber" maxlength="120"/></label><label>Case number<input id="eligCaseNumber" maxlength="120"/></label>
+          <label class="full">Notes<textarea id="eligNote" rows="2" maxlength="800"></textarea></label>
+          <div class="full"><button class="btn" type="button" id="addEligibilityCheckBtn">Add Eligibility Check</button></div>
+        </div><div class="activity-list" id="eligibilityCheckHistory"></div></section>
+
         <section class="form-section"><h3>Workflow</h3><div class="form-grid">
           <label>Current status<select id="status"></select></label><label>Assigned to<input id="assignedTo" maxlength="120"/></label>
           <label>Scheduled date<input id="scheduledDate" type="date"/></label><label>First visit date<input id="firstVisitDate" type="date"/></label>
