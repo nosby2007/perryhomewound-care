@@ -1,21 +1,63 @@
-import { adminReady, auth, db, storage, esc } from "/admin/admin-shared.js";
-import { addDoc, collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { adminReady, app, auth, db, storage, esc } from "/admin/admin-shared.js";
+import { addDoc, collection, doc, getDocs, limit, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 import { ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-functions.js";
 
 await adminReady;
 const $=id=>document.getElementById(id);const msg=t=>$("paMsg").textContent=t||"";const text=id=>($(id)?.value||"").trim();
 const patientId=()=>text("patientId");const asDate=id=>$(id)?.value?new Date(`${$(id).value}T12:00:00`):null;
-function requirePatient(){const id=patientId();if(!id)throw new Error("Enter or load the internal patient ID first.");return id;}
+function requirePatient(){const id=patientId();if(!id)throw new Error("Search and select a patient from the list first.");return id;}
 function safeName(name){return String(name||"document").replace(/[^a-zA-Z0-9._-]+/g,"-").slice(0,120);}
 function httpsUrl(value){if(!value)return"";const u=new URL(value);if(u.protocol!=="https:")throw new Error("Payment URL must use HTTPS.");return u.href;}
 
+const createPortalAccountFn = httpsCallable(getFunctions(app), "createPatientPortalAccount");
+let patientLabelToId = new Map();
+
+async function loadPatientOptions(){
+  const snap = await getDocs(query(collection(db,"patientReferal"), orderBy("createdAt","desc"), limit(300)));
+  patientLabelToId = new Map();
+  const options = snap.docs.map(d=>{
+    const p = d.data();
+    const name = (p.patientName||"").trim() || "(Unnamed patient)";
+    const dob = (p.patientDob||"").trim();
+    const label = `${name}${dob?` — DOB ${dob}`:""} (Ref ${d.id.slice(0,6)})`;
+    patientLabelToId.set(label, {id:d.id, name});
+    return label;
+  });
+  $("patientOptions").innerHTML = options.map(l=>`<option value="${esc(l)}"></option>`).join("");
+}
+loadPatientOptions().catch(()=>msg("Unable to load patient search list."));
+
+$("patientSearch").addEventListener("input",()=>{
+  const match = patientLabelToId.get($("patientSearch").value);
+  if(match){ $("patientId").value = match.id; if(!text("displayName")) $("displayName").value = match.name; }
+  else { $("patientId").value = ""; }
+});
+
+$("createPortalAccount").addEventListener("click",async()=>{
+  msg("");$("portalCredentials").textContent="";
+  try{
+    const id=requirePatient();const email=text("patientEmail");
+    if(!email) throw new Error("Enter the patient's email address.");
+    const nextVisit = $("portalNextVisit").value ? new Date(`${$("portalNextVisit").value}T12:00:00`).toISOString() : null;
+    const result = await createPortalAccountFn({patientId:id,email,displayName:text("displayName"),primaryPayer:text("portalPayer"),nextVisit});
+    const {tempPassword} = result.data||{};
+    msg("Portal account created. Share the login below with the patient through a secure channel; they'll be asked to set a new password and MFA on first sign-in.");
+    $("portalCredentials").innerHTML=`<strong>Login:</strong> ${esc(email)} &nbsp; <strong>Temporary password:</strong> <code>${esc(tempPassword||"")}</code>`;
+    await loadWounds();
+  }catch(e){msg(e?.message||"Unable to create the portal account.");}
+});
+
 $("savePortalLink").addEventListener("click",async()=>{
   msg("");try{
-    const uid=text("portalUid"),id=requirePatient();if(!uid)throw new Error("Firebase Auth UID is required.");
-    await setDoc(doc(db,"portalUsers",uid),{patientId:id,active:$("portalActive").value==="true",displayName:text("displayName"),updatedAt:serverTimestamp(),updatedBy:auth.currentUser?.uid||""},{merge:true});
+    const id=requirePatient();
+    const existing=await getDocs(query(collection(db,"portalUsers"),where("patientId","==",id),limit(1)));
+    if(existing.empty) throw new Error('No portal account is linked yet for this patient. Use "Create portal account" first.');
+    const uid=existing.docs[0].id;
+    await updateDoc(doc(db,"portalUsers",uid),{active:$("portalActive").value==="true",displayName:text("displayName"),updatedAt:serverTimestamp(),updatedBy:auth.currentUser?.uid||""});
     await setDoc(doc(db,"patientPortal",id),{displayName:text("displayName"),primaryPayer:text("portalPayer"),nextVisit:asDate("portalNextVisit"),updatedAt:serverTimestamp(),updatedBy:auth.currentUser?.uid||""},{merge:true});
-    msg("Portal link saved. Patient access remains read-only and requires verified email + MFA.");await loadWounds();
-  }catch(e){msg(e?.message||"Unable to save portal link.");}
+    msg("Portal profile updated.");await loadWounds();
+  }catch(e){msg(e?.message||"Unable to update portal profile.");}
 });
 
 async function loadWounds(){
