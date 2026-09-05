@@ -1,7 +1,6 @@
-import { adminReady, app, auth, db, storage, esc } from "/admin/admin-shared.js";
+import { adminReady, auth, db, storage, esc } from "/admin/admin-shared.js";
 import { addDoc, collection, doc, getDocs, limit, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 import { ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js";
-import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-functions.js";
 
 await adminReady;
 const $=id=>document.getElementById(id);const msg=t=>$("paMsg").textContent=t||"";const text=id=>($(id)?.value||"").trim();
@@ -10,7 +9,18 @@ function requirePatient(){const id=patientId();if(!id)throw new Error("Search an
 function safeName(name){return String(name||"document").replace(/[^a-zA-Z0-9._-]+/g,"-").slice(0,120);}
 function httpsUrl(value){if(!value)return"";const u=new URL(value);if(u.protocol!=="https:")throw new Error("Payment URL must use HTTPS.");return u.href;}
 
-const createPortalAccountFn = httpsCallable(getFunctions(app), "createPatientPortalAccount");
+async function createPortalAccountRequest(payload){
+  const idToken = await auth.currentUser.getIdToken();
+  const res = await fetch("/api/createPatientPortalAccount", {
+    method: "POST",
+    headers: {"Content-Type": "application/json", "Authorization": `Bearer ${idToken}`},
+    body: JSON.stringify(payload)
+  });
+  const body = await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(body.error || "Unable to create the portal account.");
+  return body;
+}
+
 let patientLabelToId = new Map();
 
 async function loadPatientOptions(){
@@ -40,8 +50,7 @@ $("createPortalAccount").addEventListener("click",async()=>{
     const id=requirePatient();const email=text("patientEmail");
     if(!email) throw new Error("Enter the patient's email address.");
     const nextVisit = $("portalNextVisit").value ? new Date(`${$("portalNextVisit").value}T12:00:00`).toISOString() : null;
-    const result = await createPortalAccountFn({patientId:id,email,displayName:text("displayName"),primaryPayer:text("portalPayer"),nextVisit});
-    const {tempPassword} = result.data||{};
+    const {tempPassword} = await createPortalAccountRequest({patientId:id,email,displayName:text("displayName"),primaryPayer:text("portalPayer"),nextVisit});
     msg("Portal account created. Share the login below with the patient through a secure channel; they'll be asked to set a new password and MFA on first sign-in.");
     $("portalCredentials").innerHTML=`<strong>Login:</strong> ${esc(email)} &nbsp; <strong>Temporary password:</strong> <code>${esc(tempPassword||"")}</code>`;
     await loadWounds();
