@@ -3,122 +3,121 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Booking Details — Admin</title>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>Booking Intake — PHWC Admin</title>
   <link rel="stylesheet" href="/admin/admin-shared.css"/>
-  <link rel="stylesheet" href="./bookingDetails.css"/>
+  <link rel="stylesheet" href="/admin/intake-workflows.css"/>
+  <link rel="stylesheet" href="/admin/bookingDetails.css"/>
 </head>
 <body>
-  <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="brand">
-      <div class="logo">PH</div>
-      <div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div>
-    </div>
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
     <nav class="snav">
-      <a class="sitem" href="/admin/bookings.html">← All Bookings</a>
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
+      <a class="sitem active" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
     </nav>
-    <div class="sfoot">
-      <span id="who" class="small muted"></span>
-      <button id="logoutBtn" class="btn wfull">Sign out</button>
-    </div>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
   </aside>
 
   <main class="main">
-    <header class="topbar">
-      <h1 id="bTitle">Booking Details</h1>
-    </header>
+    <header class="topbar"><div><div class="eyebrow">BOOKING INTAKE</div><h1 id="bTitle">Booking Intake</h1></div><a class="btn" href="/admin/bookings.html">← All bookings</a></header>
+    <section class="wrap">
+      <section class="intake-hero">
+        <div><span class="intake-kicker">REQUEST → INTAKE → CLINICAL TASK</span><h2 id="heroPatient">Loading booking…</h2><p id="heroSummary">Review the request, complete administrative intake, assign ownership and move the case into clinical operations.</p></div>
+        <div class="intake-hero-actions"><span id="heroStatus" class="badge">loading</span></div>
+      </section>
 
-    <section class="wrap" id="bookingWrap">
-      <div id="bookingInfo" class="card"></div>
+      <div class="intake-grid">
+        <form id="bookingIntakeForm" class="intake-stack">
+          <section class="intake-panel">
+            <div class="intake-panel-head"><div><h3>Patient & service</h3><p>Minimum information needed to route the request safely.</p></div></div>
+            <div class="intake-form-grid">
+              <label>Patient name<input id="patientName" required/></label>
+              <label>Date of birth<input id="patientDob" type="date"/></label>
+              <label>Phone<input id="patientPhone" type="tel"/></label>
+              <label>Email<input id="patientEmail" type="email"/></label>
+              <label class="full">Service address<input id="serviceAddress"/></label>
+              <label>Requested service<input id="serviceTitle"/></label>
+              <label>Wound / concern<input id="woundType" placeholder="Optional booking description"/></label>
+              <label class="full">Patient/request notes<textarea id="patientNotes" rows="3"></textarea></label>
+            </div>
+          </section>
 
-      <div class="split">
-        <div class="card">
-          <div class="head">
-            <h3>Booking Details</h3>
-            <button id="btnAddDetail" class="btn small">+ Add Detail</button>
+          <section class="intake-panel">
+            <div class="intake-panel-head"><div><h3>Insurance & eligibility</h3><p>Administrative coverage review. Do not treat this section as a guarantee of payment.</p></div></div>
+            <div class="intake-form-grid">
+              <label>Primary payer<input id="primaryPayer" placeholder="Medicare, UHC, Aetna…"/></label>
+              <label>Secondary payer<input id="secondaryPayer"/></label>
+              <label>Eligibility status<select id="eligibilityStatus"><option>Not Checked</option><option>Pending</option><option>Verified</option><option>Coverage Issue</option><option>Out of Network</option><option>Authorization Required</option><option>Authorization Pending</option><option>Authorization Approved</option><option>Authorization Denied</option></select></label>
+              <label>Authorization status<select id="authorizationStatus"><option>Not Required</option><option>Unknown</option><option>Required</option><option>Pending</option><option>Approved</option><option>Denied</option></select></label>
+              <label class="full">Authorization / reference number<input id="authorizationNumber"/></label>
+            </div>
+          </section>
+
+          <section class="intake-panel">
+            <div class="intake-panel-head"><div><h3>Ownership & scheduling</h3><p>Every active booking should have a responsible owner before it enters the clinical queue.</p></div></div>
+            <div class="intake-form-grid">
+              <label>Intake status<select id="intakeStatus"><option value="pending">Pending</option><option value="intake_review">Intake review</option><option value="needs_information">Needs information</option><option value="insurance_verification">Insurance verification</option><option value="ready_to_schedule">Ready to schedule</option><option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+              <label>Assigned owner<select id="assignedTo"><option value="">Unassigned</option></select></label>
+              <label>Scheduled date & time<input id="scheduledAt" type="datetime-local"/></label>
+              <label>Preferred visit<input id="preferredVisit" disabled/></label>
+              <label class="full">Intake / coordination notes<textarea id="intakeNotes" rows="4" placeholder="Coverage issue, callback needed, scheduling barrier, family preference, etc."></textarea></label>
+            </div>
+          </section>
+
+          <section class="intake-panel">
+            <div class="intake-panel-head"><div><h3>Intake checklist</h3><p>Track what has actually been received or confirmed before clinical handoff.</p></div></div>
+            <div class="checklist intake-checklist">
+              <label class="checkitem"><input id="docFaceSheet" type="checkbox"/><span><strong>Face sheet / demographics</strong><span>Administrative identity and contact information received.</span></span></label>
+              <label class="checkitem"><input id="docOrder" type="checkbox"/><span><strong>Referral / order</strong><span>Order or referral documentation received when applicable.</span></span></label>
+              <label class="checkitem"><input id="docInsurance" type="checkbox"/><span><strong>Insurance information</strong><span>Card or payer information available for verification.</span></span></label>
+              <label class="checkitem"><input id="docClinical" type="checkbox"/><span><strong>Clinical supporting records</strong><span>Relevant discharge/wound/medication information received when available.</span></span></label>
+              <label class="checkitem"><input id="contactConfirmed" type="checkbox"/><span><strong>Patient/family contact confirmed</strong><span>PHWC has a valid contact pathway for scheduling.</span></span></label>
+            </div>
+          </section>
+
+          <div class="workflow-actions">
+            <button id="saveIntakeBtn" class="btn" type="submit">Save intake</button>
+            <button id="markScheduledBtn" class="btn" type="button">Mark scheduled</button>
+            <button id="createTaskBtn" class="btn primary" type="button">Create clinical task</button>
           </div>
-          <table class="tbl" id="tblDetails">
-            <thead><tr><th>Title</th><th>Note</th><th>Created</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
+          <div id="intakeMessage" class="small muted" aria-live="polite"></div>
+        </form>
 
-        <div class="card">
-          <div class="head">
-            <h3>Tasks</h3>
-            <button id="btnAddTask" class="btn small">+ Add Task</button>
-          </div>
-          <table class="tbl" id="tblTasks">
-            <thead><tr><th>Title</th><th>Assignee</th><th>Status</th><th>When</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
+        <aside class="intake-stack">
+          <section class="intake-panel readiness-card">
+            <div class="intake-panel-head"><div><h3>Intake readiness</h3><p>Administrative completeness before handoff.</p></div><span id="readinessChip" class="missing-chip">Needs review</span></div>
+            <div class="readiness-score"><div id="readinessRing" class="readiness-ring"><strong id="readinessValue">0%</strong></div><div class="readiness-copy"><strong id="readinessTitle">Incomplete intake</strong><span id="readinessSummary">Review required fields.</span></div></div>
+            <div id="missingList" class="checklist"></div>
+          </section>
+
+          <section class="intake-panel">
+            <div class="intake-panel-head"><div><h3>Activity notes</h3><p>Administrative coordination history for this booking.</p></div><button id="btnAddDetail" class="btn" type="button">+ Add note</button></div>
+            <div id="detailList" class="activity-list"></div>
+          </section>
+
+          <section class="intake-panel">
+            <div class="intake-panel-head"><div><h3>Linked clinical tasks</h3><p>Tasks created in the central operational queue.</p></div></div>
+            <div id="taskList" class="activity-list"></div>
+          </section>
+        </aside>
       </div>
     </section>
   </main>
 
-  <!-- Add Detail -->
   <dialog id="dlgAddDetail">
-    <form method="dialog" id="formAddDetail">
-      <h3>Add Booking Detail</h3>
-      <input id="detailTitle" class="inp" placeholder="Detail title" required />
-      <textarea id="detailNote" class="inp" placeholder="Note"></textarea>
-      <menu>
-        <button value="cancel" class="btn">Cancel</button>
-        <button value="save" class="btn primary">Save</button>
-      </menu>
-      <p id="detailMsg" class="small muted"></p>
+    <form method="dialog" id="formAddDetail" class="form">
+      <h3>Add intake note</h3>
+      <label>Title<input id="detailTitle" required placeholder="Example: Insurance callback"/></label>
+      <label>Note<textarea id="detailNote" rows="4" placeholder="Administrative coordination note"></textarea></label>
+      <div id="detailMsg" class="small muted"></div>
+      <div class="row-end"><button value="cancel" class="btn">Cancel</button><button value="save" class="btn primary">Save note</button></div>
     </form>
   </dialog>
 
-  <!-- Add Task (with user assignment) -->
-  <dialog id="dlgAddTask">
-    <form method="dialog" id="formAddTask">
-      <h3>Create Task</h3>
-
-      <fieldset class="fieldset">
-        <legend>Assign & Schedule</legend>
-        <label>Assign to (clinician)* 
-          <select id="bdAssignedToSel" required>
-            <option value="">Select clinician…</option>
-          </select>
-        </label>
-        <label>Scheduled At (YYYY-MM-DD HH:mm)
-          <input id="bdWhen" class="inp" placeholder="2025-10-01 09:30"/>
-        </label>
-      </fieldset>
-
-      <fieldset class="fieldset">
-        <legend>Patient</legend>
-        <label>Patient Name* <input id="bdPName" required/></label>
-        <label>Patient Phone <input id="bdPPhone"/></label>
-        <label>Patient Address <input id="bdPAddr"/></label>
-      </fieldset>
-
-      <fieldset class="fieldset">
-        <legend>Service</legend>
-        <label>Service Title <input id="bdSTitle"/></label>
-        <label>Service Slug <input id="bdSSlug"/></label>
-      </fieldset>
-
-      <fieldset class="fieldset">
-        <legend>Source</legend>
-        <div class="small muted">This task will be linked to this booking.</div>
-        <input id="bdSrcType" value="booking" disabled class="inp"/>
-        <input id="bdSrcId"   value="" disabled class="inp"/>
-      </fieldset>
-
-      <label>Task Title* <input id="bdTaskTitle" required/></label>
-      <label>Notes <textarea id="bdNotes" rows="3"></textarea></label>
-
-      <menu class="row-end">
-        <button class="btn" value="cancel">Cancel</button>
-        <button class="btn primary" value="save">Save Task</button>
-      </menu>
-      <div id="bdStatus" class="small muted" aria-live="polite"></div>
-    </form>
-  </dialog>
-
-  <script type="module" src="./bookingdetails.js?v=1"></script>
+  <script type="module" src="/admin/bookingdetails.js?v=2"></script>
 </body>
 </html>

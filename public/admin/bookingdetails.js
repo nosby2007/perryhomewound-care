@@ -1,329 +1,187 @@
-/* bookingDetails.js
-   - /admin/bookingDetails.html?id=<bookingId>
-   - Shows booking + details, tasks subcollections
-   - Adds task with assignee select (users w/ clinician roles)
-*/
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { adminReady, auth, db, esc, fmt, mountSidebar } from "/admin/admin-shared.js";
 import {
-  getFirestore, doc, getDoc, collection, addDoc, onSnapshot,
-  serverTimestamp, Timestamp, query, where, getDocs
+  addDoc, arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, query,
+  serverTimestamp, Timestamp, updateDoc, where
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-/* ---- Firebase config ---- */
-const firebaseConfig = {
-  apiKey: "AIzaSyCdIpeMxhFMRpzNxmngoP3QY8ZZl2ABG_s",
-  authDomain: "credential-4f22b.firebaseapp.com",
-  projectId: "credential-4f22b",
-  storageBucket: "credential-4f22b.firebasestorage.app",
-  messagingSenderId: "107240797765",
-  appId: "1:107240797765:web:9ae5b37760081911ad952c",
-  measurementId: "G-XKYX4WC53E"
-};
+mountSidebar("bookings");
+const user = await adminReady;
 
-const app  = initializeApp(firebaseConfig);
-const db   = getFirestore(app);
-const auth = getAuth(app);
-
-/* ------------------ helpers ------------------ */
-const esc = (x)=> String(x ?? "").replace(/[&<>"']/g, m => ({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'
-}[m]));
-const fmt = (ts)=> ts?.toDate?.()?.toLocaleString?.() || "-";
-const get = (o, path, d="")=>{
-  try { return path.split(".").reduce((a,k)=> (a && k in a) ? a[k] : undefined, o) ?? d; }
-  catch { return d; }
-};
-const slugify = (x)=> String(x||"").toLowerCase().trim()
-  .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-
-function fullName(patient){
-  if(!patient) return "";
-  if (patient.name) return String(patient.name);
-  const fn = String(patient.firstName||"").trim();
-  const ln = String(patient.lastName||"").trim();
-  return (fn || ln) ? `${fn} ${ln}`.trim() : "";
-}
-
-/* ------------------ DOM ------------------ */
-const who       = document.getElementById("who");
-const logoutBtn = document.getElementById("logoutBtn");
-logoutBtn?.addEventListener("click", async ()=>{
-  await signOut(auth);
-  location.href="/admin/login/admin-login.html";
-});
-
-const params    = new URLSearchParams(location.search);
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
 const bookingId = params.get("id");
-if(!bookingId){
-  alert("Missing booking ID");
-  throw new Error("Missing ?id=");
-}
-const bookingRef = doc(db, "bookings", bookingId);
+if(!bookingId){ alert("Missing booking ID"); throw new Error("Missing booking ID"); }
 
-const bookingInfo = document.getElementById("bookingInfo");
-const tblDetails  = document.querySelector("#tblDetails tbody");
-const tblTasks    = document.querySelector("#tblTasks tbody");
+const bookingRef = doc(db,"bookings",bookingId);
+let booking = null;
+let clinicianLabels = new Map();
 
-/* dialogs/forms (DETAIL) */
-const dlgDetail   = document.getElementById("dlgAddDetail");
-const formDetail  = document.getElementById("formAddDetail");
-const detailMsg   = document.getElementById("detailMsg");
+const text = v => String(v ?? "").trim();
+const fullName = patient => text(patient?.name || [patient?.firstName,patient?.lastName].filter(Boolean).join(" "));
+const slugify = x => text(x).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+const localInput = value => {
+  const d = value?.toDate ? value.toDate() : value ? new Date(value) : null;
+  if(!d || Number.isNaN(d.getTime())) return "";
+  const pad = n => String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+const toTimestamp = value => value ? Timestamp.fromDate(new Date(value)) : null;
+const checked = id => $(id)?.checked === true;
+const setCheck = (id,v) => { if($(id)) $(id).checked = v === true; };
+const setValue = (id,v) => { if($(id)) $(id).value = v ?? ""; };
 
-/* dialogs/forms (TASK) */
-const dlgTask       = document.getElementById("dlgAddTask");
-const formTask      = document.getElementById("formAddTask");
-const bdStatus      = document.getElementById("bdStatus");
-const bdAssignedSel = document.getElementById("bdAssignedToSel");
-const bdWhen        = document.getElementById("bdWhen");
-const bdPName       = document.getElementById("bdPName");
-const bdPPhone      = document.getElementById("bdPPhone");
-const bdPAddr       = document.getElementById("bdPAddr");
-const bdSTitle      = document.getElementById("bdSTitle");
-const bdSSlug       = document.getElementById("bdSSlug");
-const bdSrcType     = document.getElementById("bdSrcType");
-const bdSrcId       = document.getElementById("bdSrcId");
-const bdTaskTitle   = document.getElementById("bdTaskTitle");
-const bdNotes       = document.getElementById("bdNotes");
-
-/* ------------------ auth ------------------ */
-onAuthStateChanged(auth, async (user)=>{
-  if(!user){ location.href="/admin/login/admin-login.html"; return; }
-  who.textContent = user.email || user.uid;
-
-  // Pre-fill source
-  bdSrcType.value = "booking";
-  bdSrcId.value   = bookingId;
-
-  await Promise.all([
-    loadBookingAndPrefillTask(),
-    loadClinicians()
-  ]);
-
-  bindDetails();
-  bindTasks();
-});
-
-/* ------------------ booking header + prefill ------------------ */
-async function loadBookingAndPrefillTask(){
-  const snap = await getDoc(bookingRef);
-  if(!snap.exists()){
-    bookingInfo.innerHTML = `<p class="muted">Booking not found.</p>`;
-    return;
-  }
-  const d = snap.data() || {};
-
-  // Render header
-  const patientName  = fullName(d.patient) || "-";
-  const contactEmail = get(d, "contact.email");
-  const contactPhone = get(d, "contact.phone");
-  const contactLine  = contactEmail || contactPhone || "-";
-  const dob          = get(d, "patient.dob") || "-";
-  const woundType    = get(d, "patient.woundType") || "-";
-  const pNotes       = get(d, "patient.notes") || "-";
-
-  const prefMode     = get(d, "preference.mode") || "-";
-  const prefDate     = get(d, "preference.preferredDate") || "-";
-  const prefTime     = get(d, "preference.preferredTime") || "-";
-  const address      = get(d, "preference.address") || "-";
-
-  const serviceTitle = d.serviceTitle || d.serviceSlug || "-";
-  const status       = d.status || "-";
-  const createdAt    = fmt(d.createdAt);
-  const userAgent    = d.userAgent || "";
-
-  document.getElementById("bTitle").textContent = patientName || "Booking Details";
-  bookingInfo.innerHTML = `
-    <div style="padding:14px 16px;">
-      <h3 style="margin:0 0 8px;">${esc(serviceTitle)}</h3>
-
-      <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div>
-          <div class="muted"><strong>Patient</strong></div>
-          <div><strong>Name:</strong> ${esc(patientName)}</div>
-          <div><strong>DOB:</strong> ${esc(dob)}</div>
-          <div><strong>Wound type:</strong> ${esc(woundType)}</div>
-          <div><strong>Notes:</strong> ${esc(pNotes)}</div>
-        </div>
-
-        <div>
-          <div class="muted"><strong>Contact & Preference</strong></div>
-          <div><strong>Contact:</strong> ${esc(contactLine)}</div>
-          <div><strong>Mode:</strong> ${esc(prefMode)}</div>
-          <div><strong>Preferred:</strong> ${esc(prefDate)} ${esc(prefTime)}</div>
-          <div><strong>Address:</strong> ${esc(address)}</div>
-        </div>
-      </div>
-
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:12px 0;" />
-
-      <div class="muted">
-        <strong>Status:</strong> ${esc(status)} &nbsp; • &nbsp;
-        <strong>Created:</strong> ${esc(createdAt)}
-        ${userAgent ? `&nbsp; • &nbsp;<strong>UA:</strong> ${esc(userAgent)}` : ""}
-      </div>
-    </div>
-  `;
-
-  // Prefill Add Task form from booking
-  bdPName.value  = patientName !== "-" ? patientName : "";
-  bdPPhone.value = contactPhone || "";
-  bdPAddr.value  = address !== "-" ? address : "";
-  bdSTitle.value = serviceTitle !== "-" ? serviceTitle : "";
-  bdSSlug.value  = serviceTitle !== "-" ? slugify(serviceTitle) : "";
-  bdTaskTitle.value = serviceTitle !== "-" ? `Visit — ${serviceTitle}` : "Visit";
-}
-
-/* ------------------ load clinicians into select ------------------ */
-const NURSE_ROLES = ['nurse','lpn','np','caregiver'];
 async function loadClinicians(){
-  // active == true, and role in allowed set
-  const qy = query(collection(db,"users"), where("active","==", true));
-  const snap = await getDocs(qy);
-
-  const arr=[];
+  const snap = await getDocs(query(collection(db,"users"),where("active","==",true)));
+  const allowed = new Set(["admin","nurse","rn","lpn","np","provider","caregiver"]);
+  const options=[];
   snap.forEach(s=>{
-    const d = s.data()||{};
-    const role = String(d.role||"").toLowerCase();
-    if(!NURSE_ROLES.includes(role)) return;
-    arr.push({ uid:s.id, label: d.displayName||d.email||s.id, role });
+    const d=s.data()||{}; const role=text(d.role).toLowerCase();
+    if(!allowed.has(role)) return;
+    const label=text(d.displayName||d.name||d.email||s.id);
+    clinicianLabels.set(s.id,label);
+    options.push({id:s.id,label,role});
   });
-  arr.sort((a,b)=> a.label.localeCompare(b.label));
-
-  bdAssignedSel.innerHTML = `<option value="">Select clinician…</option>` +
-    arr.map(u=>`<option value="${esc(u.uid)}">${esc(u.label)} — ${u.role.toUpperCase()}</option>`).join("");
+  options.sort((a,b)=>a.label.localeCompare(b.label));
+  $("assignedTo").innerHTML=`<option value="">Unassigned</option>`+options.map(x=>`<option value="${esc(x.id)}">${esc(x.label)} — ${esc(x.role.toUpperCase())}</option>`).join("");
 }
 
-/* ------------------ subcollection: bookingDetails ------------------ */
-function bindDetails(){
-  const colRef = collection(db, "bookings", bookingId, "bookingDetails");
-  onSnapshot(colRef, (snap)=>{
-    const rows=[];
-    snap.forEach(s=>{
-      const d=s.data()||{};
-      rows.push(`
-        <tr>
-          <td>${esc(d.title||"-")}</td>
-          <td>${esc(d.note||"")}</td>
-          <td>${fmt(d.createdAt)}</td>
-        </tr>
-      `);
-    });
-    tblDetails.innerHTML = rows.join("") || `<tr><td colspan="3" class="muted">No details yet.</td></tr>`;
-  });
+function bookingStatus(){ return text(booking?.intakeStatus || booking?.status || "pending").toLowerCase(); }
+
+function populate(){
+  const d=booking||{};
+  const patient=d.patient||{}; const contact=d.contact||{}; const preference=d.preference||{}; const checklist=d.intakeChecklist||{};
+  const name=fullName(patient);
+  $("bTitle").textContent=name||"Booking Intake";
+  $("heroPatient").textContent=name||"Unnamed booking request";
+  $("heroSummary").textContent=`${text(d.serviceTitle||d.serviceSlug||"Wound care request")} · received ${fmt(d.createdAt)}`;
+  $("heroStatus").textContent=bookingStatus().replaceAll("_"," ");
+  $("heroStatus").className=`badge status-${bookingStatus()}`;
+
+  setValue("patientName",name); setValue("patientDob",text(patient.dob)); setValue("patientPhone",text(contact.phone||patient.phone)); setValue("patientEmail",text(contact.email||patient.email));
+  setValue("serviceAddress",text(preference.address||patient.address)); setValue("serviceTitle",text(d.serviceTitle||d.serviceSlug)); setValue("woundType",text(patient.woundType)); setValue("patientNotes",text(patient.notes));
+  setValue("primaryPayer",text(d.primaryPayer||d.insurance?.primaryPayer||d.insurance?.payer)); setValue("secondaryPayer",text(d.secondaryPayer||d.insurance?.secondaryPayer));
+  setValue("eligibilityStatus",text(d.eligibilityStatus||"Not Checked")); setValue("authorizationStatus",text(d.authorizationStatus||"Not Required")); setValue("authorizationNumber",text(d.authorizationNumber));
+  setValue("intakeStatus",bookingStatus()); setValue("scheduledAt",localInput(d.scheduledAt)); setValue("preferredVisit",[text(preference.preferredDate),text(preference.preferredTime)].filter(Boolean).join(" ")||"Not specified"); setValue("intakeNotes",text(d.intakeNotes));
+  if(d.assignedTo && !$("assignedTo").querySelector(`option[value="${CSS.escape(d.assignedTo)}"]`)){
+    const opt=document.createElement("option"); opt.value=d.assignedTo; opt.textContent=text(d.assignedToLabel||d.assignedTo); $("assignedTo").appendChild(opt);
+  }
+  setValue("assignedTo",text(d.assignedTo));
+  setCheck("docFaceSheet",checklist.faceSheet); setCheck("docOrder",checklist.order); setCheck("docInsurance",checklist.insurance); setCheck("docClinical",checklist.clinicalRecords); setCheck("contactConfirmed",checklist.contactConfirmed);
+  updateReadiness();
 }
 
-/* ------------------ subcollection: tasks ------------------ */
-function bindTasks(){
-  const colRef = collection(db, "bookings", bookingId, "tasks");
-  onSnapshot(colRef, (snap)=>{
-    const rows=[];
-    snap.forEach(s=>{
-      const d=s.data()||{};
-      rows.push(`
-        <tr>
-          <td>${esc(d.title||"-")}</td>
-          <td>${esc(d.assignedTo||"-")}</td>
-          <td>${esc(d.status||"-")}</td>
-          <td>${fmt(d.scheduledAt)}</td>
-        </tr>
-      `);
-    });
-    tblTasks.innerHTML = rows.join("") || `<tr><td colspan="4" class="muted">No tasks yet.</td></tr>`;
-  });
+function readinessItems(){
+  const eligibility=$("eligibilityStatus").value;
+  const auth=$("authorizationStatus").value;
+  return [
+    {ok:!!text($("patientName").value),label:"Patient identified"},
+    {ok:!!(text($("patientPhone").value)||text($("patientEmail").value)),label:"Contact pathway available"},
+    {ok:!!text($("serviceTitle").value),label:"Requested service defined"},
+    {ok:!!text($("primaryPayer").value),label:"Primary payer entered"},
+    {ok:!["Not Checked","Pending"].includes(eligibility),label:"Eligibility reviewed"},
+    {ok:["Not Required","Approved"].includes(auth),label:"Authorization resolved"},
+    {ok:!!$("assignedTo").value,label:"Operational owner assigned"},
+    {ok:checked("docInsurance"),label:"Insurance information confirmed"},
+    {ok:checked("contactConfirmed"),label:"Patient/family contact confirmed"},
+    {ok:checked("docOrder")||auth==="Not Required",label:"Order/referral requirement addressed"}
+  ];
 }
 
-/* ------------------ Add Detail (dialog) ------------------ */
-document.getElementById("btnAddDetail")?.addEventListener("click", ()=>{
-  detailMsg.textContent = "";
-  formDetail.reset?.();
-  dlgDetail.showModal();
-});
+function updateReadiness(){
+  const items=readinessItems(); const done=items.filter(x=>x.ok).length; const pct=Math.round(done/items.length*100); const missing=items.filter(x=>!x.ok);
+  $("readinessValue").textContent=`${pct}%`; $("readinessRing").style.setProperty("--score",`${pct}%`);
+  $("readinessTitle").textContent=pct>=90?"Ready for clinical handoff":pct>=70?"Nearly ready":"Incomplete intake";
+  $("readinessSummary").textContent=missing.length?`${missing.length} administrative item${missing.length===1?"":"s"} still need attention.`:"All core intake checks are complete.";
+  $("readinessChip").textContent=pct>=90?"Ready":"Needs review"; $("readinessChip").className=pct>=90?"ready-chip":"missing-chip";
+  $("missingList").innerHTML=missing.length?missing.map(x=>`<div class="checkitem"><span><strong>${esc(x.label)}</strong><span>Complete before final handoff when applicable.</span></span></div>`).join(""):`<div class="intake-note">No core intake gaps detected. Continue normal clinical verification and scheduling workflow.</div>`;
+  return pct;
+}
 
-// With method="dialog", listen on DIALOG
-dlgDetail?.addEventListener("close", async ()=>{
-  if (dlgDetail.returnValue !== "save") return;
-
-  const title = document.getElementById("detailTitle").value.trim();
-  const note  = document.getElementById("detailNote").value.trim();
-  if(!title){
-    detailMsg.textContent = "Title required.";
-    dlgDetail.showModal();
-    return;
-  }
-
-  try{
-    await addDoc(collection(db,"bookings",bookingId,"bookingDetails"), {
-      title, note,
-      createdAt: serverTimestamp(),
-      createdBy: auth.currentUser?.uid || ""
-    });
-  }catch(err){
-    detailMsg.textContent = "⛔ " + (err.message || err.code || "Failed");
-    dlgDetail.showModal();
-  }
-});
-
-/* ------------------ Add Task (dialog) ------------------ */
-document.getElementById("btnAddTask")?.addEventListener("click", ()=>{
-  bdStatus.textContent = "";
-  formTask.reset?.();
-  // Re-fill source and booking-derived fields (keeps them visible)
-  bdSrcType.value = "booking";
-  bdSrcId.value   = bookingId;
-  // Keep previously prefilled patient/service values if we had them
-  dlgTask.showModal();
-});
-
-// With method="dialog", listen on DIALOG
-dlgTask?.addEventListener("close", async ()=>{
-  if (dlgTask.returnValue !== "save") return;
-
-  const title      = bdTaskTitle.value.trim();
-  const assignedTo = bdAssignedSel.value.trim();
-  const whenStr    = bdWhen.value.trim();
-
-  const pName  = bdPName.value.trim();
-  const pPhone = bdPPhone.value.trim();
-  const pAddr  = bdPAddr.value.trim();
-
-  const sTitle = bdSTitle.value.trim();
-  const sSlug  = (bdSSlug.value.trim() || slugify(sTitle));
-
-  const notes  = bdNotes.value.trim();
-
-  if(!title || !assignedTo || !pName){
-    bdStatus.textContent = "Task title, assignee and patient name are required.";
-    dlgTask.showModal();
-    return;
-  }
-
-  let scheduledAt = null;
-  if(whenStr){
-    const d = new Date(whenStr.replace(" ", "T"));
-    if(!isNaN(d.getTime())) scheduledAt = Timestamp.fromDate(d);
-  }
-
-  const task = {
-    createdAt: serverTimestamp(),
-    createdBy: auth.currentUser?.uid || "",
-    source: { type: "booking", id: bookingId },
-    patient: { name: pName, phone: pPhone, address: pAddr, email: "" },
-    service: { title: sTitle, slug: sSlug },
-    scheduledAt,
-    status: "assigned",
-    assignedTo,   // clinician UID
-    notes,
-    title
+function formPatch(){
+  const patient={...(booking?.patient||{}),name:text($("patientName").value),dob:text($("patientDob").value),woundType:text($("woundType").value),notes:text($("patientNotes").value)};
+  const contact={...(booking?.contact||{}),phone:text($("patientPhone").value),email:text($("patientEmail").value)};
+  const preference={...(booking?.preference||{}),address:text($("serviceAddress").value)};
+  const assignedTo=$("assignedTo").value; const assignedToLabel=assignedTo?($("assignedTo").selectedOptions[0]?.textContent||clinicianLabels.get(assignedTo)||assignedTo):"";
+  return {
+    patient,contact,preference,serviceTitle:text($("serviceTitle").value),
+    primaryPayer:text($("primaryPayer").value),secondaryPayer:text($("secondaryPayer").value),
+    eligibilityStatus:$("eligibilityStatus").value,authorizationStatus:$("authorizationStatus").value,authorizationNumber:text($("authorizationNumber").value),
+    intakeStatus:$("intakeStatus").value,status:$("intakeStatus").value,assignedTo,assignedToLabel,
+    scheduledAt:toTimestamp($("scheduledAt").value),intakeNotes:text($("intakeNotes").value),
+    intakeChecklist:{faceSheet:checked("docFaceSheet"),order:checked("docOrder"),insurance:checked("docInsurance"),clinicalRecords:checked("docClinical"),contactConfirmed:checked("contactConfirmed")},
+    intakeReadiness:updateReadiness(),updatedAt:serverTimestamp(),updatedBy:user.uid
   };
+}
 
-  try{
-    bdStatus.textContent = "Creating…";
-    await addDoc(collection(db,"bookings",bookingId,"tasks"), task);
-    bdStatus.textContent = "✅ Task created.";
-  }catch(err){
-    bdStatus.textContent = "⛔ " + (err.message || err.code || "Failed");
-    dlgTask.showModal();
-  }
+async function persistIntake(silent=false){
+  const patch=formPatch();
+  if(!patch.patient.name) throw new Error("Patient name is required.");
+  await updateDoc(bookingRef,patch); booking={...(booking||{}),...patch};
+  if(!silent) $("intakeMessage").textContent="Intake saved.";
+  populate();
+  return patch;
+}
+
+async function markScheduled(){
+  if(!$("scheduledAt").value) throw new Error("Choose a scheduled date and time first.");
+  if(!$("assignedTo").value) throw new Error("Assign an owner before scheduling.");
+  $("intakeStatus").value="scheduled";
+  await persistIntake(true);
+  $("intakeMessage").textContent="Booking marked scheduled.";
+}
+
+async function createClinicalTask(){
+  const patch=await persistIntake(true);
+  if(!patch.assignedTo) throw new Error("Assign an owner before creating the clinical task.");
+  const title=patch.serviceTitle?`Visit — ${patch.serviceTitle}`:"Wound care visit";
+  const task={
+    createdAt:serverTimestamp(),createdBy:user.uid,source:{type:"booking",id:bookingId},
+    patient:{name:patch.patient.name,phone:patch.contact.phone,email:patch.contact.email,address:patch.preference.address},
+    service:{title:patch.serviceTitle,slug:slugify(patch.serviceTitle)},scheduledAt:patch.scheduledAt,
+    status:"assigned",assignedTo:patch.assignedTo,assignedToLabel:patch.assignedToLabel,
+    notes:patch.intakeNotes,title
+  };
+  const taskRef=await addDoc(collection(db,"tasks"),task);
+  await updateDoc(bookingRef,{taskIds:arrayUnion(taskRef.id),lastTaskId:taskRef.id,updatedAt:serverTimestamp(),updatedBy:user.uid});
+  $("intakeMessage").textContent="Clinical task created and sent to Central Command.";
+}
+
+async function loadBooking(){
+  const snap=await getDoc(bookingRef);
+  if(!snap.exists()) throw new Error("Booking not found.");
+  booking={id:snap.id,...snap.data()}; populate();
+}
+
+function bindDetails(){
+  onSnapshot(collection(db,"bookings",bookingId,"bookingDetails"),snap=>{
+    const rows=snap.docs.map(s=>({id:s.id,...s.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    $("detailList").innerHTML=rows.length?rows.map(d=>`<div class="intake-note"><strong>${esc(d.title||"Intake note")}</strong><div>${esc(d.note||"")}</div><small>${esc(fmt(d.createdAt))}</small></div>`).join(""):`<div class="muted">No intake notes yet.</div>`;
+  });
+}
+
+function bindTasks(){
+  onSnapshot(query(collection(db,"tasks"),where("source.id","==",bookingId)),snap=>{
+    const rows=snap.docs.map(s=>({id:s.id,...s.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    $("taskList").innerHTML=rows.length?rows.map(t=>`<div class="intake-note"><strong>${esc(t.title||t.service?.title||"Clinical task")}</strong><div>${esc(t.assignedToLabel||t.assignedTo||"Unassigned")} · ${esc(t.status||"assigned")}</div><small>${esc(fmt(t.scheduledAt))}</small></div>`).join(""):`<div class="muted">No central clinical task has been created yet.</div>`;
+  });
+}
+
+$("bookingIntakeForm").addEventListener("submit",e=>{e.preventDefault();persistIntake().catch(err=>$("intakeMessage").textContent=err.message);});
+$("markScheduledBtn").addEventListener("click",()=>markScheduled().catch(err=>$("intakeMessage").textContent=err.message));
+$("createTaskBtn").addEventListener("click",()=>createClinicalTask().catch(err=>$("intakeMessage").textContent=err.message));
+$("bookingIntakeForm").addEventListener("input",updateReadiness); $("bookingIntakeForm").addEventListener("change",updateReadiness);
+
+const dlg=$("dlgAddDetail"),formDetail=$("formAddDetail");
+$("btnAddDetail").addEventListener("click",()=>{formDetail.reset();$("detailMsg").textContent="";dlg.showModal();});
+dlg.addEventListener("close",async()=>{
+  if(dlg.returnValue!=="save") return;
+  const title=text($("detailTitle").value),note=text($("detailNote").value);
+  if(!title){$("detailMsg").textContent="Title required.";dlg.showModal();return;}
+  try{await addDoc(collection(db,"bookings",bookingId,"bookingDetails"),{title,note,createdAt:serverTimestamp(),createdBy:user.uid});}
+  catch(err){$("detailMsg").textContent=err.message||"Unable to save note.";dlg.showModal();}
 });
+
+await loadClinicians();
+await loadBooking();
+bindDetails();
+bindTasks();

@@ -7,6 +7,7 @@
   <title>Referrals — PHWC Admin</title>
   <link rel="stylesheet" href="/admin/admin-shared.css"/>
   <link rel="stylesheet" href="/admin/referrals.css"/>
+  <link rel="stylesheet" href="/admin/intake-workflows.css"/>
 </head>
 <body>
   <aside class="sidebar">
@@ -78,6 +79,20 @@
     <div class="drawer-body">
       <form id="referralForm">
         <input type="hidden" id="referralId"/>
+
+        <section class="ref-readiness" id="refReadinessPanel">
+          <div class="ref-readiness-head"><div><h3>Intake readiness</h3><div class="muted2" id="refReadinessText">Complete the referral intake and administrative handoff.</div></div><span id="refReadinessChip" class="missing-chip">Needs review</span></div>
+          <div class="ref-readiness-grid">
+            <label><input id="refFaceSheetReady" type="checkbox"/> Face sheet / demographics received</label>
+            <label><input id="refOrderReady" type="checkbox"/> Referral / order received when applicable</label>
+            <label><input id="refInsuranceReady" type="checkbox"/> Insurance information received</label>
+            <label><input id="refClinicalReady" type="checkbox"/> Supporting clinical records received when available</label>
+            <label><input id="refContactReady" type="checkbox"/> Patient/family contact pathway confirmed</label>
+            <label><input id="refHandoffReady" type="checkbox"/> Administrative intake reviewed for clinical handoff</label>
+          </div>
+          <div class="muted2" id="refReadinessMessage" style="margin-top:8px">Save a new referral before tracking readiness.</div>
+        </section>
+
         <section class="form-section"><h3>Referral information</h3><div class="form-grid">
           <label>Date received<input id="receivedDate" type="date" required/></label><label>Time received<input id="receivedTime" type="time"/></label>
           <label>Referral source<select id="referralSource"></select></label><label>Method received<select id="receivedMethod"></select></label>
@@ -150,5 +165,6 @@
   <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("referrals");</script>
   <script type="module" src="/admin/referrals.js"></script>
   <script type="module" src="/admin/referral-documents.js"></script>
+  <script type="module" src="/admin/referral-readiness.js"></script>
 </body>
 </html>

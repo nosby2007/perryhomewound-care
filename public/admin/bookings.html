@@ -1,63 +1,69 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Bookings — Admin</title>
-    <link rel="stylesheet" href="/admin/admin-shared.css"/>
-    </head>
-    <body>
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="brand">
-          <div class="logo">PH</div>
-          <div class="btxt">
-            <strong>Perry Home</strong>
-            <span class="muted">Admin</span>
-          </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>Booking Intake — PHWC Admin</title>
+  <link rel="stylesheet" href="/admin/admin-shared.css"/>
+  <link rel="stylesheet" href="/admin/intake-workflows.css"/>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">PH</div><div class="btxt"><strong>Perry Home</strong><span class="muted">Admin</span></div></div>
+    <nav class="snav">
+      <a class="sitem" data-target="tasks" href="/admin/tasks.html">Tasks</a>
+      <a class="sitem active" data-target="bookings" href="/admin/bookings.html">Bookings</a>
+      <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
+      <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
+      <a class="sitem" data-target="users" href="/admin/users.html">Users</a>
+    </nav>
+    <div class="sfoot"><span id="who" class="small muted"></span><button id="logoutBtn" class="btn wfull">Sign out</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar"><div><div class="eyebrow">INTAKE OPERATIONS</div><h1>Booking Intake</h1></div></header>
+    <main class="wrap">
+      <section class="intake-hero">
+        <div><span class="intake-kicker">PHWC Central Intake</span><h2>Turn requests into scheduled clinical work.</h2><p>Review incoming bookings, verify the administrative intake, assign ownership, schedule the visit and create a clinical task without losing the original request.</p></div>
+        <div class="intake-hero-actions"><a class="btn" href="/admin/admin-dashboard.html">Command Center</a><a class="btn primary" href="/admin/referrals.html">Referral Intake</a></div>
+      </section>
+
+      <section class="intake-metrics" aria-label="Booking intake metrics">
+        <div class="intake-metric"><span>New / pending</span><strong id="mPending">0</strong></div>
+        <div class="intake-metric"><span>Needs information</span><strong id="mNeedsInfo">0</strong></div>
+        <div class="intake-metric"><span>Insurance review</span><strong id="mInsurance">0</strong></div>
+        <div class="intake-metric"><span>Ready to schedule</span><strong id="mReady">0</strong></div>
+        <div class="intake-metric"><span>Scheduled</span><strong id="mScheduled">0</strong></div>
+      </section>
+
+      <section class="phead">
+        <div class="filters">
+          <select id="fBookingStatus" aria-label="Filter booking status">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="intake_review">Intake review</option>
+            <option value="needs_information">Needs information</option>
+            <option value="insurance_verification">Insurance verification</option>
+            <option value="ready_to_schedule">Ready to schedule</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <input id="qBookings" class="inp" type="search" placeholder="Search patient, email, phone, service, payer…" aria-label="Search bookings"/>
         </div>
-        <nav class="snav">
-          <a class="sitem" data-target="tasks"    href="/admin/tasks.html">Tasks</a>
-          <a class="sitem active" data-target="bookings" href="/admin/bookings.html">Bookings</a>
-          <a class="sitem" data-target="contacts" href="/admin/contacts.html">Contacts</a>
-          <a class="sitem" data-target="referrals" href="/admin/referrals.html">Referrals</a>
-          <a class="sitem" data-target="users"    href="/admin/users.html">Users</a>
-        </nav>
-        <div class="sfoot">
-          <span id="who" class="small muted"></span>
-          <button id="logoutBtn" class="btn wfull">Sign out</button>
-        </div>
-      </aside>
-    
-      <div class="main">
-        <header class="topbar"><h1>Bookings</h1></header>
-        <section class="wrap">
-          <div class="phead">
-            <div class="filters">
-              <select id="fBookingStatus">
-                <option value="">All</option>
-                <option>pending</option><option>scheduled</option>
-                <option>completed</option><option>cancelled</option>
-              </select>
-              <input id="qBookings" class="inp" placeholder="Search name/email/service…"/>
-            </div>
-          </div>
-    
-          <div class="tablewrap">
-            <table class="tbl" id="tblBookings">
-              <thead>
-                <tr>
-                  <th>When</th><th>Patient</th><th>Contact</th>
-                  <th>Service</th><th>Status</th><th>Actions</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
+      </section>
+
+      <div class="tablewrap">
+        <table class="tbl booking-table" id="tblBookings">
+          <thead><tr><th>Received</th><th>Patient</th><th>Service</th><th>Payer</th><th>Status</th><th>Owner</th><th>Scheduled</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
-    
-      <script type="module">
-        import { mountSidebar } from "/admin/admin-shared.js";
-        mountSidebar("bookings");
-      </script>
-      <script type="module" src="./bookings.js"></script>
-    </html>
-    
+    </main>
+  </div>
+
+  <script type="module">import { mountSidebar } from "/admin/admin-shared.js"; mountSidebar("bookings");</script>
+  <script type="module" src="/admin/bookings.js"></script>
+</body>
+</html>
