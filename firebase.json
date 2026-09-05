@@ -20,7 +20,11 @@
       { "source": "/portal/login", "destination": "/portal/login.html" },
       { "source": "/portal/security-setup", "destination": "/portal/security-setup.html" },
       { "source": "/blog", "destination": "/blog.html" },
-      { "source": "/blog/post", "destination": "/blog-post.html" }
+      { "source": "/blog/post", "destination": "/blog-post.html" },
+      {
+        "source": "/api/createPatientPortalAccount",
+        "function": { "functionId": "createPatientPortalAccount", "region": "us-central1" }
+      }
     ],
     "headers": [
       {
