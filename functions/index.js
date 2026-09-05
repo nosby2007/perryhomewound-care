@@ -69,19 +69,15 @@ function generateTempPassword() {
   return `${randomBytes(9).toString("base64").replace(/[+/=]/g, "")}-Aa1`;
 }
 
-// Creates a Firebase Auth account for a patient and links it to their portal
-// record, so admins never have to hand-copy a UID between the Firebase
-// Console and the app.
-//
-// This is a plain onRequest function, not onCall: the project's Google Cloud
-// organization enforces the "Domain Restricted Sharing" policy, which blocks
-// granting allUsers the Cloud Run Invoker role that onCall/httpsCallable
-// depends on. Instead this is reached only through the Firebase Hosting
-// rewrite at /api/createPatientPortalAccount (see firebase.json), which
-// Firebase is allowed to invoke internally without a public IAM grant.
-// Called from public/admin/patient-portal.js via fetch() with a Firebase
-// Auth ID token in the Authorization header.
-exports.createPatientPortalAccount = onRequest(async (req, res) => {
+/**
+ * Handles POST /api/createPatientPortalAccount: verifies the caller is an
+ * active admin, then creates the patient's Firebase Auth account and links
+ * portalUsers/patientPortal for them.
+ * @param {object} req Express-style request from onRequest.
+ * @param {object} res Express-style response from onRequest.
+ * @return {Promise<void>}
+ */
+async function handleCreatePatientPortalAccount(req, res) {
   try {
     if (req.method !== "POST") {
       throw new ApiError(405, "Method not allowed.");
@@ -161,4 +157,21 @@ exports.createPatientPortalAccount = onRequest(async (req, res) => {
     const status = error instanceof ApiError ? error.status : 500;
     res.status(status).json({error: error.message || "Unexpected error."});
   }
-});
+}
+
+// Creates a Firebase Auth account for a patient and links it to their portal
+// record, so admins never have to hand-copy a UID between the Firebase
+// Console and the app.
+//
+// This is a plain onRequest function, not onCall: the project's Google Cloud
+// organization enforces the "Domain Restricted Sharing" policy, which blocks
+// granting allUsers the Cloud Run Invoker role that onCall/httpsCallable
+// depends on. invoker:"private" stops Firebase from even attempting that
+// public grant on deploy (which otherwise fails outright under the policy).
+// The function is reached only through the Firebase Hosting rewrite at
+// /api/createPatientPortalAccount (see firebase.json), which Firebase is
+// allowed to invoke internally without a public IAM grant. Called from
+// public/admin/patient-portal.js via fetch() with a Firebase Auth ID token
+// in the Authorization header.
+exports.createPatientPortalAccount = onRequest(
+    {invoker: "private"}, handleCreatePatientPortalAccount);
