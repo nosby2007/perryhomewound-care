@@ -13,7 +13,7 @@
     .panel p{margin:.35rem 0 1rem}.notice{border-radius:12px;padding:11px 13px;margin:0 0 14px;border:1px solid var(--line);background:#f5f1e7}.notice.success{background:#eaf4ee;border-color:#c8e1d2;color:#32654d}.notice.error{background:#fdeceb;border-color:#efc7c5;color:#9f4141}
     .result{margin-top:14px;padding:14px;border-radius:13px;background:#eef3f0;border:1px solid #d5e0da}.result-row{display:grid;gap:8px;margin-top:10px}.copy-row{display:grid;grid-template-columns:1fr auto;gap:8px}.copy-row input{width:100%}
     .phi-note{font-size:.8rem;color:var(--muted);background:#fff8ed;border:1px solid #f0d0aa;border-radius:12px;padding:10px 12px;margin:12px 0}
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.toolbar h2{margin:0}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.toolbar h2{margin:0}.status-open{background:#eef4f5;border-color:#ccdde1;color:#245366}.status-paid{background:#eaf4ee;border-color:#c8e1d2;color:#32654d}.status-expired{background:#f1efeb;border-color:#ded9d0;color:#6f777a}
     @media(max-width:1050px){.pay-grid{grid-template-columns:1fr}}
   </style>
 </head>
@@ -39,7 +39,7 @@
         <section class="panel">
           <h2>Create a secure payment request</h2>
           <p class="muted">Creates a private PHWC link. The amount is locked on the server before Stripe Checkout opens.</p>
-          <div class="phi-note"><strong>Privacy:</strong> payer details and internal notes remain in PHWC. Stripe receives only a generic self-pay label, the amount, and an opaque payment reference. Do not put diagnosis, wound details, SSN, or other clinical information in Stripe.</div>
+          <div class="phi-note"><strong>Privacy:</strong> payer details and internal notes remain in PHWC. PHWC sends Stripe only a generic self-pay label, the amount, and an opaque payment reference. Stripe then collects the payment information it needs on its own hosted checkout page. Do not put diagnosis, wound details, SSN, or other clinical information in Stripe.</div>
           <form id="selfPayForm" class="form">
             <label>Patient / payer label (internal only)
               <input id="payerLabel" type="text" maxlength="120" autocomplete="off" placeholder="e.g., John D."/>
