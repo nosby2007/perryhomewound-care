@@ -175,3 +175,6 @@ async function handleCreatePatientPortalAccount(req, res) {
 // in the Authorization header.
 exports.createPatientPortalAccount = onRequest(
     {invoker: "private"}, handleCreatePatientPortalAccount);
+
+// Self-pay Stripe checkout endpoints.
+Object.assign(exports, require("./payments"));
