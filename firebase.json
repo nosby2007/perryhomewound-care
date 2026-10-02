@@ -3,57 +3,236 @@
     "public": "public",
     "cleanUrls": true,
     "trailingSlash": false,
-    "ignore": ["firebase.json","**/.*","**/node_modules/**","**/*.md"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.md"
+    ],
     "rewrites": [
-      { "source": "/admin", "destination": "/admin/admin.html" },
-      { "source": "/login", "destination": "/admin/login/admin-login.html" },
-      { "source": "/admin/tasks",     "destination": "/admin/tasks.html" },
-      { "source": "/admin/bookings",  "destination": "/admin/bookings.html" },
-      { "source": "/admin/contacts",  "destination": "/admin/contacts.html" },
-      { "source": "/admin/referrals", "destination": "/admin/referrals.html" },
-      { "source": "/admin/crm",       "destination": "/admin/crm.html" },
-      { "source": "/admin/social-studio", "destination": "/admin/social-studio.html" },
-      { "source": "/admin/blog-studio", "destination": "/admin/blog-studio.html" },
-      { "source": "/admin/users",     "destination": "/admin/users.html" },
-      { "source": "/admin/patient-portal", "destination": "/admin/patient-portal.html" },
-      { "source": "/portal", "destination": "/portal/index.html" },
-      { "source": "/portal/login", "destination": "/portal/login.html" },
-      { "source": "/portal/security-setup", "destination": "/portal/security-setup.html" },
-      { "source": "/blog", "destination": "/blog.html" },
-      { "source": "/blog/post", "destination": "/blog-post.html" },
+      {
+        "source": "/admin",
+        "destination": "/admin/admin.html"
+      },
+      {
+        "source": "/login",
+        "destination": "/admin/login/admin-login.html"
+      },
+      {
+        "source": "/admin/tasks",
+        "destination": "/admin/tasks.html"
+      },
+      {
+        "source": "/admin/bookings",
+        "destination": "/admin/bookings.html"
+      },
+      {
+        "source": "/admin/contacts",
+        "destination": "/admin/contacts.html"
+      },
+      {
+        "source": "/admin/referrals",
+        "destination": "/admin/referrals.html"
+      },
+      {
+        "source": "/admin/crm",
+        "destination": "/admin/crm.html"
+      },
+      {
+        "source": "/admin/social-studio",
+        "destination": "/admin/social-studio.html"
+      },
+      {
+        "source": "/admin/blog-studio",
+        "destination": "/admin/blog-studio.html"
+      },
+      {
+        "source": "/admin/users",
+        "destination": "/admin/users.html"
+      },
+      {
+        "source": "/admin/patient-portal",
+        "destination": "/admin/patient-portal.html"
+      },
+      {
+        "source": "/portal",
+        "destination": "/portal/index.html"
+      },
+      {
+        "source": "/portal/login",
+        "destination": "/portal/login.html"
+      },
+      {
+        "source": "/portal/security-setup",
+        "destination": "/portal/security-setup.html"
+      },
+      {
+        "source": "/blog",
+        "destination": "/blog.html"
+      },
+      {
+        "source": "/blog/post",
+        "destination": "/blog-post.html"
+      },
       {
         "source": "/api/createPatientPortalAccount",
-        "function": { "functionId": "createPatientPortalAccount", "region": "us-central1" }
+        "function": {
+          "functionId": "createPatientPortalAccount",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/admin/self-pay",
+        "destination": "/admin/self-pay.html"
+      },
+      {
+        "source": "/pay",
+        "destination": "/pay.html"
+      },
+      {
+        "source": "/pay-success",
+        "destination": "/pay-success.html"
+      },
+      {
+        "source": "/api/createSelfPayInvoice",
+        "function": {
+          "functionId": "createSelfPayInvoice",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/selfPayInvoices",
+        "function": {
+          "functionId": "listSelfPayInvoices",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/selfPayInvoice",
+        "function": {
+          "functionId": "getSelfPayInvoice",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/createSelfPayCheckout",
+        "function": {
+          "functionId": "createSelfPayCheckout",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/stripeWebhook",
+        "function": {
+          "functionId": "stripeWebhook",
+          "region": "us-central1"
+        }
       }
     ],
     "headers": [
       {
         "source": "**",
         "headers": [
-          { "key": "X-Content-Type-Options", "value": "nosniff" },
-          { "key": "X-Frame-Options", "value": "DENY" },
-          { "key": "Referrer-Policy", "value": "no-referrer" },
-          { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-          { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" }
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          },
+          {
+            "key": "Permissions-Policy",
+            "value": "camera=(), microphone=(), geolocation=()"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains"
+          }
         ]
       },
       {
         "source": "/admin/**",
         "headers": [
-          { "key": "Cache-Control", "value": "private, no-store, max-age=0" },
-          { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+          {
+            "key": "Cache-Control",
+            "value": "private, no-store, max-age=0"
+          },
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          }
         ]
       },
       {
         "source": "/portal/**",
         "headers": [
-          { "key": "Cache-Control", "value": "private, no-store, max-age=0, must-revalidate" },
-          { "key": "Pragma", "value": "no-cache" },
-          { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+          {
+            "key": "Cache-Control",
+            "value": "private, no-store, max-age=0, must-revalidate"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          },
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          }
         ]
       },
-      { "source": "**/*.@(css|js)", "headers":[{"key":"Cache-Control","value":"public, max-age=3600"}] },
-      { "source": "**/*.@(jpg|jpeg|gif|webp|svg|png)", "headers":[{"key":"Cache-Control","value":"public, max-age=86400"}] }
+      {
+        "source": "**/*.@(css|js)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|gif|webp|svg|png)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=86400"
+          }
+        ]
+      },
+      {
+        "source": "/pay**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "private, no-store, max-age=0, must-revalidate"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          },
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          }
+        ]
+      },
+      {
+        "source": "/api/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "private, no-store, max-age=0, must-revalidate"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          }
+        ]
+      }
     ]
   },
   "firestore": {
@@ -67,7 +246,12 @@
     {
       "source": "functions",
       "codebase": "default",
-      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"]
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
     }
   ]
 }
