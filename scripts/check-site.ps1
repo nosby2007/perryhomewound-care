@@ -46,6 +46,19 @@ function Test-PublicReference([string]$target) {
   return $false
 }
 
+Write-Host "Checking Cloud Functions syntax..."
+$functionsRoot = Join-Path $projectRoot "functions"
+if (Test-Path -LiteralPath $functionsRoot) {
+  $functionJsFiles = Get-ChildItem -LiteralPath $functionsRoot -Recurse -File -Filter "*.js"
+  foreach ($file in $functionJsFiles) {
+    & node --check $file.FullName 2>$null
+    if ($LASTEXITCODE -ne 0) {
+      $relative = $file.FullName.Substring($projectRoot.Length + 1)
+      $failures.Add("Cloud Functions syntax failed: $relative")
+    }
+  }
+}
+
 Write-Host "Checking HTML document structure and local references..."
 $htmlFiles = Get-ChildItem -LiteralPath $publicRoot -Recurse -File -Filter "*.html"
 foreach ($file in $htmlFiles) {
