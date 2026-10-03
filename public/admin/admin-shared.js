@@ -98,6 +98,7 @@ export function mountSidebar(activeId){
   addNavItem(nav, "social", "/admin/social-studio.html", "Content Studio");
   addNavItem(nav, "blog", "/admin/blog-studio.html", "Blog Studio");
   addNavItem(nav, "self-pay", "/admin/self-pay.html", "Self-Pay");
+  addNavItem(nav, "private-care", "/admin/private-care.html", "Private Care");
 
   if(activeId === "social" && !document.querySelector('script[data-phwc-social-share]')){
     const shareScript = document.createElement("script");

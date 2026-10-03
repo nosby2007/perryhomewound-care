@@ -17,6 +17,7 @@
       { "source": "/admin/users",     "destination": "/admin/users.html" },
       { "source": "/admin/patient-portal", "destination": "/admin/patient-portal.html" },
       { "source": "/admin/self-pay", "destination": "/admin/self-pay.html" },
+      { "source": "/admin/private-care", "destination": "/admin/private-care.html" },
       { "source": "/portal", "destination": "/portal/index.html" },
       { "source": "/portal/login", "destination": "/portal/login.html" },
       { "source": "/portal/security-setup", "destination": "/portal/security-setup.html" },
