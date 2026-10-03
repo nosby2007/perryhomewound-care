@@ -53,10 +53,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Firebase CLI
         run: npm install --global firebase-tools
+
+      - name: Install Functions dependencies
+        working-directory: functions
+        run: npm ci
 
       - name: Deploy Hosting and Firestore rules
         run: firebase deploy --only hosting,firestore:rules --project credential-4f22b --non-interactive
@@ -71,3 +75,7 @@ jobs:
         run: |
           echo "::warning::PHWC Hosting and Firestore rules were deployed, but Storage rules were not."
           echo "::warning::Grant the deployment service account permission to inspect/enable Firebase Storage API before enabling referral document uploads."
+
+      - name: Deploy Functions
+        run: firebase deploy --only functions --project credential-4f22b --non-interactive
+
