@@ -3,7 +3,7 @@ import {collection,doc,getDocs,serverTimestamp,Timestamp,writeBatch} from "https
 
 await adminReady;
 const $=id=>document.getElementById(id);
-let episodes=[],clients=[],saving=false;
+let episodes=[],clients=[],staff=[],visits=[],saving=false;
 
 function notice(msg,type="success"){$("notice").textContent=msg;$("notice").className="notice "+type;$("notice").hidden=false;}
 function dateText(v){return v?.toDate?.()?.toLocaleDateString?.()||v||"-";}
@@ -17,14 +17,19 @@ function supervisionDays(lines,payer){
   return 122;
 }
 async function load(){
-  const [episodeSnap,clientSnap]=await Promise.all([
+  const [episodeSnap,clientSnap,staffSnap,visitSnap]=await Promise.all([
     getDocs(collection(db,"privateCareEpisodes")),
-    getDocs(collection(db,"privateCareClients"))
+    getDocs(collection(db,"privateCareClients")),
+    getDocs(collection(db,"privateCareStaff")),
+    getDocs(collection(db,"privateCareVisits"))
   ]);
   episodes=episodeSnap.docs.map(d=>({id:d.id,...d.data()}));
   clients=clientSnap.docs.map(d=>({id:d.id,...d.data()}));
+  staff=staffSnap.docs.map(d=>({id:d.id,...d.data()}));
+  visits=visitSnap.docs.map(d=>({id:d.id,...d.data()}));
   render();
   populatePlanEpisodes();
+  populateScheduling();
 }
 function render(){
   const today=new Date(),todayKey=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
@@ -67,23 +72,24 @@ $("admissionForm").addEventListener("submit",async e=>{
 function populatePlanEpisodes(){
   const select=$("planEpisode"); if(!select)return;
   const current=select.value;
-  select.innerHTML='<option value="">Select episode…</option>'+episodes.filter(x=>x.status!=="discharged").map(x=>`<option value="${esc(x.id)}">${esc(x.clientName||x.clientId)} — ${esc(x.status)}</option>`).join("");
-  if(episodes.some(x=>x.id===current))select.value=current;
+  select.innerHTML='<option value="">Select episode…</option>'+episodes.filter(x=>x.status==="pending_admission").map(x=>`<option value="${esc(x.id)}">${esc(x.clientName||x.clientId)} — ${esc(x.status)}</option>`).join("");
+  if(episodes.some(x=>x.id===current&&x.status==="pending_admission"))select.value=current;
 }
 let planSaving=false;
 $("planForm")?.addEventListener("submit",async e=>{
   e.preventDefault(); if(planSaving)return;
   const episodeId=$("planEpisode").value;
   const episode=episodes.find(x=>x.id===episodeId);
-  if(!episode){notice("Select a valid Private Care episode.","error");return;}
+  if(!episode||episode.status!=="pending_admission"){notice("Select a pending-admission episode. Active plans must be revised through a separate revision workflow.","error");return;}
+  const charges=$("charges").value.trim(),paymentTerms=$("paymentTerms").value.trim();
   const servicesFrequency=$("servicesFrequency").value.trim(),functionalNeeds=$("functionalNeeds").value.trim(),goals=$("goals").value.trim(),dischargePlan=$("dischargePlan").value.trim();
-  if(!servicesFrequency||!functionalNeeds||!goals||!dischargePlan||!$("agreementConfirmed").checked||!$("planApproved").checked){notice("Complete the required agreement and service-plan fields before activation.","error");return;}
+  if(!charges||!paymentTerms||!servicesFrequency||!functionalNeeds||!goals||!dischargePlan||!$("agreementConfirmed").checked||!$("planApproved").checked){notice("Complete the required agreement and service-plan fields before activation.","error");return;}
   planSaving=true; const btn=$("savePlanBtn"); if(btn)btn.disabled=true;
   try{
     const batch=writeBatch(db),now=serverTimestamp();
     const agreementRef=doc(collection(db,"privateCareEpisodes",episodeId,"serviceAgreements"));
     const planRef=doc(collection(db,"privateCareEpisodes",episodeId,"servicePlans"));
-    batch.set(agreementRef,{effectiveDate:$("agreementDate").value,charges:$("charges").value.trim(),paymentTerms:$("paymentTerms").value.trim(),servicesFrequency,confirmed:true,status:"active",createdAt:now,updatedAt:now});
+    batch.set(agreementRef,{effectiveDate:$("agreementDate").value,charges,paymentTerms,servicesFrequency,confirmed:true,status:"active",createdAt:now,updatedAt:now});
     batch.set(planRef,{serviceLines:episode.serviceLines||[],functionalNeeds,servicesFrequency,goals,dischargePlan,clinicalDetails:$("clinicalDetails").value.trim(),approved:true,status:"active",createdAt:now,updatedAt:now});
     batch.update(doc(db,"privateCareEpisodes",episodeId),{status:"active",serviceAgreementId:agreementRef.id,activeServicePlanId:planRef.id,activatedAt:now,updatedAt:now});
     await batch.commit();
@@ -92,5 +98,38 @@ $("planForm")?.addEventListener("submit",async e=>{
   finally{planSaving=false;if(btn)btn.disabled=false;}
   try{await load();}catch(err){console.error(err);notice("Plan saved and episode activated, but the census could not refresh. Use Refresh.","error");}
 });
+
+function populateScheduling(){
+  const episodeSelect=$("visitEpisode"); if(episodeSelect){
+    const cur=episodeSelect.value; episodeSelect.innerHTML='<option value="">Select…</option>'+episodes.filter(x=>x.status==="active").map(x=>`<option value="${esc(x.id)}">${esc(x.clientName||x.clientId)}</option>`).join(""); if(episodes.some(x=>x.id===cur&&x.status==="active"))episodeSelect.value=cur;
+  }
+  refreshStaffChoices();
+  const body=$("visitsBody"); if(body)body.innerHTML=visits.length?visits.sort((a,b)=>(a.scheduledAt?.seconds||0)-(b.scheduledAt?.seconds||0)).map(v=>`<tr><td>${esc(v.clientName||"")}</td><td>${esc((v.serviceLine||"").replaceAll("_"," "))}</td><td>${esc(v.staffName||"")}</td><td>${esc(dateText(v.scheduledAt))} ${esc(v.scheduledTime||"")}</td><td>${esc(v.status||"scheduled")}</td></tr>`).join(""):'<tr><td colspan="5" class="muted">No visits scheduled.</td></tr>';
+}
+function refreshStaffChoices(){
+  const service=$("visitService")?.value,select=$("visitStaff"); if(!select)return;
+  const eligible=staff.filter(s=>s.active!==false&&s.qualified===true&&(!service||(s.serviceLines||[]).includes(service)));
+  select.innerHTML='<option value="">Select qualified staff…</option>'+eligible.map(s=>`<option value="${esc(s.id)}">${esc(s.name)} — ${esc(s.role)}</option>`).join("");
+}
+$("visitService")?.addEventListener("change",refreshStaffChoices);
+$("staffForm")?.addEventListener("submit",async e=>{
+  e.preventDefault(); const name=$("staffName").value.trim(),role=$("staffRole").value,serviceLines=[...document.querySelectorAll('input[name="staffService"]:checked')].map(x=>x.value);
+  if(!name||!serviceLines.length||!$("staffQualified").checked){notice("Complete staff identity, permitted services and qualification verification.","error");return;}
+  if(serviceLines.includes("NURSING")&&!["RN","LPN"].includes(role)){notice("Nursing service can only be assigned to an RN/LPN staff profile.","error");return;}
+  const ref=doc(collection(db,"privateCareStaff")); const batch=writeBatch(db); batch.set(ref,{name,role,credential:$("staffCredential").value.trim(),serviceLines,qualified:true,active:true,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+  try{await batch.commit();e.target.reset();notice("Staff member added.");await load();}catch(err){console.error(err);notice(err.message||"Unable to add staff.","error");}
+});
+$("visitForm")?.addEventListener("submit",async e=>{
+  e.preventDefault(); const episode=episodes.find(x=>x.id===$("visitEpisode").value),service=$("visitService").value,person=staff.find(x=>x.id===$("visitStaff").value);
+  if(!episode||episode.status!=="active"){notice("Select an active episode.","error");return;}
+  if(!(episode.serviceLines||[]).includes(service)){notice("This service is not included in the active episode.","error");return;}
+  if(!person||person.qualified!==true||!(person.serviceLines||[]).includes(service)){notice("Select staff verified for this service.","error");return;}
+  if(service==="NURSING"&&!["RN","LPN"].includes(person.role)){notice("Nursing visits require an RN/LPN assignment.","error");return;}
+  const rawDate=$("visitDate").value,time=$("visitTime").value;if(!rawDate||!time)return;
+  const scheduled=new Date(rawDate+"T"+time+":00"); const visitRef=doc(collection(db,"privateCareVisits"));
+  const batch=writeBatch(db);batch.set(visitRef,{episodeId:episode.id,clientId:episode.clientId,clientName:episode.clientName,serviceLine:service,staffId:person.id,staffName:person.name,staffRole:person.role,scheduledAt:Timestamp.fromDate(scheduled),scheduledTime:time,durationHours:Number($("visitDuration").value),status:"scheduled",evvStatus:"not_started",documentationStatus:"not_started",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+  try{await batch.commit();e.target.reset();notice("Private Care visit scheduled.");await load();}catch(err){console.error(err);notice(err.message||"Unable to schedule visit.","error");}
+});
+
 $("refreshBtn").addEventListener("click",load);
 load().catch(e=>notice(e.message,"error"));
