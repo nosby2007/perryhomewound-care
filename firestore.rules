@@ -311,6 +311,27 @@ service cloud.firestore {
       allow write: if false;
     }
 
+
+    // Private Home Care operational records. P0/P1 is admin-only while
+    // caregiver/staff role-scoped access is designed separately.
+    match /privateCareClients/{clientId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+    match /privateCareEpisodes/{episodeId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+
+      match /{subcollection}/{documentId} {
+        allow read, create, update: if isAdmin();
+        allow delete: if false;
+      }
+    }
+    match /privateCareStaff/{staffId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+
     match /{document=**} { allow read, write: if false; }
   }
 }
