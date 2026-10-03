@@ -34,7 +34,7 @@ jobs:
   deploy-firebase:
     name: Deploy PHWC Firebase
     needs: validate
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -78,4 +78,3 @@ jobs:
 
       - name: Deploy Functions
         run: firebase deploy --only functions --project credential-4f22b --non-interactive
-
