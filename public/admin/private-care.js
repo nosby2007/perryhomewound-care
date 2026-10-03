@@ -1,5 +1,5 @@
 import {adminReady,db,esc} from "/admin/admin-shared.js";
-import {collection,doc,getDocs,serverTimestamp,Timestamp,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import {collection,doc,getDocs,serverTimestamp,Timestamp,writeBatch,updateDoc} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 await adminReady;
 const $=id=>document.getElementById(id);
@@ -30,6 +30,7 @@ async function load(){
   render();
   populatePlanEpisodes();
   populateScheduling();
+  populateEvvAndSupervision();
 }
 function render(){
   const today=new Date(),todayKey=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
@@ -129,6 +130,39 @@ $("visitForm")?.addEventListener("submit",async e=>{
   const scheduled=new Date(rawDate+"T"+time+":00"); const visitRef=doc(collection(db,"privateCareVisits"));
   const batch=writeBatch(db);batch.set(visitRef,{episodeId:episode.id,clientId:episode.clientId,clientName:episode.clientName,serviceLine:service,staffId:person.id,staffName:person.name,staffRole:person.role,scheduledAt:Timestamp.fromDate(scheduled),scheduledTime:time,durationHours:Number($("visitDuration").value),status:"scheduled",evvStatus:"not_started",documentationStatus:"not_started",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
   try{await batch.commit();e.target.reset();notice("Private Care visit scheduled.");await load();}catch(err){console.error(err);notice(err.message||"Unable to schedule visit.","error");}
+});
+
+function populateEvvAndSupervision(){
+  const evv=$("evvVisit"); if(evv){const cur=evv.value;evv.innerHTML='<option value="">Select visit…</option>'+visits.filter(v=>v.status!=="completed").map(v=>`<option value="${esc(v.id)}">${esc(v.clientName)} — ${esc((v.serviceLine||"").replaceAll("_"," "))} — ${esc(dateText(v.scheduledAt))}</option>`).join("");if(visits.some(v=>v.id===cur&&v.status!=="completed"))evv.value=cur;}
+  const sup=$("supervisionEpisode");if(sup){const cur=sup.value;sup.innerHTML='<option value="">Select…</option>'+episodes.filter(x=>x.status==="active").map(x=>`<option value="${esc(x.id)}">${esc(x.clientName||x.clientId)}</option>`).join("");if(episodes.some(x=>x.id===cur&&x.status==="active"))sup.value=cur;}
+}
+$("clockInBtn")?.addEventListener("click",async()=>{
+  const visit=visits.find(v=>v.id===$("evvVisit").value);if(!visit){notice("Select a scheduled visit.","error");return;}if(visit.evvStatus!=="not_started"){notice("This visit has already been clocked in.","error");return;}
+  try{await updateDoc(doc(db,"privateCareVisits",visit.id),{evvStatus:"in_progress",status:"in_progress",clockInAt:serverTimestamp(),updatedAt:serverTimestamp()});notice("Clock-in recorded.");await load();}catch(err){console.error(err);notice(err.message||"Clock-in failed.","error");}
+});
+$("clockOutBtn")?.addEventListener("click",async()=>{
+  const visit=visits.find(v=>v.id===$("evvVisit").value);if(!visit){notice("Select a visit.","error");return;}if(visit.evvStatus!=="in_progress"){notice("Clock in before clocking out.","error");return;}
+  try{await updateDoc(doc(db,"privateCareVisits",visit.id),{evvStatus:"completed",clockOutAt:serverTimestamp(),updatedAt:serverTimestamp()});notice("Clock-out recorded. Complete the visit documentation.");await load();}catch(err){console.error(err);notice(err.message||"Clock-out failed.","error");}
+});
+$("evvForm")?.addEventListener("submit",async e=>{
+  e.preventDefault();const visit=visits.find(v=>v.id===$("evvVisit").value);if(!visit){notice("Select a visit.","error");return;}
+  const tasks=$("visitTasks").value.trim(),response=$("visitResponse").value.trim(),concerns=$("visitConcerns").value.trim(),complete=$("visitCompleted").checked;
+  if(complete&&visit.evvStatus!=="completed"){notice("Clock-out must be recorded before completing documentation.","error");return;}
+  if(complete&&(!tasks||!response)){notice("Services/tasks and client response are required to complete documentation.","error");return;}
+  const noteRef=doc(collection(db,"privateCareVisits",visit.id,"documentation"));const batch=writeBatch(db);
+  batch.set(noteRef,{serviceLine:visit.serviceLine,tasks,response,concerns,status:complete?"complete":"draft",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+  batch.update(doc(db,"privateCareVisits",visit.id),{documentationStatus:complete?"complete":"draft",status:complete?"completed":visit.status,completedAt:complete?serverTimestamp():null,updatedAt:serverTimestamp()});
+  try{await batch.commit();e.target.reset();notice(complete?"Visit documentation completed.":"Visit documentation saved as draft.");await load();}catch(err){console.error(err);notice(err.message||"Unable to save documentation.","error");}
+});
+$("supervisionForm")?.addEventListener("submit",async e=>{
+  e.preventDefault();const episode=episodes.find(x=>x.id===$("supervisionEpisode").value);if(!episode||episode.status!=="active"){notice("Select an active episode.","error");return;}
+  const findings=$("supervisionFindings").value.trim(),supervisor=$("supervisionBy").value.trim();if(!findings||!supervisor||!$("supervisionComplete").checked){notice("Complete the supervisory review fields.","error");return;}
+  const raw=$("supervisionDate").value;if(!raw)return;const performed=new Date(raw+"T12:00:00");
+  const days=episode.supervisionIntervalDays;let next=null;if(days){next=new Date(performed);next.setDate(next.getDate()+days);}
+  const supRef=doc(collection(db,"privateCareEpisodes",episode.id,"supervisoryVisits")),batch=writeBatch(db);
+  batch.set(supRef,{performedAt:Timestamp.fromDate(performed),supervisor,findings,actions:$("supervisionActions").value.trim(),completed:true,createdAt:serverTimestamp()});
+  batch.update(doc(db,"privateCareEpisodes",episode.id),{lastSupervisionAt:Timestamp.fromDate(performed),nextSupervisionDue:next?Timestamp.fromDate(next):null,updatedAt:serverTimestamp()});
+  try{await batch.commit();e.target.reset();notice(next?"Supervisory visit recorded and next due date updated.":"Supervisory visit recorded. Medicaid/program-specific next due date remains unset.");await load();}catch(err){console.error(err);notice(err.message||"Unable to record supervision.","error");}
 });
 
 $("refreshBtn").addEventListener("click",load);
