@@ -334,6 +334,10 @@ service cloud.firestore {
     match /privateCareVisits/{visitId} {
       allow read, create, update: if isAdmin();
       allow delete: if false;
+      match /documentation/{documentId} {
+        allow read, create, update: if isAdmin();
+        allow delete: if false;
+      }
     }
 
     match /{document=**} { allow read, write: if false; }
