@@ -24,6 +24,7 @@ async function load(){
   episodes=episodeSnap.docs.map(d=>({id:d.id,...d.data()}));
   clients=clientSnap.docs.map(d=>({id:d.id,...d.data()}));
   render();
+  populatePlanEpisodes();
 }
 function render(){
   const today=new Date(),todayKey=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
@@ -62,6 +63,34 @@ $("admissionForm").addEventListener("submit",async e=>{
     console.error(err);notice(err.message||"Unable to create admission.","error");return;
   }finally{saving=false;if(submit)submit.disabled=false;}
   try{await load();}catch(err){console.error(err);notice("Admission saved, but the census could not refresh. Use Refresh; do not recreate the admission.","error");}
+});
+function populatePlanEpisodes(){
+  const select=$("planEpisode"); if(!select)return;
+  const current=select.value;
+  select.innerHTML='<option value="">Select episode…</option>'+episodes.filter(x=>x.status!=="discharged").map(x=>`<option value="${esc(x.id)}">${esc(x.clientName||x.clientId)} — ${esc(x.status)}</option>`).join("");
+  if(episodes.some(x=>x.id===current))select.value=current;
+}
+let planSaving=false;
+$("planForm")?.addEventListener("submit",async e=>{
+  e.preventDefault(); if(planSaving)return;
+  const episodeId=$("planEpisode").value;
+  const episode=episodes.find(x=>x.id===episodeId);
+  if(!episode){notice("Select a valid Private Care episode.","error");return;}
+  const servicesFrequency=$("servicesFrequency").value.trim(),functionalNeeds=$("functionalNeeds").value.trim(),goals=$("goals").value.trim(),dischargePlan=$("dischargePlan").value.trim();
+  if(!servicesFrequency||!functionalNeeds||!goals||!dischargePlan||!$("agreementConfirmed").checked||!$("planApproved").checked){notice("Complete the required agreement and service-plan fields before activation.","error");return;}
+  planSaving=true; const btn=$("savePlanBtn"); if(btn)btn.disabled=true;
+  try{
+    const batch=writeBatch(db),now=serverTimestamp();
+    const agreementRef=doc(collection(db,"privateCareEpisodes",episodeId,"serviceAgreements"));
+    const planRef=doc(collection(db,"privateCareEpisodes",episodeId,"servicePlans"));
+    batch.set(agreementRef,{effectiveDate:$("agreementDate").value,charges:$("charges").value.trim(),paymentTerms:$("paymentTerms").value.trim(),servicesFrequency,confirmed:true,status:"active",createdAt:now,updatedAt:now});
+    batch.set(planRef,{serviceLines:episode.serviceLines||[],functionalNeeds,servicesFrequency,goals,dischargePlan,clinicalDetails:$("clinicalDetails").value.trim(),approved:true,status:"active",createdAt:now,updatedAt:now});
+    batch.update(doc(db,"privateCareEpisodes",episodeId),{status:"active",serviceAgreementId:agreementRef.id,activeServicePlanId:planRef.id,activatedAt:now,updatedAt:now});
+    await batch.commit();
+    e.target.reset(); notice("Service Agreement and Service Plan saved. Episode activated.");
+  }catch(err){console.error(err);notice(err.message||"Unable to save the service plan.","error");return;}
+  finally{planSaving=false;if(btn)btn.disabled=false;}
+  try{await load();}catch(err){console.error(err);notice("Plan saved and episode activated, but the census could not refresh. Use Refresh.","error");}
 });
 $("refreshBtn").addEventListener("click",load);
 load().catch(e=>notice(e.message,"error"));
